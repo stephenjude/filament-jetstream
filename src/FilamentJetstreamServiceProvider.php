@@ -2,19 +2,21 @@
 
 namespace FilamentJetstream\FilamentJetstream;
 
-use Filament\Support\Assets\AlpineComponent;
+use Filament\Events\Auth\Registered;
 use Filament\Support\Assets\Asset;
 use Filament\Support\Assets\Css;
 use Filament\Support\Assets\Js;
 use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentIcon;
+use FilamentJetstream\FilamentJetstream\Commands\FilamentJetstreamCommand;
+use FilamentJetstream\FilamentJetstream\Listeners\CreatePersonalTeam;
+use FilamentJetstream\FilamentJetstream\Testing\TestsFilamentJetstream;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Facades\Event;
 use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use FilamentJetstream\FilamentJetstream\Commands\FilamentJetstreamCommand;
-use FilamentJetstream\FilamentJetstream\Testing\TestsFilamentJetstream;
 
 class FilamentJetstreamServiceProvider extends PackageServiceProvider
 {
@@ -34,8 +36,6 @@ class FilamentJetstreamServiceProvider extends PackageServiceProvider
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
-                    ->publishMigrations()
-                    ->askToRunMigrations()
                     ->askToStarRepoOnGitHub('stephenjude/filament-jetstream');
             });
 
@@ -43,10 +43,6 @@ class FilamentJetstreamServiceProvider extends PackageServiceProvider
 
         if (file_exists($package->basePath("/../config/{$configFileName}.php"))) {
             $package->hasConfigFile();
-        }
-
-        if (file_exists($package->basePath('/../database/migrations'))) {
-            $package->hasMigrations($this->getMigrations());
         }
 
         if (file_exists($package->basePath('/../resources/lang'))) {
@@ -64,6 +60,11 @@ class FilamentJetstreamServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
+        Event::listen(
+            Registered::class,
+            CreatePersonalTeam::class,
+        );
+
         // Asset Registration
         FilamentAsset::register(
             $this->getAssets(),
@@ -77,15 +78,6 @@ class FilamentJetstreamServiceProvider extends PackageServiceProvider
 
         // Icon Registration
         FilamentIcon::register($this->getIcons());
-
-        // Handle Stubs
-        if (app()->runningInConsole()) {
-            foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
-                $this->publishes([
-                    $file->getRealPath() => base_path("stubs/filament-jetstream/{$file->getFilename()}"),
-                ], 'filament-jetstream-stubs');
-            }
-        }
 
         // Testing
         Testable::mixin(new TestsFilamentJetstream());
@@ -103,8 +95,8 @@ class FilamentJetstreamServiceProvider extends PackageServiceProvider
     {
         return [
             // AlpineComponent::make('filament-jetstream', __DIR__ . '/../resources/dist/components/filament-jetstream.js'),
-            Css::make('filament-jetstream-styles', __DIR__ . '/../resources/dist/filament-jetstream.css'),
-            Js::make('filament-jetstream-scripts', __DIR__ . '/../resources/dist/filament-jetstream.js'),
+            Css::make('filament-jetstream-styles', __DIR__.'/../resources/dist/filament-jetstream.css'),
+            Js::make('filament-jetstream-scripts', __DIR__.'/../resources/dist/filament-jetstream.js'),
         ];
     }
 
