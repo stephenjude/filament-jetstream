@@ -57,7 +57,6 @@ class FilamentJetstreamServiceProvider extends PackageServiceProvider
         Testable::mixin(new TestsFilamentJetstream());
     }
 
-
     /**
      * @return array<class-string>
      */
@@ -67,7 +66,6 @@ class FilamentJetstreamServiceProvider extends PackageServiceProvider
             FilamentJetstreamCommand::class,
         ];
     }
-
 
     /**
      * @return array<string>

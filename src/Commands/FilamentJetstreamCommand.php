@@ -42,9 +42,9 @@ class FilamentJetstreamCommand extends Command
     {
         $this->replaceInFile(
             search: 'use Laravel\Sanctum\HasApiTokens;',
-            replace: 'use Filament\Panel;'.PHP_EOL.
-            'use Filament\Models\Contracts\FilamentUser;'.PHP_EOL.
-            'use Laravel\Sanctum\HasApiTokens;'.PHP_EOL,
+            replace: 'use Filament\Panel;' . PHP_EOL .
+            'use Filament\Models\Contracts\FilamentUser;' . PHP_EOL .
+            'use Laravel\Sanctum\HasApiTokens;' . PHP_EOL,
             path: app_path('Models/User.php'),
         );
 
@@ -55,9 +55,9 @@ class FilamentJetstreamCommand extends Command
         );
 
         $this->replaceInFile(
-            search: '}'.PHP_EOL,
-            replace: 'public function canAccessPanel(Panel $panel): bool'.PHP_EOL.'{'.PHP_EOL.
-            '   return;'.PHP_EOL.'}'.PHP_EOL.'}'.PHP_EOL,
+            search: '}' . PHP_EOL,
+            replace: 'public function canAccessPanel(Panel $panel): bool' . PHP_EOL . '{' . PHP_EOL .
+            '   return;' . PHP_EOL . '}' . PHP_EOL . '}' . PHP_EOL,
             path: app_path('Models/User.php'),
         );
 
@@ -74,10 +74,10 @@ class FilamentJetstreamCommand extends Command
     {
         $this->replaceInFile(
             search: 'use Laravel\Sanctum\HasApiTokens;',
-            replace: 'use Illuminate\Support\Collection;'.PHP_EOL.
-            'use Illuminate\Database\Eloquent\Model;'.PHP_EOL.
-            'use Filament\Models\Contracts\HasTenants;'.PHP_EOL.
-            'use Laravel\Sanctum\HasApiTokens;'.PHP_EOL,
+            replace: 'use Illuminate\Support\Collection;' . PHP_EOL .
+            'use Illuminate\Database\Eloquent\Model;' . PHP_EOL .
+            'use Filament\Models\Contracts\HasTenants;' . PHP_EOL .
+            'use Laravel\Sanctum\HasApiTokens;' . PHP_EOL,
             path: app_path('Models/User.php'),
         );
 
@@ -88,16 +88,16 @@ class FilamentJetstreamCommand extends Command
         );
 
         $this->replaceInFile(
-            search: '}'.PHP_EOL.'}'.PHP_EOL,
-            replace: 'public function canAccessTenant(Model $tenant): bool'.PHP_EOL.'{'.PHP_EOL.
-            '   return $this->belongsToTeam($tenant);'.PHP_EOL.'}'.PHP_EOL.'}'.PHP_EOL,
+            search: '}' . PHP_EOL . '}' . PHP_EOL,
+            replace: 'public function canAccessTenant(Model $tenant): bool' . PHP_EOL . '{' . PHP_EOL .
+            '   return $this->belongsToTeam($tenant);' . PHP_EOL . '}' . PHP_EOL . '}' . PHP_EOL,
             path: app_path('Models/User.php'),
         );
 
         $this->replaceInFile(
-            search: '}'.PHP_EOL.'}'.PHP_EOL,
-            replace: 'public function getTenants(Panel $panel): Collection'.PHP_EOL.'{'.PHP_EOL.
-            '   return $this->allTeams();'.PHP_EOL.'}'.PHP_EOL.'}'.PHP_EOL,
+            search: '}' . PHP_EOL . '}' . PHP_EOL,
+            replace: 'public function getTenants(Panel $panel): Collection' . PHP_EOL . '{' . PHP_EOL .
+            '   return $this->allTeams();' . PHP_EOL . '}' . PHP_EOL . '}' . PHP_EOL,
             path: app_path('Models/User.php'),
         );
     }
@@ -105,11 +105,11 @@ class FilamentJetstreamCommand extends Command
     public function configureAssets(): void
     {
         $this->replaceInFile(
-            search: 'content: ['.PHP_EOL,
-            replace: 'content: ['.PHP_EOL.
-            './app/Filament/**/*.php'.PHP_EOL.
-            './resources/views/filament/**/*.blade.php'.PHP_EOL.
-            './vendor/filament/**/*.blade.php'.PHP_EOL,
+            search: 'content: [' . PHP_EOL,
+            replace: 'content: [' . PHP_EOL .
+            './app/Filament/**/*.php' . PHP_EOL .
+            './resources/views/filament/**/*.blade.php' . PHP_EOL .
+            './vendor/filament/**/*.blade.php' . PHP_EOL,
             path: base_path('Models/User.php'),
         );
 
@@ -120,16 +120,16 @@ class FilamentJetstreamCommand extends Command
         );
 
         $this->replaceInFile(
-            search: '}'.PHP_EOL.'}'.PHP_EOL,
-            replace: 'public function canAccessTenant(Model $tenant): bool'.PHP_EOL.'{'.PHP_EOL.
-            '   return $this->belongsToTeam($tenant);'.PHP_EOL.'}'.PHP_EOL.'}'.PHP_EOL,
+            search: '}' . PHP_EOL . '}' . PHP_EOL,
+            replace: 'public function canAccessTenant(Model $tenant): bool' . PHP_EOL . '{' . PHP_EOL .
+            '   return $this->belongsToTeam($tenant);' . PHP_EOL . '}' . PHP_EOL . '}' . PHP_EOL,
             path: app_path('Models/User.php'),
         );
 
         $this->replaceInFile(
-            search: '}'.PHP_EOL.'}'.PHP_EOL,
-            replace: 'public function getTenants(Panel $panel): Collection'.PHP_EOL.'{'.PHP_EOL.
-            '   return $this->allTeams();'.PHP_EOL.'}'.PHP_EOL.'}'.PHP_EOL,
+            search: '}' . PHP_EOL . '}' . PHP_EOL,
+            replace: 'public function getTenants(Panel $panel): Collection' . PHP_EOL . '{' . PHP_EOL .
+            '   return $this->allTeams();' . PHP_EOL . '}' . PHP_EOL . '}' . PHP_EOL,
             path: app_path('tailwind.config.js'),
         );
     }
