@@ -5,9 +5,7 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/stephenjude/filament-jetstream/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/stephenjude/filament-jetstream/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/stephenjude/filament-jetstream.svg?style=flat-square)](https://packagist.org/packages/stephenjude/filament-jetstream)
 
-
-
-This is where your description should go. Limit it to a paragraph or two. Consider adding a small example.
+This package adapts Laravel Jetstream Livewire into your filament admin panel, and it supports team, api and dark mode.
 
 ## Installation
 
@@ -17,11 +15,9 @@ You can install the package via composer:
 composer require stephenjude/filament-jetstream
 ```
 
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="filament-jetstream-migrations"
-php artisan migrate
+Install Jetstream with team, api and email verification.
+```php
+php artisan filament:jetstream:install --team --api --verification
 ```
 
 You can publish the config file with:
@@ -46,8 +42,7 @@ return [
 ## Usage
 
 ```php
-$filamentJetstream = new FilamentJetstream\FilamentJetstream();
-echo $filamentJetstream->echoPhrase('Hello, FilamentJetstream!');
+php artisan 
 ```
 
 ## Testing
