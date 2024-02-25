@@ -1,12 +1,12 @@
 <?php
 
-namespace VendorName\Skeleton\Commands;
+namespace FilamentJetstream\FilamentJetstream\Commands;
 
 use Illuminate\Console\Command;
 
-class SkeletonCommand extends Command
+class FilamentJetstreamCommand extends Command
 {
-    public $signature = 'skeleton';
+    public $signature = 'filament-jetstream';
 
     public $description = 'My command';
 

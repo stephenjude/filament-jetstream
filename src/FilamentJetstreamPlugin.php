@@ -1,15 +1,15 @@
 <?php
 
-namespace VendorName\Skeleton;
+namespace FilamentJetstream\FilamentJetstream;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
 
-class SkeletonPlugin implements Plugin
+class FilamentJetstreamPlugin implements Plugin
 {
     public function getId(): string
     {
-        return 'skeleton';
+        return 'filament-jetstream';
     }
 
     public function register(Panel $panel): void
