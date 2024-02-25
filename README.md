@@ -17,7 +17,7 @@ composer require stephenjude/filament-jetstream
 
 Install Jetstream with team, api and email verification.
 ```php
-php artisan filament:jetstream:install --team --api --verification
+php artisan filament:jetstream:install --teams --api --verification
 ```
 
 You can publish the config file with:
