@@ -12,7 +12,6 @@ use Filament\Panel;
 use FilamentJetstream\FilamentJetstream\Pages\CreateTeam;
 use FilamentJetstream\FilamentJetstream\Pages\EditTeam;
 use Laravel\Jetstream\Features;
-use Laravel\Jetstream\Http\Livewire\ApiTokenManager;
 
 class FilamentJetstreamPlugin implements Plugin
 {
@@ -33,7 +32,7 @@ class FilamentJetstreamPlugin implements Plugin
                 MenuItem::make()
                     ->label('Profile')
                     ->icon('heroicon-o-user-circle')
-                    ->url(static fn() => Filament::getTenant()
+                    ->url(static fn () => Filament::getTenant()
                         ? url(EditProfile::getUrl())
                         : url('/app')),
             ]);
@@ -44,7 +43,7 @@ class FilamentJetstreamPlugin implements Plugin
                     MenuItem::make()
                         ->label('API Tokens')
                         ->icon('heroicon-o-key')
-                        ->url(static fn() => Filament::getTenant()
+                        ->url(static fn () => Filament::getTenant()
                             ? url(ApiTokens::getUrl())
                             : url('/app')),
                 ]);
@@ -58,7 +57,7 @@ class FilamentJetstreamPlugin implements Plugin
                     MenuItem::make()
                         ->label('Team Settings')
                         ->icon('heroicon-o-cog-6-tooth')
-                        ->url(static fn() => Filament::getTenant()
+                        ->url(static fn () => Filament::getTenant()
                             ? url(\App\Filament\App\Pages\EditTeam::getUrl())
                             : url('/app')),
                 ]);

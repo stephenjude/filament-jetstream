@@ -7,12 +7,11 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Tenancy\RegisterTenant;
 
-
 class CreateTeam extends RegisterTenant
 {
     public static function getLabel(): string
     {
-        return "Create Team";
+        return 'Create Team';
     }
 
     public function form(Form $form): Form
