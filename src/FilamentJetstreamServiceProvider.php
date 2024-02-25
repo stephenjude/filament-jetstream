@@ -11,7 +11,6 @@ use Filament\Support\Facades\FilamentIcon;
 use FilamentJetstream\FilamentJetstream\Commands\FilamentJetstreamCommand;
 use FilamentJetstream\FilamentJetstream\Listeners\CreatePersonalTeam;
 use FilamentJetstream\FilamentJetstream\Testing\TestsFilamentJetstream;
-use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\Facades\Event;
 use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
@@ -95,8 +94,8 @@ class FilamentJetstreamServiceProvider extends PackageServiceProvider
     {
         return [
             // AlpineComponent::make('filament-jetstream', __DIR__ . '/../resources/dist/components/filament-jetstream.js'),
-            Css::make('filament-jetstream-styles', __DIR__.'/../resources/dist/filament-jetstream.css'),
-            Js::make('filament-jetstream-scripts', __DIR__.'/../resources/dist/filament-jetstream.js'),
+            Css::make('filament-jetstream-styles', __DIR__ . '/../resources/dist/filament-jetstream.css'),
+            Js::make('filament-jetstream-scripts', __DIR__ . '/../resources/dist/filament-jetstream.js'),
         ];
     }
 
