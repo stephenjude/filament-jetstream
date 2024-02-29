@@ -64,7 +64,6 @@ class FilamentJetstreamServiceProvider extends PackageServiceProvider
         Testable::mixin(new TestsFilamentJetstream());
     }
 
-
     /**
      * @return array<class-string>
      */
