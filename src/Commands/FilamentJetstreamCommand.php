@@ -23,7 +23,7 @@ class FilamentJetstreamCommand extends Command
             '--verification' => true,
             '--dark' => true,
             '--teams' => $this->option('teams'),
-            '--api' => $this->option('api')
+            '--api' => $this->option('api'),
         ]);
 
         $this->configureUser();
@@ -157,7 +157,7 @@ class FilamentJetstreamCommand extends Command
 
     protected function configurePanel()
     {
-        if (!empty(Filament::getPanels())) {
+        if (! empty(Filament::getPanels())) {
             (new Filesystem)->deleteDirectory(app_path('Providers/Filament'));
         }
 
@@ -174,7 +174,6 @@ class FilamentJetstreamCommand extends Command
             path: app_path('Providers/Filament/AppPanelProvider.php')
         );
     }
-
 
     protected function configureAssets(): void
     {
@@ -245,12 +244,12 @@ class FilamentJetstreamCommand extends Command
             try {
                 $process->setTty(true);
             } catch (RuntimeException $e) {
-                $this->output->writeln('  <bg=yellow;fg=black> WARN </> '.$e->getMessage().PHP_EOL);
+                $this->output->writeln('  <bg=yellow;fg=black> WARN </> ' . $e->getMessage() . PHP_EOL);
             }
         }
 
         $process->run(function ($type, $line) {
-            $this->output->write('    '.$line);
+            $this->output->write('    ' . $line);
         });
     }
 }

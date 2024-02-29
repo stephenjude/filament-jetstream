@@ -13,8 +13,8 @@ Route::get('/team-invitations/{invitation}', [\Laravel\Jetstream\Http\Controller
     ->middleware([
         'signed',
         'verified',
-        'auth:'.$panel->getAuthGuard(),
-        \Illuminate\Session\Middleware\AuthenticateSession::class
+        'auth:' . $panel->getAuthGuard(),
+        \Illuminate\Session\Middleware\AuthenticateSession::class,
     ])
     ->name('team-invitations.accept');
 

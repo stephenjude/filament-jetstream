@@ -36,7 +36,7 @@ class FilamentJetstreamPlugin implements Plugin
                 MenuItem::make()
                     ->label('Profile')
                     ->icon('heroicon-o-user-circle')
-                    ->url(static fn() => auth()->user()?->hasVerifiedEmail()
+                    ->url(static fn () => auth()->user()?->hasVerifiedEmail()
                         ? url(EditProfile::getUrl())
                         : url($panel->getPath())),
             ]);
@@ -47,7 +47,7 @@ class FilamentJetstreamPlugin implements Plugin
                     MenuItem::make()
                         ->label('API Tokens')
                         ->icon('heroicon-o-key')
-                        ->url(static fn() => auth()->user()?->hasVerifiedEmail()
+                        ->url(static fn () => auth()->user()?->hasVerifiedEmail()
                             ? url(ApiTokens::getUrl())
                             : url($panel->getPath())),
                 ]);
@@ -62,7 +62,7 @@ class FilamentJetstreamPlugin implements Plugin
                     MenuItem::make()
                         ->label('Team Settings')
                         ->icon('heroicon-o-cog-6-tooth')
-                        ->url(static fn() => Filament::getTenant()
+                        ->url(static fn () => Filament::getTenant()
                             ? url(EditTeam::getUrl())
                             : url($panel->getPath())),
                 ]);

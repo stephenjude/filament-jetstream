@@ -14,11 +14,11 @@ class EditProfile extends Page
 
     public static function shouldRegisterNavigation(): bool
     {
-        return (bool)config('filament-jetstream.navigation_items.profile.display');
+        return (bool) config('filament-jetstream.navigation_items.profile.display');
     }
 
     public static function getNavigationSort(): ?int
     {
-        return (bool)config('filament-jetstream.navigation_items.profile.sort');
+        return (bool) config('filament-jetstream.navigation_items.profile.sort');
     }
 }
