@@ -11,7 +11,7 @@ Route::redirect('/login', "/{$panel?->getPath()}/login")->name('login');
 
 Route::redirect('/register', "/{$panel?->getPath()}/register")->name('register');
 
-$authGuard = $panel ? 'auth:'.$panel?->getAuthGuard() : 'auth';
+$authGuard = $panel ? 'auth:' . $panel?->getAuthGuard() : 'auth';
 
 Route::get('/team-invitations/{invitation}', [TeamInvitationController::class, 'accept'])
     ->middleware(['signed', 'verified', $authGuard, AuthenticateSession::class])

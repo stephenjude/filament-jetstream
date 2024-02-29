@@ -13,7 +13,6 @@ class FilamentJetstreamCommand extends Command
 
     public $description = 'Install the Laravel Jetstream and Filament Panel components.';
 
-
     /**
      * The console command description.
      */
@@ -21,7 +20,7 @@ class FilamentJetstreamCommand extends Command
     {
         $this->info('Filament Jetstream scaffolding...');
 
-        if (!$this->installComposerPackages()) {
+        if (! $this->installComposerPackages()) {
             return self::FAILURE;
         }
 
@@ -30,7 +29,7 @@ class FilamentJetstreamCommand extends Command
             '--verification' => true,
             '--dark' => true,
             '--teams' => $this->option('teams'),
-            '--api' => $this->option('api')
+            '--api' => $this->option('api'),
         ]);
 
         $this->configureUser();
@@ -43,9 +42,7 @@ class FilamentJetstreamCommand extends Command
 
         $this->configureRoute();
 
-        {
-            $this->configurePanel();
-        }
+        $this->configurePanel();
 
         $this->configureAssets();
 
@@ -56,17 +53,16 @@ class FilamentJetstreamCommand extends Command
         return self::SUCCESS;
     }
 
-
     /**
      * Install Laravel Jetstream and Filament composer packages.
      */
     protected function installComposerPackages(): bool
     {
-        if (!$this->hasComposerPackage('filament/filament')) {
+        if (! $this->hasComposerPackage('filament/filament')) {
             return $this->requireComposerPackages('filament/filament:^3.2');
         }
 
-        if (!$this->hasComposerPackage('laravel/jetstream')) {
+        if (! $this->hasComposerPackage('laravel/jetstream')) {
             return $this->requireComposerPackages('laravel/jetstream:^4.2');
         }
 
@@ -200,15 +196,15 @@ class FilamentJetstreamCommand extends Command
     {
         $filesystem = (new Filesystem);
 
-        if (!$filesystem->isEmptyDirectory(app_path('Providers/Filament'))) {
+        if (! $filesystem->isEmptyDirectory(app_path('Providers/Filament'))) {
             collect($filesystem->files(app_path('Providers/Filament')))
-                ->map(fn(\SplFileInfo $fileInfo) => str($fileInfo->getFilename())
+                ->map(fn (\SplFileInfo $fileInfo) => str($fileInfo->getFilename())
                     ->before('.php')
                     ->prepend("App\Providers\Filament")
                     ->append('::class,')
                     ->toString())
                 ->each(
-                    fn($value) => $this->replaceInFile(search: $value, replace: '', path: config_path('app.php'))
+                    fn ($value) => $this->replaceInFile(search: $value, replace: '', path: config_path('app.php'))
                 );
 
             $filesystem->deleteDirectory(app_path('Providers/Filament'));
@@ -309,12 +305,12 @@ class FilamentJetstreamCommand extends Command
             try {
                 $process->setTty(true);
             } catch (\RuntimeException $e) {
-                $this->output->writeln('  <bg=yellow;fg=black> WARN </> '.$e->getMessage().PHP_EOL);
+                $this->output->writeln('  <bg=yellow;fg=black> WARN </> ' . $e->getMessage() . PHP_EOL);
             }
         }
 
         $process->run(function ($type, $line) {
-            $this->output->write('    '.$line);
+            $this->output->write('    ' . $line);
         });
     }
 
@@ -332,14 +328,14 @@ class FilamentJetstreamCommand extends Command
     /**
      * Installs the given Composer Packages into the application.
      */
-    protected function requireComposerPackages(array|string $packages): bool
+    protected function requireComposerPackages(array | string $packages): bool
     {
         $command = array_merge(
             ['composer', 'require'],
             is_array($packages) ? $packages : func_get_args()
         );
 
-        return !(new Process($command, base_path(), ['COMPOSER_MEMORY_LIMIT' => '-1']))
+        return ! (new Process($command, base_path(), ['COMPOSER_MEMORY_LIMIT' => '-1']))
             ->setTimeout(null)
             ->run(function ($type, $output) {
                 $this->output->write($output);
