@@ -1,8 +1,9 @@
 <?php
 
 return [
+
     /**
-     * Display, hide and sort user's navigation items from this package
+     * Display, hide and sort user's sidebar navigation items from this package
      */
     'navigation_items' => [
         'profile' => [
