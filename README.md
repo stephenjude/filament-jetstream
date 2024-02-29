@@ -5,15 +5,13 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/stephenjude/filament-jetstream/fix-php-code-style-issues.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/stephenjude/filament-jetstream/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/stephenjude/filament-jetstream.svg?style=flat-square)](https://packagist.org/packages/stephenjude/filament-jetstream)
 
-This package natively installs all the [Laravel Jetstream](https://jetstream.laravel.com/) features into your Filament
-application. Just like Laravel Jetstream, this package should only be installed on afresh Laravel application. You don't
-need to install Livewire, Jetstream or Filament before using this package. It does all the work for you!
+This package seamlessly integrates all Laravel Jetstream features into your Filament application. Similar to Laravel Jetstream, it's designed for installation exclusively on a fresh Laravel application. There's no need to install Livewire, Jetstream, or Filament separately before using this package – it handles all the setup for you!
 
-## How It Wokrs
+## How It Works
 
-This package did not reinvent the wheel. Under the hood, it uses all the Livewire components from Laravel Jetstream
-and removes anything that is not needed. You can enable or disable features from the Jetstream config, and it works on
-Filament too.
+This package doesn't reinvent the wheel; instead, it leverages the Livewire components from Laravel Jetstream under the
+hood, stripping away any unnecessary elements. You have the flexibility to enable or disable features through the
+Jetstream configuration, and it seamlessly integrates with Filament for your panel.
 
 ## Installation
 

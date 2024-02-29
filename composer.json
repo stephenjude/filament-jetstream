@@ -1,6 +1,6 @@
 {
     "name": "stephenjude/filament-jetstream",
-    "description": "Laravel Jetstream adapter for Filament Admin Panels",
+    "description": "Supercharge your Filament Admin Panel with Laravel Jetstream.",
     "keywords": [
         "stephenjude",
         "laravel",
