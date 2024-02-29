@@ -4,6 +4,7 @@ namespace FilamentJetstream\FilamentJetstream\Listeners;
 
 use App\Models\Team;
 use Filament\Events\Auth\Registered;
+use Laravel\Jetstream\Features;
 
 class CreatePersonalTeam
 {
@@ -22,14 +23,16 @@ class CreatePersonalTeam
     {
         $user = $event->getUser();
 
-        $team = Team::forceCreate([
-            'user_id' => $user->id,
-            'name' => explode(' ', $user->name, 2)[0] . "'s Team",
-            'personal_team' => true,
-        ]);
+        if (Features::hasTeamFeatures()) {
+            $team = Team::forceCreate([
+                'user_id' => $user->id,
+                'name' => explode(' ', $user->name, 2)[0]."'s Team",
+                'personal_team' => true,
+            ]);
 
-        $user->ownedTeams()->save($team);
+            $user->ownedTeams()->save($team);
 
-        $user->switchTeam($team);
+            $user->switchTeam($team);
+        }
     }
 }

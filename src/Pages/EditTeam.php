@@ -25,11 +25,11 @@ class EditTeam extends EditTenantProfile
 
     public static function shouldRegisterNavigation(): bool
     {
-        return config('filament-jetstream.navigation_items.team.display');
+        return (bool) config('filament-jetstream.navigation_items.team.display');
     }
 
     public static function getNavigationSort(): ?int
     {
-        return config('filament-jetstream.navigation_items.team.sort');
+        return (bool) config('filament-jetstream.navigation_items.team.sort');
     }
 }

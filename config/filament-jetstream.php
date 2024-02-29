@@ -3,6 +3,14 @@
 // config for FilamentJetstream/FilamentJetstream
 return [
 
+    /*
+     * Disable Jetstream and Fortify routes. If you want your users to still used
+     */
+    'enable_route' => [
+        'fortify' => true,
+        'jetstream' => false,
+    ],
+
     'navigation_items' => [
         'profile' => [
             'display' => false,
