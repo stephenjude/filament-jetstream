@@ -308,7 +308,7 @@ class FilamentJetstreamCommand extends Command
         if ('\\' !== DIRECTORY_SEPARATOR && file_exists('/dev/tty') && is_readable('/dev/tty')) {
             try {
                 $process->setTty(true);
-            } catch (RuntimeException $e) {
+            } catch (\RuntimeException $e) {
                 $this->output->writeln('  <bg=yellow;fg=black> WARN </> '.$e->getMessage().PHP_EOL);
             }
         }
