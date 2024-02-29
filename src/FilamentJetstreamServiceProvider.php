@@ -44,9 +44,11 @@ class FilamentJetstreamServiceProvider extends PackageServiceProvider
             $package->hasViews(static::$viewNamespace);
         }
 
-        Fortify::$registersRoutes = false;
 
-        Jetstream::$registersRoutes = false;
+        if ($this->isInstalled('laravel/jetstream')) {
+            Fortify::$registersRoutes = false;
+            Jetstream::$registersRoutes = false;
+        }
     }
 
     public function packageRegistered(): void
@@ -72,5 +74,13 @@ class FilamentJetstreamServiceProvider extends PackageServiceProvider
         return [
             FilamentJetstreamCommand::class,
         ];
+    }
+
+    protected function isInstalled(string $package): bool
+    {
+        $packages = json_decode(file_get_contents(base_path('composer.json')), true);
+
+        return array_key_exists($package, $packages['require'] ?? [])
+            || array_key_exists($package, $packages['require-dev'] ?? []);
     }
 }
