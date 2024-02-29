@@ -1,16 +1,9 @@
 <?php
 
-// config for FilamentJetstream/FilamentJetstream
 return [
-
-    /*
-     * Disable Jetstream and Fortify routes. If you want your users to still used
+    /**
+     * Display, hide and sort user's navigation items from this package
      */
-    'enable_route' => [
-        'fortify' => true,
-        'jetstream' => false,
-    ],
-
     'navigation_items' => [
         'profile' => [
             'display' => false,

@@ -30,6 +30,6 @@ class EditTeam extends EditTenantProfile
 
     public static function getNavigationSort(): ?int
     {
-        return (bool) config('filament-jetstream.navigation_items.team.sort');
+        return config('filament-jetstream.navigation_items.team.sort');
     }
 }

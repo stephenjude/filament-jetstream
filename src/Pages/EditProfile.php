@@ -19,6 +19,6 @@ class EditProfile extends Page
 
     public static function getNavigationSort(): ?int
     {
-        return (bool)config('filament-jetstream.navigation_items.profile.sort');
+        return config('filament-jetstream.navigation_items.profile.sort');
     }
 }
