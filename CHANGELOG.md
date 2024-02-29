@@ -2,6 +2,10 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 0.0.2 - 2024-02-29
+
+- Fixed class not found
+
 ## 0.0.1 - 2024-02-29
 
 - Initial release.

@@ -44,7 +44,6 @@ class FilamentJetstreamServiceProvider extends PackageServiceProvider
             $package->hasViews(static::$viewNamespace);
         }
 
-
         if ($this->isInstalled('laravel/jetstream')) {
             Fortify::$registersRoutes = false;
             Jetstream::$registersRoutes = false;
