@@ -2,7 +2,6 @@
 
 namespace FilamentJetstream\FilamentJetstream\Pages;
 
-use App\Models\Team;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Tenancy\RegisterTenant;
