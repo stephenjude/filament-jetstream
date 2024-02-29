@@ -2,7 +2,6 @@
 
 namespace FilamentJetstream\FilamentJetstream\Commands;
 
-use Filament\Facades\Filament;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Symfony\Component\Process\Process;
@@ -12,11 +11,19 @@ class FilamentJetstreamCommand extends Command
     public $signature = 'filament:jetstream:install {--teams : Indicates if team support should be installed}
                                               {--api : Indicates if API support should be installed}';
 
-    public $description = 'Install the Jetstream and filament components.';
+    public $description = 'Install the Laravel Jetstream and Filament Panel components.';
 
+
+    /**
+     * The console command description.
+     */
     public function handle(): int
     {
         $this->info('Filament Jetstream scaffolding...');
+
+        if (!$this->installComposerPackages()) {
+            return self::FAILURE;
+        }
 
         $this->call('jetstream:install', [
             'stack' => 'livewire',
@@ -36,7 +43,9 @@ class FilamentJetstreamCommand extends Command
 
         $this->configureRoute();
 
-        $this->configurePanel();
+        {
+            $this->configurePanel();
+        }
 
         $this->configureAssets();
 
@@ -47,6 +56,26 @@ class FilamentJetstreamCommand extends Command
         return self::SUCCESS;
     }
 
+
+    /**
+     * Install Laravel Jetstream and Filament composer packages.
+     */
+    protected function installComposerPackages(): bool
+    {
+        if (!$this->hasComposerPackage('filament/filament')) {
+            return $this->requireComposerPackages('filament/filament:^3.2');
+        }
+
+        if (!$this->hasComposerPackage('laravel/jetstream')) {
+            return $this->requireComposerPackages('laravel/jetstream:^4.2');
+        }
+
+        return true;
+    }
+
+    /**
+     * Configure User model for Filament panel.
+     */
     protected function configureUser(): void
     {
         $this->replaceInFile(
@@ -79,6 +108,9 @@ class FilamentJetstreamCommand extends Command
         );
     }
 
+    /**
+     * Configure User model for Laravel email verification.
+     */
     protected function configureEmailVerification(): void
     {
         $this->replaceInFile(
@@ -94,6 +126,9 @@ class FilamentJetstreamCommand extends Command
         );
     }
 
+    /**
+     * Configure User model for Filament panel team features.
+     */
     protected function configureTeam(): void
     {
         $this->replaceInFile(
@@ -136,6 +171,9 @@ class FilamentJetstreamCommand extends Command
         );
     }
 
+    /**
+     * Configure routes for the Jetstream features.
+     */
     protected function configureRoute()
     {
         $this->replaceInFile(
@@ -155,27 +193,43 @@ class FilamentJetstreamCommand extends Command
         );
     }
 
+    /**
+     * Configure Filament panel for the Jetstream.
+     */
     protected function configurePanel()
     {
-        if (!empty(Filament::getPanels())) {
-            (new Filesystem)->deleteDirectory(app_path('Providers/Filament'));
+        $filesystem = (new Filesystem);
+
+        if (!$filesystem->isEmptyDirectory(app_path('Providers/Filament'))) {
+            collect($filesystem->files(app_path('Providers/Filament')))
+                ->map(fn(\SplFileInfo $fileInfo) => str($fileInfo->getFilename())
+                    ->before('.php')
+                    ->prepend("App\Providers\Filament")
+                    ->append('::class,')
+                    ->toString())
+                ->each(
+                    fn($value) => $this->replaceInFile(search: $value, replace: '', path: config_path('app.php'))
+                );
+
+            $filesystem->deleteDirectory(app_path('Providers/Filament'));
         }
 
         $this->callSilently('make:filament-panel', ['id' => 'app', '--force' => true]);
 
         $this->replaceInFile(
-            search: '->login()',
+            search: "->path('app')",
             replace: <<<'HEREDOC'
-                ->default()
-                ->plugin(
-                    \FilamentJetstream\FilamentJetstream\FilamentJetstreamPlugin::make()
-                );
-                HEREDOC,
+            ->path('app')
+                        ->default()
+                        ->plugin(\FilamentJetstream\FilamentJetstream\FilamentJetstreamPlugin::make())
+            HEREDOC,
             path: app_path('Providers/Filament/AppPanelProvider.php')
         );
     }
 
-
+    /**
+     * Configure blade css and tailwind configurations.
+     */
     protected function configureAssets(): void
     {
         $this->replaceInFile(
@@ -223,6 +277,10 @@ class FilamentJetstreamCommand extends Command
             path: resource_path('views/components/secondary-button.blade.php'),
         );
 
+        (new Filesystem)->deleteDirectory(resource_path('views/auth'));
+        (new Filesystem)->delete(resource_path('views/dashboard.blade.php'));
+        (new Filesystem)->delete(resource_path('views/navigation-menu.blade.php'));
+
         if (file_exists(base_path('pnpm-lock.yaml'))) {
             $this->runCommands(['pnpm install', 'pnpm run build']);
         } elseif (file_exists(base_path('yarn.lock'))) {
@@ -232,12 +290,18 @@ class FilamentJetstreamCommand extends Command
         }
     }
 
-    protected function replaceInFile($search, $replace, $path)
+    /**
+     * Replace a given string within a given file.
+     */
+    protected function replaceInFile(string $search, string $replace, string $path): void
     {
         file_put_contents($path, str_replace($search, $replace, file_get_contents($path)));
     }
 
-    protected function runCommands($commands)
+    /**
+     * Run the given commands.
+     */
+    protected function runCommands($commands): void
     {
         $process = Process::fromShellCommandline(implode(' && ', $commands), null, null, null, null);
 
@@ -252,5 +316,33 @@ class FilamentJetstreamCommand extends Command
         $process->run(function ($type, $line) {
             $this->output->write('    '.$line);
         });
+    }
+
+    /**
+     * Determine if the given Composer package is installed.
+     */
+    protected function hasComposerPackage(string $package): bool
+    {
+        $packages = json_decode(file_get_contents(base_path('composer.json')), true);
+
+        return array_key_exists($package, $packages['require'] ?? [])
+            || array_key_exists($package, $packages['require-dev'] ?? []);
+    }
+
+    /**
+     * Installs the given Composer Packages into the application.
+     */
+    protected function requireComposerPackages(array|string $packages): bool
+    {
+        $command = array_merge(
+            ['composer', 'require'],
+            is_array($packages) ? $packages : func_get_args()
+        );
+
+        return !(new Process($command, base_path(), ['COMPOSER_MEMORY_LIMIT' => '-1']))
+            ->setTimeout(null)
+            ->run(function ($type, $output) {
+                $this->output->write($output);
+            });
     }
 }
