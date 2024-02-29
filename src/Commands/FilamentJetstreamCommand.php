@@ -20,15 +20,17 @@ class FilamentJetstreamCommand extends Command
     {
         $this->info('Filament Jetstream scaffolding...');
 
-        if (!$this->installComposerPackages()) {
+        if (!$this->installFilamentPackage() || !$this->installJetstreamPackage()) {
             return self::FAILURE;
         }
 
-        $options = array_filter(['--teams' => $this->option('teams'), '--api' => $this->option('api'),]);
-
-        $options = implode(' ', (array_keys($options)));
-
-        $this->runCommands(["php artisan jetstream:install livewire --verification --dark $options"]);
+        $this->call('jetstream:install', [
+            'stack' => 'livewire',
+            '--verification' => true,
+            '--dark' => true,
+            '--teams' => $this->option('teams'),
+            '--api' => $this->option('api'),
+        ]);
 
         $this->configureUser();
 
@@ -52,14 +54,22 @@ class FilamentJetstreamCommand extends Command
     }
 
     /**
-     * Install Laravel Jetstream and Filament composer packages.
+     * Install Filament package.
      */
-    protected function installComposerPackages(): bool
+    protected function installFilamentPackage(): bool
     {
         if (!$this->hasComposerPackage('filament/filament')) {
             return $this->requireComposerPackages('filament/filament:^3.2');
         }
 
+        return true;
+    }
+
+    /**
+     * Install Laravel Jetstream package.
+     */
+    protected function installJetstreamPackage(): bool
+    {
         if (!$this->hasComposerPackage('laravel/jetstream')) {
             return $this->requireComposerPackages('laravel/jetstream:^4.2');
         }
@@ -194,19 +204,20 @@ class FilamentJetstreamCommand extends Command
     {
         $filesystem = (new Filesystem);
 
-        if (!$filesystem->isEmptyDirectory(app_path('Providers/Filament'))) {
-            collect($filesystem->files(app_path('Providers/Filament')))
-                ->map(fn(\SplFileInfo $fileInfo) => str($fileInfo->getFilename())
-                    ->before('.php')
-                    ->prepend("App\Providers\Filament")
-                    ->append('::class,')
-                    ->toString())
-                ->each(
-                    fn($value) => $this->replaceInFile(search: $value, replace: '', path: config_path('app.php'))
-                );
+        $filesystem->ensureDirectoryExists(app_path('Providers/Filament'));
 
-            $filesystem->deleteDirectory(app_path('Providers/Filament'));
-        }
+        collect($filesystem->files(app_path('Providers/Filament')))
+            ->map(fn(\SplFileInfo $fileInfo) => str($fileInfo->getFilename())
+                ->before('.php')
+                ->prepend("App\Providers\Filament")
+                ->append('::class,')
+                ->toString())
+            ->each(
+                fn($value) => $this->replaceInFile(search: $value, replace: '', path: config_path('app.php'))
+            );
+
+        $filesystem->deleteDirectory(app_path('Providers/Filament'));
+
 
         $this->callSilently('make:filament-panel', ['id' => 'app', '--force' => true]);
 
