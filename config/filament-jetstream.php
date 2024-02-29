@@ -6,15 +6,11 @@ return [
      */
     'navigation_items' => [
         'profile' => [
-            'display' => false,
+            'display' => true,
             'sort' => 1,
         ],
-        'team' => [
-            'display' => false,
-            'sort' => 2,
-        ],
         'api_tokens' => [
-            'display' => false,
+            'display' => true,
             'sort' => 3,
         ],
     ],

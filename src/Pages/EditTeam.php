@@ -22,14 +22,4 @@ class EditTeam extends EditTenantProfile
             'team' => Filament::getTenant(),
         ];
     }
-
-    public static function shouldRegisterNavigation(): bool
-    {
-        return (bool) config('filament-jetstream.navigation_items.team.display');
-    }
-
-    public static function getNavigationSort(): ?int
-    {
-        return config('filament-jetstream.navigation_items.team.sort');
-    }
 }
