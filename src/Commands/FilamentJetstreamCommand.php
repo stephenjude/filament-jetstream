@@ -201,7 +201,7 @@ class FilamentJetstreamCommand extends Command
 
         copy(__DIR__.'/../../stubs/routes/web.php', base_path('routes/web.php'));
 
-        $this->installServiceProviderAfter('AuthServiceProvider', 'AppPanelProvider');
+        $this->installServiceProviderAfter('AuthServiceProvider', 'Filament\AppPanelProvider');
     }
 
     /**

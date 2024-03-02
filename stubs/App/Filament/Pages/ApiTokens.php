@@ -13,11 +13,11 @@ class ApiTokens extends Page
 
     public static function shouldRegisterNavigation(): bool
     {
-        return (bool)config('filament-jetstream.navigation_items.api_tokens.display');
+        return false;
     }
 
     public static function getNavigationSort(): ?int
     {
-        return config('filament-jetstream.navigation_items.api_tokens.sort');
+        return 1;
     }
 }
