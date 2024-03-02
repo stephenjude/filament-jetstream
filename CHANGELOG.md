@@ -2,6 +2,12 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 0.0.6 - 2024-03-02
+
+- Added stubs
+- Make package removable.
+- Clean up.
+
 ## 0.0.5 - 2024-03-02
 
 - Scaffold filament assets.
