@@ -7,7 +7,7 @@ class EditProfile extends Page
 {
     protected static ?string $navigationIcon = 'heroicon-o-user-circle';
 
-    protected static string $view = 'filament-jetstream::pages.edit-profile';
+    protected static string $view = 'filament.pages.edit-profile';
 
     protected static ?string $navigationLabel = 'Profile';
 

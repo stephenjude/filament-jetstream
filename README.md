@@ -49,12 +49,6 @@ You can remove the `--teams` and `--api` arguments if you don't want those featu
 
 ![Edit Team](art/api_token.png)
 
-You can publish the config file with:
-
-```bash
-php artisan vendor:publish --tag="filament-jetstream-config"
-```
-
 ## Testing
 
 ```bash

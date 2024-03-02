@@ -191,13 +191,9 @@ class FilamentJetstreamCommand extends Command
                 ->before('.php')->prepend("App\Providers\Filament")->append('::class,')->toString())
             ->each(fn($value) => $this->replaceInFile(search: $value, replace: '', path: config_path('app.php')));
 
-        $filesystem->copyDirectory(__DIR__.'/../../stubs/App/Providers/Filament', app_path('Providers/Filament'));
-        $filesystem->copyDirectory(__DIR__.'/../../stubs/App/Filament', app_path('Filament'));
-        $filesystem->copyDirectory(__DIR__.'/../../stubs/App/Listeners', app_path('Listeners'));
-        $filesystem->copyDirectory(
-            __DIR__.'/../../stubs/resources/views/filament/pages',
-            resource_path('views/filament/pages')
-        );
+        $filesystem->copyDirectory(__DIR__.'/../../stubs/App', app_path('/'));
+
+        $filesystem->copyDirectory(__DIR__.'/../../stubs/resources/views/filament', resource_path('views/filament'));
 
         copy(__DIR__.'/../../stubs/routes/web.php', base_path('routes/web.php'));
 

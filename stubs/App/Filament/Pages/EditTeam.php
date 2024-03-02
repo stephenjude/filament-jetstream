@@ -6,7 +6,7 @@ use Filament\Facades\Filament;
 use Filament\Pages\Tenancy\EditTenantProfile;
 class EditTeam extends EditTenantProfile
 {
-    protected static string $view = 'filament-jetstream::pages.edit-team';
+    protected static string $view = 'filament.pages.edit-team';
 
     protected static ?int $navigationSort = 2;
 
