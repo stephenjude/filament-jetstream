@@ -2,6 +2,10 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 0.0.5 - 2024-03-02
+
+- Scaffold filament assets.
+
 ## 0.0.4 - 2024-02-29
 
 - Fixed installation error.
