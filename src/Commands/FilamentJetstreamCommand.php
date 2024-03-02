@@ -182,9 +182,6 @@ class FilamentJetstreamCommand extends Command
         $filesystem = (new Filesystem);
 
         $filesystem->ensureDirectoryExists(app_path('Providers/Filament'));
-        $filesystem->ensureDirectoryExists(app_path('Filament'));
-        $filesystem->ensureDirectoryExists(app_path('Listeners'));
-        $filesystem->ensureDirectoryExists(resource_path('views/filament/pages'));
 
         collect($filesystem->files(app_path('Providers/Filament')))
             ->map(fn (\SplFileInfo $fileInfo) => str($fileInfo->getFilename())
@@ -255,6 +252,13 @@ class FilamentJetstreamCommand extends Command
         (new Filesystem)->deleteDirectory(resource_path('views/auth'));
         (new Filesystem)->delete(resource_path('views/dashboard.blade.php'));
         (new Filesystem)->delete(resource_path('views/navigation-menu.blade.php'));
+
+        (new Filesystem)->delete(base_path('tests/Features/AuthenticationTest.php'));
+        (new Filesystem)->delete(base_path('tests/Features/EmailVerificationTest.php'));
+        (new Filesystem)->delete(base_path('tests/Features/PasswordConfirmationTest.php'));
+        (new Filesystem)->delete(base_path('tests/Features/PasswordResetTest.php'));
+        (new Filesystem)->delete(base_path('tests/Features/ProfileInformationTest.php'));
+        (new Filesystem)->delete(base_path('tests/Features/RegistrationTest.php'));
 
         if (file_exists(base_path('pnpm-lock.yaml'))) {
             $this->runCommands(['pnpm install', 'pnpm run build']);
