@@ -4,6 +4,7 @@ namespace App\Filament\Pages;
 
 use Filament\Facades\Filament;
 use Filament\Pages\Tenancy\EditTenantProfile;
+
 class EditTeam extends EditTenantProfile
 {
     protected static string $view = 'filament.pages.edit-team';

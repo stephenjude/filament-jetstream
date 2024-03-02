@@ -6,6 +6,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Tenancy\RegisterTenant;
 use Illuminate\Database\Eloquent\Model;
+
 class CreateTeam extends RegisterTenant
 {
     public static function getLabel(): string
