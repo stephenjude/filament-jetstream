@@ -4,6 +4,7 @@ namespace FilamentJetstream\FilamentJetstream\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
 
 class FilamentJetstreamCommand extends Command
@@ -39,8 +40,6 @@ class FilamentJetstreamCommand extends Command
         if ($this->option('teams')) {
             $this->configureTeam();
         }
-
-        $this->configureRoute();
 
         $this->configurePanel();
 
@@ -176,28 +175,6 @@ class FilamentJetstreamCommand extends Command
     }
 
     /**
-     * Configure routes for the Jetstream features.
-     */
-    protected function configureRoute()
-    {
-        $this->replaceInFile(
-            search: <<<'HEREDOC'
-            Route::middleware([
-                'auth:sanctum',
-                config('jetstream.auth_session'),
-                'verified',
-            ])->group(function () {
-                Route::get('/dashboard', function () {
-                    return view('dashboard');
-                })->name('dashboard');
-            });
-            HEREDOC,
-            replace: '',
-            path: base_path('routes/web.php')
-        );
-    }
-
-    /**
      * Configure Filament panel for the Jetstream.
      */
     protected function configurePanel()
@@ -205,32 +182,26 @@ class FilamentJetstreamCommand extends Command
         $filesystem = (new Filesystem);
 
         $filesystem->ensureDirectoryExists(app_path('Providers/Filament'));
+        $filesystem->ensureDirectoryExists(app_path('Filament'));
+        $filesystem->ensureDirectoryExists(app_path('Listeners'));
+        $filesystem->ensureDirectoryExists(resource_path('views/filament/pages'));
 
         collect($filesystem->files(app_path('Providers/Filament')))
             ->map(fn(\SplFileInfo $fileInfo) => str($fileInfo->getFilename())
-                ->before('.php')
-                ->prepend("App\Providers\Filament")
-                ->append('::class,')
-                ->toString())
-            ->each(
-                fn($value) => $this->replaceInFile(search: $value, replace: '', path: config_path('app.php'))
-            );
+                ->before('.php')->prepend("App\Providers\Filament")->append('::class,')->toString())
+            ->each(fn($value) => $this->replaceInFile(search: $value, replace: '', path: config_path('app.php')));
 
-        $filesystem->deleteDirectory(app_path('Providers/Filament'));
-
-        $this->callSilently('make:filament-panel', ['id' => 'app', '--force' => true]);
-
-        $this->replaceInFile(
-            search: "->path('app')",
-            replace: <<<'HEREDOC'
-            ->path('app')
-                        ->default()
-                        ->plugin(\FilamentJetstream\FilamentJetstream\FilamentJetstreamPlugin::make())
-            HEREDOC,
-            path: app_path('Providers/Filament/AppPanelProvider.php')
+        $filesystem->copyDirectory(__DIR__.'/../../stubs/App/Providers/Filament', app_path('Providers/Filament'));
+        $filesystem->copyDirectory(__DIR__.'/../../stubs/App/Filament', app_path('Filament'));
+        $filesystem->copyDirectory(__DIR__.'/../../stubs/App/Listeners', app_path('Listeners'));
+        $filesystem->copyDirectory(
+            __DIR__.'/../../stubs/resources/views/filament/pages',
+            resource_path('views/filament/pages')
         );
 
-        $this->call('filament:install', ['--scaffold' => true]);
+        copy(__DIR__.'/../../stubs/routes/web.php', base_path('routes/web.php'));
+
+        $this->installServiceProviderAfter('AuthServiceProvider', 'AppPanelProvider');
     }
 
     /**
@@ -238,6 +209,8 @@ class FilamentJetstreamCommand extends Command
      */
     protected function configureAssets(): void
     {
+        $this->call('filament:install', ['--scaffold' => true]);
+
         $this->replaceInFile(
             search: file_get_contents(base_path('tailwind.config.js')),
             replace: <<<'HEREDOC'
@@ -350,5 +323,25 @@ class FilamentJetstreamCommand extends Command
             ->run(function ($type, $output) {
                 $this->output->write($output);
             });
+    }
+
+    /**
+     * Install the service provider in the application configuration file.
+     */
+    protected function installServiceProviderAfter(string $after, string $name): void
+    {
+        if (!Str::contains(
+            $appConfig = file_get_contents(config_path('app.php')),
+            'App\\Providers\\'.$name.'::class'
+        )) {
+            file_put_contents(
+                config_path('app.php'),
+                str_replace(
+                    'App\\Providers\\'.$after.'::class,',
+                    'App\\Providers\\'.$after.'::class,'.PHP_EOL.'        App\\Providers\\'.$name.'::class,',
+                    $appConfig
+                )
+            );
+        }
     }
 }
