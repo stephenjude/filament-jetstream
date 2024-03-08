@@ -24,5 +24,5 @@ Route::redirect('/register', '/app/register')->name('register');
 Route::redirect('/dashboard', '/app')->name('dashboard');
 
 Route::get('/team-invitations/{invitation}', [TeamInvitationController::class, 'accept'])
-    ->middleware(['signed', 'verified', 'auth:filament', AuthenticateSession::class])
+    ->middleware(['signed', 'verified', 'auth', AuthenticateSession::class])
     ->name('team-invitations.accept');
