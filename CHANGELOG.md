@@ -2,6 +2,12 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 0.0.7 - 2024-03-09
+
+- Check features on profile edit by @fabpl
+- Check gate on delete team @fabpl
+- Removed undefined filament guard by @stephenjude
+
 ## 0.0.6 - 2024-03-02
 
 - Added stubs
