@@ -2,6 +2,10 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 0.0.8 - 2024-04-16
+
+- Laravel 11 support by @gpibarra
+
 ## 0.0.7 - 2024-03-09
 
 - Check features on profile edit by @fabpl
