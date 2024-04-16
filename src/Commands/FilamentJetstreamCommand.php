@@ -70,7 +70,7 @@ class FilamentJetstreamCommand extends Command
     protected function installJetstreamPackage(): bool
     {
         if (! $this->hasComposerPackage('laravel/jetstream')) {
-            return $this->requireComposerPackages('laravel/jetstream:^4.2');
+            return $this->requireComposerPackages('laravel/jetstream:^4.2|^5.0');
         }
 
         return true;
