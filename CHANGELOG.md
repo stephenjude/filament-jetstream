@@ -2,6 +2,10 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 0.0.9 - 2024-04-18
+
+- Use `ServiceProvider::addProviderToBootstrapFile` from L11
+
 ## 0.0.8 - 2024-04-16
 
 - Laravel 11 support by @gpibarra
