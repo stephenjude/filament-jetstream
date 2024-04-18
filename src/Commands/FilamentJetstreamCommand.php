@@ -4,6 +4,7 @@ namespace FilamentJetstream\FilamentJetstream\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Symfony\Component\Process\Process;
 
@@ -21,7 +22,7 @@ class FilamentJetstreamCommand extends Command
     {
         $this->info('Filament Jetstream scaffolding...');
 
-        if (! $this->installFilamentPackage() || ! $this->installJetstreamPackage()) {
+        if (!$this->installFilamentPackage() || !$this->installJetstreamPackage()) {
             return self::FAILURE;
         }
 
@@ -57,7 +58,7 @@ class FilamentJetstreamCommand extends Command
      */
     protected function installFilamentPackage(): bool
     {
-        if (! $this->hasComposerPackage('filament/filament')) {
+        if (!$this->hasComposerPackage('filament/filament')) {
             return $this->requireComposerPackages('filament/filament:^3.2');
         }
 
@@ -69,7 +70,7 @@ class FilamentJetstreamCommand extends Command
      */
     protected function installJetstreamPackage(): bool
     {
-        if (! $this->hasComposerPackage('laravel/jetstream')) {
+        if (!$this->hasComposerPackage('laravel/jetstream')) {
             return $this->requireComposerPackages('laravel/jetstream:^4.2|^5.0');
         }
 
@@ -184,17 +185,18 @@ class FilamentJetstreamCommand extends Command
         $filesystem->ensureDirectoryExists(app_path('Providers/Filament'));
 
         collect($filesystem->files(app_path('Providers/Filament')))
-            ->map(fn (\SplFileInfo $fileInfo) => str($fileInfo->getFilename())
+            ->map(fn(\SplFileInfo $fileInfo) => str($fileInfo->getFilename())
                 ->before('.php')->prepend("App\Providers\Filament")->append('::class,')->toString())
-            ->each(fn ($value) => $this->replaceInFile(search: $value, replace: '', path: config_path('app.php')));
+            ->each(fn($value) => $this->replaceInFile(search: $value, replace: '', path: config_path('app.php')));
 
-        $filesystem->copyDirectory(__DIR__ . '/../../stubs/App', app_path('/'));
+        $filesystem->copyDirectory(__DIR__.'/../../stubs/App', app_path('/'));
 
-        $filesystem->copyDirectory(__DIR__ . '/../../stubs/resources/views/filament', resource_path('views/filament'));
+        $filesystem->copyDirectory(__DIR__.'/../../stubs/resources/views/filament', resource_path('views/filament'));
 
-        copy(__DIR__ . '/../../stubs/routes/web.php', base_path('routes/web.php'));
+        copy(__DIR__.'/../../stubs/routes/web.php', base_path('routes/web.php'));
 
-        $this->installServiceProviderAfter('AuthServiceProvider', 'Filament\AppPanelProvider');
+
+        ServiceProvider::addProviderToBootstrapFile('App\Providers\Filament\AppPanelProvider');
     }
 
     /**
@@ -286,12 +288,12 @@ class FilamentJetstreamCommand extends Command
             try {
                 $process->setTty(true);
             } catch (\RuntimeException $e) {
-                $this->output->writeln('  <bg=yellow;fg=black> WARN </> ' . $e->getMessage() . PHP_EOL);
+                $this->output->writeln('  <bg=yellow;fg=black> WARN </> '.$e->getMessage().PHP_EOL);
             }
         }
 
         $process->run(function ($type, $line) {
-            $this->output->write('    ' . $line);
+            $this->output->write('    '.$line);
         });
     }
 
@@ -309,14 +311,14 @@ class FilamentJetstreamCommand extends Command
     /**
      * Installs the given Composer Packages into the application.
      */
-    protected function requireComposerPackages(array | string $packages): bool
+    protected function requireComposerPackages(array|string $packages): bool
     {
         $command = array_merge(
             ['composer', 'require'],
             is_array($packages) ? $packages : func_get_args()
         );
 
-        return ! (new Process($command, base_path(), ['COMPOSER_MEMORY_LIMIT' => '-1']))
+        return !(new Process($command, base_path(), ['COMPOSER_MEMORY_LIMIT' => '-1']))
             ->setTimeout(null)
             ->run(function ($type, $output) {
                 $this->output->write($output);
@@ -328,15 +330,15 @@ class FilamentJetstreamCommand extends Command
      */
     protected function installServiceProviderAfter(string $after, string $name): void
     {
-        if (! Str::contains(
+        if (!Str::contains(
             $appConfig = file_get_contents(config_path('app.php')),
-            'App\\Providers\\' . $name . '::class'
+            'App\\Providers\\'.$name.'::class'
         )) {
             file_put_contents(
                 config_path('app.php'),
                 str_replace(
-                    'App\\Providers\\' . $after . '::class,',
-                    'App\\Providers\\' . $after . '::class,' . PHP_EOL . '        App\\Providers\\' . $name . '::class,',
+                    'App\\Providers\\'.$after.'::class,',
+                    'App\\Providers\\'.$after.'::class,'.PHP_EOL.'        App\\Providers\\'.$name.'::class,',
                     $appConfig
                 )
             );
