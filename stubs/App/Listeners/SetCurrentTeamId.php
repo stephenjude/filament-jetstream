@@ -2,7 +2,6 @@
 
 namespace App\Listeners;
 
-use App\Models\Team;
 use Filament\Events\TenantSet;
 use Laravel\Jetstream\Features;
 
