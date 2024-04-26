@@ -7,6 +7,7 @@ use App\Filament\Pages\CreateTeam;
 use App\Filament\Pages\EditProfile;
 use App\Filament\Pages\EditTeam;
 use App\Listeners\CreatePersonalTeam;
+use App\Listeners\SetCurrentTeamId;
 use App\Models\Team;
 use Filament\Events\Auth\Registered;
 use Filament\Facades\Filament;
@@ -129,6 +130,14 @@ class AppPanelProvider extends PanelProvider
         Event::listen(
             Registered::class,
             CreatePersonalTeam::class,
+        );
+
+        /**
+         * Listen and switch team if tenant was changed
+         */
+        Event::listen(
+            TenantSet::class,
+            SetCurrentTeamId::class,
         );
     }
 
