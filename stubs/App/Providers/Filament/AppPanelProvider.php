@@ -7,7 +7,7 @@ use App\Filament\Pages\CreateTeam;
 use App\Filament\Pages\EditProfile;
 use App\Filament\Pages\EditTeam;
 use App\Listeners\CreatePersonalTeam;
-use App\Listeners\SetCurrentTeamId;
+use App\Listeners\SwitchTeam;
 use App\Models\Team;
 use Filament\Events\Auth\Registered;
 use Filament\Events\TenantSet;
@@ -138,7 +138,7 @@ class AppPanelProvider extends PanelProvider
          */
         Event::listen(
             TenantSet::class,
-            SetCurrentTeamId::class,
+            SwitchTeam::class,
         );
     }
 
