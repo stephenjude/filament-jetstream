@@ -22,7 +22,10 @@ class SetCurrentTeamId
     {
         if (Features::hasTeamFeatures()) {
             $user = $event->getUser();
-            $user->switchTeam($event->getTenant());
+
+            $team = $event->getTenant();
+
+            $user->switchTeam($team);
         }
     }
 }
