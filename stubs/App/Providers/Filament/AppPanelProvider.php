@@ -7,8 +7,10 @@ use App\Filament\Pages\CreateTeam;
 use App\Filament\Pages\EditProfile;
 use App\Filament\Pages\EditTeam;
 use App\Listeners\CreatePersonalTeam;
+use App\Listeners\SwitchTeam;
 use App\Models\Team;
 use Filament\Events\Auth\Registered;
+use Filament\Events\TenantSet;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -129,6 +131,14 @@ class AppPanelProvider extends PanelProvider
         Event::listen(
             Registered::class,
             CreatePersonalTeam::class,
+        );
+
+        /**
+         * Listen and switch team if tenant was changed
+         */
+        Event::listen(
+            TenantSet::class,
+            SwitchTeam::class,
         );
     }
 
