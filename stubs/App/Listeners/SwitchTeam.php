@@ -5,7 +5,7 @@ namespace App\Listeners;
 use Filament\Events\TenantSet;
 use Laravel\Jetstream\Features;
 
-class SetCurrentTeamId
+class SwitchTeam
 {
     /**
      * Create the event listener.
