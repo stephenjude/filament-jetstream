@@ -99,8 +99,12 @@ class FilamentJetstreamCommand extends Command
         );
 
         $this->replaceInFile(
-            search: '}',
+            search: <<<'HEREDOC'
+                }
+            }
+            HEREDOC,
             replace: <<<'HEREDOC'
+                }
 
                 public function canAccessPanel(Panel $panel): bool
                 {
