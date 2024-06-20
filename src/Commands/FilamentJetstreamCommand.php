@@ -26,7 +26,6 @@ class FilamentJetstreamCommand extends Command
             return self::FAILURE;
         }
 
-
         $this->info('Installing Jetstream components started');
         $this->call('jetstream:install', [
             'stack' => 'livewire',
