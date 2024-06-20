@@ -2,6 +2,10 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 0.0.11 - 2024-06-12
+
+- Fixed Laravel 11 User model scaffold bug
+
 ## 0.0.10 - 2024-05-14
 
 - Fixes current_team_id not being updated by @tomhatzer
