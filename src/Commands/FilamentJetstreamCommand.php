@@ -26,6 +26,8 @@ class FilamentJetstreamCommand extends Command
             return self::FAILURE;
         }
 
+
+        $this->info('Installing Jetstream components started');
         $this->call('jetstream:install', [
             'stack' => 'livewire',
             '--verification' => true,
@@ -33,18 +35,29 @@ class FilamentJetstreamCommand extends Command
             '--teams' => $this->option('teams'),
             '--api' => $this->option('api'),
         ]);
+        $this->info('Installing Jetstream components completed');
 
+        $this->info('Configuring User model for Filament Panel started');
         $this->configureUser();
+        $this->info('Configuring User model for Filament Panel completed');
 
+        $this->info('Configuring email verification for Filament Panel started');
         $this->configureEmailVerification();
+        $this->info('Configuring email verification for Filament Panel completed');
 
         if ($this->option('teams')) {
+            $this->info('Configuring User model for Filament Panel Tenancy started');
             $this->configureTeam();
+            $this->info('Configuring Team model for Filament Panel Tenancy completed');
         }
 
+        $this->info('Configuring Filament Panel Provider started');
         $this->configurePanel();
+        $this->info('Configuring Filament Panel Provider completed');
 
+        $this->info('Configuring Filament Panel assets started');
         $this->configureAssets();
+        $this->info('Configuring Filament Panel assets completed');
 
         $this->line('');
 
