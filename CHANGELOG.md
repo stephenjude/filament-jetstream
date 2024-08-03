@@ -2,6 +2,10 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 0.0.12 - 2024-06-20
+
+- Fixed user profile URL bug
+
 ## 0.0.11 - 2024-06-12
 
 - Fixed Laravel 11 User model scaffold bug
