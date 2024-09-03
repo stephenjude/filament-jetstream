@@ -1,3 +1,5 @@
+![Edit Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/banner.jpg)
+
 # Filament Jetstream
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/stephenjude/filament-jetstream.svg?style=flat-square)](https://packagist.org/packages/stephenjude/filament-jetstream)
@@ -31,23 +33,23 @@ You can remove the `--teams` and `--api` arguments if you don't want those featu
 
 ## Screenshots
 
-![Edit Profile](art/profile_1.png)
+![Edit Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/profile_1.png)
 
 ---
 
-![Edit Profile](art/profile_2.png)
+![Edit Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/profile_2.png)
 
 ---
 
-![Edit Team](art/team_1.png)
+![Edit Team](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/team_1.png)
 
 ---
 
-![Edit Team](art/team_2.png)
+![Edit Team](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/team_2.png)
 
 ---
 
-![Edit Team](art/api_token.png)
+![Edit Team](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/api_token.png)
 
 ## Testing
 
