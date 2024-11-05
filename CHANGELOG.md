@@ -2,6 +2,10 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 0.0.13 - 2024-08-03
+
+- Fixed duplicate team creation during user registration
+
 ## 0.0.12 - 2024-06-20
 
 - Fixed user profile URL bug
