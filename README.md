@@ -31,15 +31,15 @@ You can remove the `--teams` and `--api` arguments if you don't want those featu
 
 ## Screenshots
 
-![Edit Profile](art/profile_1.png)
+![Profile](art/profile.jpeg)
 
 ---
 
-![Edit Profile](art/profile_2.png)
+![Team](art/team.jpeg)
 
 ---
 
-![Edit Team](art/team_1.png)
+![Edit Team](art/api_token.jpeg)
 
 ---
 

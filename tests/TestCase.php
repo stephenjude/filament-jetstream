@@ -1,6 +1,6 @@
 <?php
 
-namespace FilamentJetstream\FilamentJetstream\Tests;
+namespace Filament\Jetstream\Tests;
 
 use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
@@ -8,13 +8,13 @@ use Filament\Actions\ActionsServiceProvider;
 use Filament\FilamentServiceProvider;
 use Filament\Forms\FormsServiceProvider;
 use Filament\Infolists\InfolistsServiceProvider;
+use Filament\Jetstream\JetstreamServiceProvider;
 use Filament\Notifications\NotificationsServiceProvider;
 use Filament\SpatieLaravelSettingsPluginServiceProvider;
 use Filament\SpatieLaravelTranslatablePluginServiceProvider;
 use Filament\Support\SupportServiceProvider;
 use Filament\Tables\TablesServiceProvider;
 use Filament\Widgets\WidgetsServiceProvider;
-use FilamentJetstream\FilamentJetstream\FilamentJetstreamServiceProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Livewire\LivewireServiceProvider;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -27,7 +27,7 @@ class TestCase extends Orchestra
         parent::setUp();
 
         Factory::guessFactoryNamesUsing(
-            fn (string $modelName) => 'FilamentJetstream\\FilamentJetstream\\Database\\Factories\\' . class_basename($modelName) . 'Factory'
+            fn(string $modelName) => 'Filament\\Jetstream\\Database\\Factories\\'.class_basename($modelName).'Factory'
         );
     }
 
@@ -48,14 +48,13 @@ class TestCase extends Orchestra
             SupportServiceProvider::class,
             TablesServiceProvider::class,
             WidgetsServiceProvider::class,
-            FilamentJetstreamServiceProvider::class,
+            JetstreamServiceProvider::class,
         ];
     }
 
     public function getEnvironmentSetUp($app)
     {
         config()->set('database.default', 'testing');
-
         /*
         $migration = include __DIR__.'/../database/migrations/create_filament-jetstream_table.php.stub';
         $migration->up();
