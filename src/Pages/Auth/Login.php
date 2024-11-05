@@ -6,8 +6,8 @@ use Arr;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
 use Filament\Http\Responses\Auth\Contracts\LoginResponse;
-use Filament\Models\Contracts\FilamentUser;
 use Filament\Jetstream\Events\TwoFactorAuthenticationChallenged;
+use Filament\Models\Contracts\FilamentUser;
 
 class Login extends \Filament\Pages\Auth\Login
 {

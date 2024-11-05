@@ -2,10 +2,10 @@
 
 namespace Filament\Jetstream\Actions;
 
-use Filament\Models\Contracts\FilamentUser;
-use Illuminate\Support\Collection;
 use Filament\Jetstream\Contracts\TwoFactorAuthenticationProvider;
 use Filament\Jetstream\Events\TwoFactorAuthenticationEnabled;
+use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Support\Collection;
 
 class EnableTwoFactorAuthentication
 {

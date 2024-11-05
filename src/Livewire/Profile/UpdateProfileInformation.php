@@ -3,7 +3,6 @@
 namespace Filament\Jetstream\Livewire\Profile;
 
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
-use Filament\Actions\Action;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
@@ -37,7 +36,7 @@ class UpdateProfileInformation extends BaseLivewireComponent
                             ->avatar()
                             ->imageEditor()
                             ->directory('profile-photos')
-                            ->disk(fn(): string => Jetstream::plugin()?->profilePhotoDisk())
+                            ->disk(fn (): string => Jetstream::plugin()?->profilePhotoDisk())
                             ->visible(fn (): bool => Jetstream::plugin()?->managesProfilePhotos()),
                         TextInput::make('name')
                             ->label(__('filament-jetstream::default.form.name.label'))

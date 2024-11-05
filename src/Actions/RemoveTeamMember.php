@@ -4,11 +4,11 @@ namespace Filament\Jetstream\Actions;
 
 use App\Models\Team;
 use App\Models\User;
+use Filament\Jetstream\Contracts\RemovesTeamMembers;
+use Filament\Jetstream\Events\TeamMemberRemoved;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\ValidationException;
-use Filament\Jetstream\Contracts\RemovesTeamMembers;
-use Filament\Jetstream\Events\TeamMemberRemoved;
 
 class RemoveTeamMember implements RemovesTeamMembers
 {

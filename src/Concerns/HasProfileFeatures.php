@@ -5,11 +5,8 @@ namespace Filament\Jetstream\Concerns;
 use Closure;
 use Filament\Jetstream\Pages\Auth\Challenge;
 use Filament\Jetstream\Pages\Auth\Recovery;
-use Filament\Jetstream\Pages\Auth\Setup;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules\Password;
-use Laravel\Jetstream\Contracts\AddsTeamMembers;
-use Laravel\Jetstream\Jetstream;
 
 trait HasProfileFeatures
 {

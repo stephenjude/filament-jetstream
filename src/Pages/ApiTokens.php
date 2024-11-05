@@ -45,5 +45,4 @@ class ApiTokens extends Page
 
         return $panel->generateRouteName(static::getRelativeRouteName());
     }
-
 }

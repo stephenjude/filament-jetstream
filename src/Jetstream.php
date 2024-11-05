@@ -2,9 +2,7 @@
 
 namespace Filament\Jetstream;
 
-use Filament\Jetstream\Contracts\CreatesTeams;
 use Filament\Jetstream\Contracts\DeletesTeams;
-use Filament\Jetstream\Contracts\DeletesUsers;
 use Filament\Jetstream\Contracts\InvitesTeamMembers;
 use Filament\Jetstream\Contracts\RemovesTeamMembers;
 use Filament\Jetstream\Contracts\UpdatesTeamNames;

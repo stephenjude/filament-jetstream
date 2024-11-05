@@ -15,8 +15,6 @@ use Filament\Jetstream\Events\InvitingTeamMember;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Mail\TeamInvitation;
-use Filament\Jetstream\Rules\Role;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Unique;
 

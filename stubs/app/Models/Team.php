@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Filament\Jetstream\Events\TeamCreated;
 use Filament\Jetstream\Events\TeamDeleted;
 use Filament\Jetstream\Events\TeamUpdated;
 use Filament\Jetstream\Team as JetstreamTeam;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Team extends JetstreamTeam
 {

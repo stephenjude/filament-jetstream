@@ -15,10 +15,11 @@ class RemoveTeamMemberTest extends TestCase
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
         $user->currentTeam->users()->attach(
-            $otherUser = User::factory()->create(), ['role' => 'admin']
+            $otherUser = User::factory()->create(),
+            ['role' => 'admin']
         );
 
-        $this->delete('/teams/'.$user->currentTeam->id.'/members/'.$otherUser->id);
+        $this->delete('/teams/' . $user->currentTeam->id . '/members/' . $otherUser->id);
 
         $this->assertCount(0, $user->currentTeam->fresh()->users);
     }
@@ -28,12 +29,13 @@ class RemoveTeamMemberTest extends TestCase
         $user = User::factory()->withPersonalTeam()->create();
 
         $user->currentTeam->users()->attach(
-            $otherUser = User::factory()->create(), ['role' => 'admin']
+            $otherUser = User::factory()->create(),
+            ['role' => 'admin']
         );
 
         $this->actingAs($otherUser);
 
-        $response = $this->delete('/teams/'.$user->currentTeam->id.'/members/'.$user->id);
+        $response = $this->delete('/teams/' . $user->currentTeam->id . '/members/' . $user->id);
 
         $response->assertStatus(403);
     }

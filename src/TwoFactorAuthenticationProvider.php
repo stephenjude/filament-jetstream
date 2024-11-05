@@ -2,9 +2,9 @@
 
 namespace Filament\Jetstream;
 
+use Filament\Jetstream\Contracts\TwoFactorAuthenticationProvider as TwoFactorAuthenticationProviderContract;
 use Illuminate\Contracts\Cache\Repository;
 use PragmaRX\Google2FA\Google2FA;
-use Filament\Jetstream\Contracts\TwoFactorAuthenticationProvider as TwoFactorAuthenticationProviderContract;
 
 class TwoFactorAuthenticationProvider implements TwoFactorAuthenticationProviderContract
 {

@@ -2,7 +2,6 @@
 
 namespace Filament\Jetstream\Pages;
 
-use Filament\Facades\Filament;
 use Filament\Pages\Tenancy\EditTenantProfile;
 
 class EditTeam extends EditTenantProfile

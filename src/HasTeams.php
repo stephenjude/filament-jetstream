@@ -84,9 +84,9 @@ trait HasTeams
     public function teams()
     {
         return $this->belongsToMany(Jetstream::teamModel(), Jetstream::membershipModel())
-                        ->withPivot('role')
-                        ->withTimestamps()
-                        ->as('membership');
+            ->withPivot('role')
+            ->withTimestamps()
+            ->as('membership');
     }
 
     /**
@@ -160,7 +160,6 @@ trait HasTeams
      * Determine if the user has the given role on the given team.
      *
      * @param  mixed  $team
-     * @param  string  $role
      * @return bool
      */
     public function hasTeamRole($team, string $role)
@@ -170,7 +169,8 @@ trait HasTeams
         }
 
         return $this->belongsToTeam($team) && optional(Jetstream::findRole($team->users->where(
-            'id', $this->id
+            'id',
+            $this->id
         )->first()->membership->role))->key === $role;
     }
 
@@ -197,7 +197,6 @@ trait HasTeams
      * Determine if the user has the given permission on the given team.
      *
      * @param  mixed  $team
-     * @param  string  $permission
      * @return bool
      */
     public function hasTeamPermission($team, string $permission)
@@ -239,5 +238,4 @@ trait HasTeams
     {
         return $this->belongsToTeam($tenant);
     }
-
 }

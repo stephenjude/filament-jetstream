@@ -98,7 +98,7 @@ class CreateApiToken extends BaseLivewireComponent
                     ->label(__('filament-jetstream::default.actions.copy_token.label'))
                     ->icon('heroicon-o-square-2-stack')
                     ->alpineClickHandler('(window.navigator.clipboard.writeText("' . $plainTextToken . '"))')
-                    ->dispatch( 'token-copied', ['token' => $plainTextToken]),
+                    ->dispatch('token-copied', ['token' => $plainTextToken]),
             ])
             ->persistent()
             ->send();
