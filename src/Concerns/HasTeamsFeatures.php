@@ -94,8 +94,6 @@ trait HasTeamsFeatures
             ->toArray();
     }
 
-
-
     public function getTeamMenuItemLabel(): string
     {
         return $this->evaluate($this->teamMenuItemLabel) ?? __('Team Settings');
@@ -133,7 +131,7 @@ trait HasTeamsFeatures
 
         Gate::forUser($user)->authorize('addTeamMember', $team);
 
-        abort_unless(User::where('email',$email)->exists(), __('We were unable to find a registered user with this email address.'));
+        abort_unless(User::where('email', $email)->exists(), __('We were unable to find a registered user with this email address.'));
 
         abort_if($team->hasUserWithEmail($email), __('This user already belongs to the team.'));
 

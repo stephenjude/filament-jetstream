@@ -2,9 +2,9 @@
 
 namespace Filament\Jetstream\Actions;
 
+use Filament\Jetstream\Events\RecoveryCodesGenerated;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Support\Collection;
-use Filament\Jetstream\Events\RecoveryCodesGenerated;
 
 class GenerateNewRecoveryCodes
 {

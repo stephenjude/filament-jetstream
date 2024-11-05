@@ -2,10 +2,10 @@
 
 namespace Filament\Jetstream\Actions;
 
-use Filament\Models\Contracts\FilamentUser;
-use Illuminate\Validation\ValidationException;
 use Filament\Jetstream\Contracts\TwoFactorAuthenticationProvider;
 use Filament\Jetstream\Events\TwoFactorAuthenticationConfirmed;
+use Filament\Models\Contracts\FilamentUser;
+use Illuminate\Validation\ValidationException;
 
 class ConfirmTwoFactorAuthentication
 {

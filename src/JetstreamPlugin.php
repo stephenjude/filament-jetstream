@@ -17,7 +17,6 @@ use Filament\Pages\Auth\Login;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Route;
 
 class JetstreamPlugin implements Plugin
 {

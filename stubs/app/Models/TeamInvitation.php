@@ -2,9 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\TeamInvitation as JetstreamTeamInvitation;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TeamInvitation extends JetstreamTeamInvitation
 {

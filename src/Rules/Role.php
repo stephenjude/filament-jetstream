@@ -3,8 +3,8 @@
 namespace Filament\Jetstream\Rules;
 
 use Closure;
-use Illuminate\Contracts\Validation\Rule;
 use Filament\Jetstream\Jetstream;
+use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Contracts\Validation\ValidationRule;
 
 class Role implements ValidationRule
