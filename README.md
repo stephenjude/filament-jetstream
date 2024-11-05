@@ -33,23 +33,15 @@ You can remove the `--teams` and `--api` arguments if you don't want those featu
 
 ## Screenshots
 
-![Edit Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/profile_1.png)
+![Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/profile.jpeg)
 
 ---
 
-![Edit Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/profile_2.png)
+![API Tokens](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/api_tokens.jpeg)
 
 ---
 
-![Edit Team](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/team_1.png)
-
----
-
-![Edit Team](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/team_2.png)
-
----
-
-![Edit Team](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/api_token.png)
+![Team](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/team.jpeg)
 
 ## Testing
 
