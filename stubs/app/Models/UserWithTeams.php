@@ -19,8 +19,8 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
-    use Notifiable;
     use HasTeams;
+    use Notifiable;
     use TwoFactorAuthenticatable;
 
     /**
@@ -68,7 +68,6 @@ class User extends Authenticatable implements FilamentUser, HasTenants
     {
         return true;
     }
-
 
     /**
      * Get the attributes that should be cast.

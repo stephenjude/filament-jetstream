@@ -65,7 +65,7 @@ trait HasApiTokensFeatures
 
     public function getApiTokenUrl(Panel $panel): ?string
     {
-        if (!$panel->hasTenancy()) {
+        if (! $panel->hasTenancy()) {
             return $panel->route('api-tokens');
         }
 

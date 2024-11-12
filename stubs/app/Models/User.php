@@ -4,10 +4,8 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Jetstream\HasProfilePhoto;
-use Filament\Jetstream\HasTeams;
 use Filament\Jetstream\TwoFactorAuthenticatable;
 use Filament\Models\Contracts\FilamentUser;
-use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -67,7 +65,6 @@ class User extends Authenticatable implements FilamentUser
     {
         return true;
     }
-
 
     /**
      * Get the attributes that should be cast.

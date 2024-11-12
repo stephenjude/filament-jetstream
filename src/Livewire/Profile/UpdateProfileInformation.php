@@ -11,7 +11,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
-use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Support\Arr;
 
 class UpdateProfileInformation extends BaseLivewireComponent

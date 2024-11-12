@@ -2,14 +2,13 @@
 
 namespace Filament\Jetstream\Livewire\Teams;
 
-use Filament\Jetstream\Models\Membership;
-use Filament\Jetstream\Models\Team;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Radio;
 use Filament\Jetstream\Events\TeamMemberUpdated;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
+use Filament\Jetstream\Models\Team;
 use Filament\Jetstream\Role;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables;
@@ -92,7 +91,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
             return;
         }
 
-        $team->users()->updateExistingPivot($teamMember->user_id, ['role' => $data['role'],]);
+        $team->users()->updateExistingPivot($teamMember->user_id, ['role' => $data['role']]);
 
         TeamMemberUpdated::dispatch($team->fresh(), $teamMember);
 

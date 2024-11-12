@@ -65,7 +65,6 @@ class InstallCommand extends Command
         return self::SUCCESS;
     }
 
-
     /**
      * Configure User model for Filament panel.
      */

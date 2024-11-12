@@ -2,9 +2,9 @@
 
 namespace Database\Factories;
 
-use Filament\Jetstream\Models\Team;
 use App\Models\User;
 use Filament\Jetstream\Features;
+use Filament\Jetstream\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
