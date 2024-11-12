@@ -2,14 +2,15 @@
 
 namespace Filament\Jetstream\Livewire\Teams;
 
-use App\Models\Membership;
-use App\Models\Team;
+use Filament\Jetstream\Models\Membership;
+use Filament\Jetstream\Models\Team;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Radio;
 use Filament\Jetstream\Events\TeamMemberUpdated;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
+use Filament\Jetstream\Role;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -23,7 +24,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
     public function table(Table $table): Table
     {
         return $table
-            ->query(fn () => Membership::with('user')->where('team_id', Filament::getTenant()->id))
+            ->query(fn () => Jetstream::plugin()->membershipModel::with('user')->where('team_id', Filament::getTenant()->id))
             ->columns([
                 Tables\Columns\Layout\Split::make([
                     Tables\Columns\ImageColumn::make('profile_photo_url')
@@ -39,7 +40,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
             ->actions([
                 Tables\Actions\Action::make('updateTeamRole')
                     ->visible(fn ($record): bool => Gate::check('updateTeamMember', Filament::getTenant()))
-                    ->label(fn ($record): string => Jetstream::findRole($record->role)->name)
+                    ->label(fn ($record): string => Role::find($record->role)->name)
                     ->modalWidth('lg')
                     ->modalHeading(__('filament-jetstream::default.actions.update_team_role.title'))
                     ->modalSubmitActionLabel(__('filament-jetstream::default.actions.save.label'))
@@ -85,15 +86,13 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
         /** @var Team $team */
         $team = Filament::getTenant();
 
-        if (Gate::check('updateTeamMember', $team)) {
+        if (! Gate::check('updateTeamMember', $team)) {
             $this->sendNotification(__('You do not have permission to update this team member.'), type: 'danger');
 
             return;
         }
 
-        $team->users()->updateExistingPivot($teamMember->id, [
-            'role' => $data['role'],
-        ]);
+        $team->users()->updateExistingPivot($teamMember->user_id, ['role' => $data['role'],]);
 
         TeamMemberUpdated::dispatch($team->fresh(), $teamMember);
 
@@ -113,7 +112,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
             return;
         }
 
-        if (Gate::check('removeTeamMember', $team)) {
+        if (! Gate::check('removeTeamMember', $team)) {
             $this->sendNotification(__('You do not have permission to remove this team member.'), type: 'danger');
 
             return;

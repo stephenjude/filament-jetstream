@@ -18,7 +18,7 @@ class EditProfile extends \Filament\Pages\Auth\EditProfile
         parent::mount();
 
         if ($id = $this->getUser()?->currentTeam?->id) {
-            once(fn () => Filament::setTenant(Jetstream::$teamModel::find($id)));
+            once(fn () => Filament::setTenant(Jetstream::plugin()->teamModel::find($id)));
         }
     }
 

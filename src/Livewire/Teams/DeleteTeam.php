@@ -32,9 +32,11 @@ class DeleteTeam extends BaseLivewireComponent
                                 ->modalSubmitActionLabel(__('filament-jetstream::default.actions.delete_team.label'))
                                 ->modalCancelAction(false)
                                 ->action(fn () => function () {
-                                    Filament::getTenant()?->purge();
+                                    Filament::getTenant()->purge();
 
-                                    return redirect()->to(Filament::getCurrentPanel()->getUrl());
+                                    $this->sendNotification(__('Team deleted!'));
+
+                                    return redirect()->to(Filament::getCurrentPanel()?->getUrl());
                                 }),
                         ]),
                     ]),

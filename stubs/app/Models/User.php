@@ -4,8 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Jetstream\HasProfilePhoto;
+use Filament\Jetstream\HasTeams;
 use Filament\Jetstream\TwoFactorAuthenticatable;
 use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -44,6 +46,15 @@ class User extends Authenticatable implements FilamentUser
     ];
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
+
+    /**
      * The accessors to append to the model's array form.
      *
      * @var array<int, string>
@@ -51,6 +62,12 @@ class User extends Authenticatable implements FilamentUser
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true;
+    }
+
 
     /**
      * Get the attributes that should be cast.
@@ -63,13 +80,5 @@ class User extends Authenticatable implements FilamentUser
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    /**
-     * Determine if the user can access filament panel.
-     */
-    public function canAccessPanel(Panel $panel): bool
-    {
-        return true;
     }
 }

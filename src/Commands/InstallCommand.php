@@ -22,11 +22,8 @@ class InstallCommand extends Command
     {
         $this->info('Filament Jetstream scaffolding...');
 
-        if (! $this->installFilamentPackage() || ! $this->installJetstreamPackage()) {
-            return self::FAILURE;
-        }
-
         $this->info('Installing Jetstream components started');
+
         $this->call('jetstream:install', [
             'stack' => 'livewire',
             '--verification' => true,
@@ -34,10 +31,13 @@ class InstallCommand extends Command
             '--teams' => $this->option('teams'),
             '--api' => $this->option('api'),
         ]);
+
         $this->info('Installing Jetstream components completed');
 
         $this->info('Configuring User model for Filament Panel started');
+
         $this->configureUser();
+
         $this->info('Configuring User model for Filament Panel completed');
 
         $this->info('Configuring email verification for Filament Panel started');
@@ -65,29 +65,6 @@ class InstallCommand extends Command
         return self::SUCCESS;
     }
 
-    /**
-     * Install Filament package.
-     */
-    protected function installFilamentPackage(): bool
-    {
-        if (! $this->hasComposerPackage('filament/filament')) {
-            return $this->requireComposerPackages('filament/filament:^3.2');
-        }
-
-        return true;
-    }
-
-    /**
-     * Install Laravel Jetstream package.
-     */
-    protected function installJetstreamPackage(): bool
-    {
-        if (! $this->hasComposerPackage('laravel/jetstream')) {
-            return $this->requireComposerPackages('laravel/jetstream:^4.2|^5.0');
-        }
-
-        return true;
-    }
 
     /**
      * Configure User model for Filament panel.

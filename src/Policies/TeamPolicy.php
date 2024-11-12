@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Policies;
+namespace Filament\Jetstream\Policies;
 
-use App\Models\Team;
+use Filament\Jetstream\Models\Team;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 

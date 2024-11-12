@@ -1,11 +1,48 @@
 <?php
 
-namespace Filament\Jetstream;
+namespace Filament\Jetstream\Models;
 
+use Filament\Jetstream\Events\TeamCreated;
+use Filament\Jetstream\Events\TeamDeleted;
+use Filament\Jetstream\Events\TeamUpdated;
+use Filament\Jetstream\Jetstream;
 use Illuminate\Database\Eloquent\Model;
 
-abstract class Team extends Model
+class Team extends Model
 {
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'personal_team',
+    ];
+
+    /**
+     * The event map for the model.
+     *
+     * @var array<string, class-string>
+     */
+    protected $dispatchesEvents = [
+        'created' => TeamCreated::class,
+        'updated' => TeamUpdated::class,
+        'deleted' => TeamDeleted::class,
+    ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'personal_team' => 'boolean',
+        ];
+    }
+
     /**
      * Get the owner of the team.
      *
@@ -13,7 +50,7 @@ abstract class Team extends Model
      */
     public function owner()
     {
-        return $this->belongsTo(Jetstream::userModel(), 'user_id');
+        return $this->belongsTo(Jetstream::plugin()->userModel, 'user_id');
     }
 
     /**
@@ -33,7 +70,7 @@ abstract class Team extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(Jetstream::userModel(), Jetstream::membershipModel())
+        return $this->belongsToMany(Jetstream::plugin()->userModel, Jetstream::plugin()->membershipModel)
             ->withPivot('role')
             ->withTimestamps()
             ->as('membership');
@@ -81,7 +118,7 @@ abstract class Team extends Model
      */
     public function teamInvitations()
     {
-        return $this->hasMany(Jetstream::teamInvitationModel());
+        return $this->hasMany(Jetstream::plugin()->teamInvitationModel);
     }
 
     /**

@@ -8,6 +8,9 @@ use Filament\Facades\Filament;
 use Filament\Jetstream\Events\AddingTeamMember;
 use Filament\Jetstream\Events\TeamMemberAdded;
 use Filament\Jetstream\Jetstream;
+use Filament\Jetstream\Models\Membership;
+use Filament\Jetstream\Models\Team;
+use Filament\Jetstream\Models\TeamInvitation;
 use Filament\Jetstream\Role;
 use Filament\Notifications\Notification;
 use Illuminate\Http\RedirectResponse;
@@ -23,6 +26,14 @@ trait HasTeamsFeatures
     public ?string $teamMenuItemIcon = null;
 
     public ?Closure $acceptTeamInvitation = null;
+
+    public string $userModel = 'App\\Models\\User';
+
+    public string $teamModel = Team::class;
+
+    public string $membershipModel = Membership::class;
+
+    public string $teamInvitationModel = TeamInvitation::class;
 
     /** @var array{name:string, key:string, description:string, permissions:array<int, string>}|null */
     public ?array $rolesAndPermissions = [
@@ -65,6 +76,39 @@ trait HasTeamsFeatures
         return $this;
     }
 
+    public function models(string $userModel = 'App\\Models\\User', string $teamModel = Team::class, string $membershipModel = Membership::class, string $teamInvitationModel = TeamInvitation::class): static
+    {
+        $this->userModel = $userModel;
+
+        $this->teamModel = $teamModel;
+
+        $this->membershipModel = $membershipModel;
+
+        $this->teamInvitationModel = $teamInvitationModel;
+
+        return $this;
+    }
+
+    public function userModel(): string
+    {
+        return $this->userModel;
+    }
+
+    public function teamModel(): string
+    {
+        return $this->teamModel;
+    }
+
+    public function membershipModel(): string
+    {
+        return $this->membershipModel;
+    }
+
+    public function teamInvitationModel(): string
+    {
+        return $this->teamInvitationModel;
+    }
+
     public function handleAcceptTeamInvitation(Closure $acceptTeamInvitation): static
     {
         $this->acceptTeamInvitation = $acceptTeamInvitation;
@@ -89,7 +133,7 @@ trait HasTeamsFeatures
     {
         return collect($this->evaluate($this->rolesAndPermissions))
             ->map(
-                fn ($role) => Jetstream::role($role['key'], $role['name'], $role['permissions'])->description($role['description'])
+                fn ($role) => (new Role($role['key'], $role['name'], $role['permissions']))->description($role['description'])
             )
             ->toArray();
     }
@@ -117,7 +161,7 @@ trait HasTeamsFeatures
 
     public function defaultAcceptTeamInvitation(string | int $invitationId): RedirectResponse
     {
-        $model = Jetstream::teamInvitationModel();
+        $model = Jetstream::plugin()->teamInvitationModel;
 
         $invitation = $model::whereKey($invitationId)->firstOrFail();
 
@@ -135,7 +179,7 @@ trait HasTeamsFeatures
 
         abort_if($team->hasUserWithEmail($email), __('This user already belongs to the team.'));
 
-        $newTeamMember = Jetstream::findUserByEmailOrFail($email);
+        $newTeamMember = (new $this->userModel)->where('email', $email)->firstOrFail();
 
         AddingTeamMember::dispatch($team, $newTeamMember);
 

@@ -59,6 +59,14 @@ class Role implements JsonSerializable
     }
 
     /**
+     * Find the role with the given key.
+     */
+    public static function find(string $key): ?Role
+    {
+        return collect(static::plugin()?->getTeamRolesAndPermissions())->firstWhere('key', $key);
+    }
+
+    /**
      * Get the JSON serializable representation of the object.
      *
      * @return array

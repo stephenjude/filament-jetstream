@@ -3,6 +3,7 @@
 namespace Filament\Jetstream\Livewire\Profile;
 
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Section;
@@ -10,6 +11,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
+use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Support\Arr;
 
 class UpdateProfileInformation extends BaseLivewireComponent
@@ -47,7 +49,7 @@ class UpdateProfileInformation extends BaseLivewireComponent
                             ->label(__('filament-jetstream::default.form.email.label'))
                             ->email()
                             ->required()
-                            ->unique(Jetstream::$userModel, ignorable: $this->authUser()),
+                            ->unique(get_class(Filament::auth()->user()), ignorable: $this->authUser()),
                         Actions::make([
                             Actions\Action::make('save')
                                 ->label(__('filament-jetstream::default.actions.save.label'))

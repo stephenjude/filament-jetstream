@@ -22,8 +22,9 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
         return $table
             ->query(fn () => $this->authUser()->tokens()->latest())
             ->columns([
-                Tables\Columns\TextColumn::make('name')
-                    ->label(__('filament-jetstream::default.table.columns.token_name.label')),
+                Tables\Columns\Layout\Split::make([
+                    Tables\Columns\TextColumn::make('name'),
+                ]),
             ])
             ->paginated(false)
             ->actions([
@@ -39,20 +40,29 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
                         ->toArray())
                         ->columns())
                     ->action(fn ($record, array $data) => $this->updateToken($record, $data)),
-                Tables\Actions\DeleteAction::make('deleteToken')
+                Tables\Actions\Action::make('deleteToken')
+                    ->color('danger')
                     ->label(__('filament-jetstream::default.actions.delete_token.label'))
                     ->modalHeading(__('filament-jetstream::default.actions.delete_token.title'))
-                    ->modalDescription(__('filament-jetstream::default.actions.delete_token.description')),
+                    ->modalDescription(__('filament-jetstream::default.actions.delete_token.description'))
+                    ->action(fn ($record) => $this->deleteToken($record)),
             ]);
     }
 
     public function updateToken(PersonalAccessToken $record, array $data)
     {
         $record->forceFill([
-            'abilities' => Jetstream::validPermissions(array_keys(array_filter($data))),
+            'abilities' => Jetstream::plugin()->validPermissions(array_keys(array_filter($data))),
         ])->save();
 
         $this->sendNotification();
+    }
+
+    public function deleteToken(PersonalAccessToken $record)
+    {
+        $record->delete();
+
+        $this->sendNotification(__('Token deleted!'));
     }
 
     public function render()

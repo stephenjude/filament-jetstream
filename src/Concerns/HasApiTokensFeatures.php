@@ -7,7 +7,7 @@ use Filament\Facades\Filament;
 use Filament\Navigation\MenuItem;
 use Filament\Panel;
 
-trait HasApiFeatures
+trait HasApiTokensFeatures
 {
     public Closure | bool $hasApiFeature = false;
 
@@ -59,15 +59,25 @@ trait HasApiFeatures
             ->label(fn () => $this->getApiMenuItemLabel())
             ->icon(fn () => $this->getApiMenuItemIcon())
             ->url(function () use ($panel) {
-                if (! $panel->hasTenancy()) {
-                    return $panel->route('api-tokens');
-                }
-
-                if ($tenant = Filament::getTenant()) {
-                    return $panel->route('api-tokens', ['tenant' => $tenant->id]);
-                }
-
-                return null;
+                return $this->getApiTokenUrl($panel);
             });
+    }
+
+    public function getApiTokenUrl(Panel $panel): ?string
+    {
+        if (!$panel->hasTenancy()) {
+            return $panel->route('api-tokens');
+        }
+
+        if ($tenant = Filament::getTenant()) {
+            return $panel->route('api-tokens', ['tenant' => $tenant->id]);
+        }
+
+        return null;
+    }
+
+    public function validPermissions(array $permissions): array
+    {
+        return array_values(array_intersect($permissions, $this->getApiTokenPermissions()));
     }
 }

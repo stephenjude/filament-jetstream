@@ -1,7 +1,8 @@
 <?php
 
-namespace Filament\Jetstream;
+namespace Filament\Jetstream\Models;
 
+use Filament\Jetstream\Jetstream;
 use Illuminate\Database\Eloquent\Model;
 
 class TeamInvitation extends Model
@@ -23,6 +24,6 @@ class TeamInvitation extends Model
      */
     public function team()
     {
-        return $this->belongsTo(Jetstream::teamModel());
+        return $this->belongsTo(Jetstream::plugin()->teamModel);
     }
 }

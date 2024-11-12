@@ -4,7 +4,9 @@ namespace Filament\Jetstream\Concerns;
 
 use Closure;
 use Filament\Jetstream\Pages\Auth\Challenge;
+use Filament\Jetstream\Pages\Auth\Policy;
 use Filament\Jetstream\Pages\Auth\Recovery;
+use Filament\Jetstream\Pages\Auth\Terms;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules\Password;
 
@@ -27,6 +29,8 @@ trait HasProfileFeatures
     public Closure | bool $logoutOtherBrowserSessions = true;
 
     public Closure | bool $deleteAccount = true;
+
+    public Closure | bool $termsAndPrivacyPolicy = false;
 
     public function profilePhoto(Closure | bool $condition = true, string $disk = 'public'): static
     {
@@ -127,5 +131,25 @@ trait HasProfileFeatures
         $this->deleteAccount = $condition;
 
         return $this;
+    }
+
+    public function termsAndPrivacyPolicy(Closure | bool $condition = true): static
+    {
+        $this->termsAndPrivacyPolicy = $condition;
+
+        return $this;
+    }
+
+    public function hasTermsAndPrivacyPolicy(): bool
+    {
+        return $this->evaluate($this->termsAndPrivacyPolicy) === true;
+    }
+
+    public function termsAndPrivacyRoutes(): array
+    {
+        return [
+            Route::get('/terms-of-service', Terms::class)->name('terms'),
+            Route::get('/privacy-policy', Policy::class)->name('policy'),
+        ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Filament\Jetstream;
 
+use Filament\Jetstream\Models\Team;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -32,7 +33,7 @@ trait HasTeams
             $this->switchTeam($this->personalTeam());
         }
 
-        return $this->belongsTo(Jetstream::teamModel(), 'current_team_id');
+        return $this->belongsTo(Jetstream::plugin()->teamModel, 'current_team_id');
     }
 
     /**
@@ -73,7 +74,7 @@ trait HasTeams
      */
     public function ownedTeams()
     {
-        return $this->hasMany(Jetstream::teamModel());
+        return $this->hasMany(Jetstream::plugin()->teamModel);
     }
 
     /**
@@ -83,7 +84,9 @@ trait HasTeams
      */
     public function teams()
     {
-        return $this->belongsToMany(Jetstream::teamModel(), Jetstream::membershipModel())
+        $plugin = Jetstream::plugin();
+
+        return $this->belongsToMany($plugin->teamModel, $plugin->membershipModel)
             ->withPivot('role')
             ->withTimestamps()
             ->as('membership');
@@ -92,7 +95,7 @@ trait HasTeams
     /**
      * Get the user's "personal" team.
      *
-     * @return \App\Models\Team
+     * @return Team
      */
     public function personalTeam()
     {
@@ -153,7 +156,7 @@ trait HasTeams
             ->membership
             ->role;
 
-        return $role ? Jetstream::findRole($role) : null;
+        return $role ? Role::find($role) : null;
     }
 
     /**
@@ -168,7 +171,7 @@ trait HasTeams
             return true;
         }
 
-        return $this->belongsToTeam($team) && optional(Jetstream::findRole($team->users->where(
+        return $this->belongsToTeam($team) && optional(Role::find($team->users->where(
             'id',
             $this->id
         )->first()->membership->role))->key === $role;
@@ -228,6 +231,8 @@ trait HasTeams
      */
     public function getTenants(Panel $panel): Collection
     {
+        dd($this->teams);
+
         return $this->teams;
     }
 

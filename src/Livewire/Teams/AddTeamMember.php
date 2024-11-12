@@ -44,7 +44,7 @@ class AddTeamMember extends BaseLivewireComponent
                             ->label(__('filament-jetstream::default.form.email.label'))
                             ->email()
                             ->required()
-                            ->unique(table: Jetstream::teamInvitationModel(), modifyRuleUsing: function (Unique $rule) {
+                            ->unique(table: Jetstream::plugin()->teamInvitationModel, modifyRuleUsing: function (Unique $rule) {
                                 return $rule->where('team_id', Filament::getTenant()->id);
                             })
                             ->validationMessages([

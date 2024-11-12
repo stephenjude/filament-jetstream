@@ -3,6 +3,7 @@
 namespace Filament\Jetstream\Livewire\ApiTokens;
 
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Grid;
@@ -71,7 +72,7 @@ class CreateApiToken extends BaseLivewireComponent
 
         $data = $this->form->getState();
 
-        $permissions = Jetstream::validPermissions(array_keys(array_filter(Arr::except($data, 'name'))));
+        $permissions = Jetstream::plugin()->validPermissions(array_keys(array_filter(Arr::except($data, 'name'))));
 
         if (empty($permissions)) {
             Notification::make()
@@ -102,6 +103,8 @@ class CreateApiToken extends BaseLivewireComponent
             ])
             ->persistent()
             ->send();
+
+        $this->redirect(Jetstream::plugin()->getApiTokenUrl(Filament::getCurrentPanel()));
     }
 
     public function render()
@@ -114,7 +117,7 @@ class CreateApiToken extends BaseLivewireComponent
     {
         Notification::make()
             ->success()
-            ->body(__('filament-jetstream::default.create_api_token.actions.notifications.copy_token.success.message'))
+            ->body(__('filament-jetstream::default.notifications.copy_token.success.message'))
             ->icon('heroicon-o-square-2-stack')
             ->send();
 

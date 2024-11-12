@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Team;
+use Filament\Jetstream\Models\Team;
 use App\Models\User;
 use Filament\Jetstream\Features;
 use Illuminate\Database\Eloquent\Factories\Factory;

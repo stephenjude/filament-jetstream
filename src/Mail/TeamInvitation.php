@@ -2,7 +2,7 @@
 
 namespace Filament\Jetstream\Mail;
 
-use App\Models\TeamInvitation as TeamInvitationModel;
+use Filament\Jetstream\Models\TeamInvitation as TeamInvitationModel;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;

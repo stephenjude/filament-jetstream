@@ -4,7 +4,7 @@ namespace Filament\Jetstream;
 
 use Filament\Contracts\Plugin;
 use Filament\Events\TenantSet;
-use Filament\Jetstream\Concerns\HasApiFeatures;
+use Filament\Jetstream\Concerns\HasApiTokensFeatures;
 use Filament\Jetstream\Concerns\HasProfileFeatures;
 use Filament\Jetstream\Concerns\HasTeamsFeatures;
 use Filament\Jetstream\Listeners\SwitchTeam;
@@ -21,13 +21,13 @@ use Illuminate\Support\Facades\Event;
 class JetstreamPlugin implements Plugin
 {
     use EvaluatesClosures;
-    use HasApiFeatures;
+    use HasApiTokensFeatures;
     use HasProfileFeatures;
     use HasTeamsFeatures;
 
     public function getId(): string
     {
-        return 'filament/jetstream';
+        return 'jetstream';
     }
 
     public static function make(): static
@@ -38,9 +38,7 @@ class JetstreamPlugin implements Plugin
     public static function get(): static
     {
         /** @var static $plugin */
-        $plugin = filament(app(static::class)->getId());
-
-        return $plugin;
+        return filament(app(static::class)->getId());
     }
 
     public function register(Panel $panel): void
@@ -54,6 +52,11 @@ class JetstreamPlugin implements Plugin
                 ForceTwoFactorAuthentication::class,
             ]);
 
+        if ($this->hasTermsAndPrivacyPolicy()) {
+            $panel
+                ->routes(fn () => $this->termsAndPrivacyRoutes());
+        }
+
         if ($this->hasApiTokensFeatures()) {
             $panel
                 ->pages([ApiTokens::class])
@@ -62,7 +65,7 @@ class JetstreamPlugin implements Plugin
 
         if ($this->hasTeamsFeatures()) {
             $panel
-                ->tenant(\App\Models\Team::class)
+                ->tenant($this->teamModel())
                 ->tenantRegistration(CreateTeam::class)
                 ->tenantProfile(EditTeam::class)
                 ->routes(fn () => $this->teamsRoutes());
