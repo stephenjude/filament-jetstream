@@ -16,7 +16,7 @@
     backupStaticProperties="false"
 >
     <testsuites>
-        <testsuite name="FilamentJetstream Test Suite">
+        <testsuite name="Filament Jetstream Test Suite">
             <directory>tests</directory>
         </testsuite>
     </testsuites>
