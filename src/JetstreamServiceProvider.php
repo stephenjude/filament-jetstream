@@ -20,7 +20,6 @@ use Filament\Jetstream\Pages\ApiTokens;
 use Filament\Jetstream\Pages\Auth\Challenge;
 use Filament\Jetstream\Pages\Auth\Login;
 use Filament\Jetstream\Pages\Auth\Recovery;
-use Filament\Jetstream\Pages\Auth\Register;
 use Filament\Jetstream\Pages\EditProfile;
 use Filament\Jetstream\Pages\EditTeam;
 use Illuminate\Contracts\Cache\Repository;
