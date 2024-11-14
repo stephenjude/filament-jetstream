@@ -231,9 +231,7 @@ trait HasTeams
      */
     public function getTenants(Panel $panel): Collection
     {
-        dd($this->teams);
-
-        return $this->teams;
+        return $this->allTeams();
     }
 
     /**

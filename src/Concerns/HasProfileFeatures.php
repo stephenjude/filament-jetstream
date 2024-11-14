@@ -30,8 +30,6 @@ trait HasProfileFeatures
 
     public Closure | bool $deleteAccount = true;
 
-    public Closure | bool $termsAndPrivacyPolicy = false;
-
     public function profilePhoto(Closure | bool $condition = true, string $disk = 'public'): static
     {
         $this->updateProfilePhoto = $condition;
@@ -131,25 +129,5 @@ trait HasProfileFeatures
         $this->deleteAccount = $condition;
 
         return $this;
-    }
-
-    public function termsAndPrivacyPolicy(Closure | bool $condition = true): static
-    {
-        $this->termsAndPrivacyPolicy = $condition;
-
-        return $this;
-    }
-
-    public function hasTermsAndPrivacyPolicy(): bool
-    {
-        return $this->evaluate($this->termsAndPrivacyPolicy) === true;
-    }
-
-    public function termsAndPrivacyRoutes(): array
-    {
-        return [
-            Route::get('/terms-of-service', Terms::class)->name('terms'),
-            Route::get('/privacy-policy', Policy::class)->name('policy'),
-        ];
     }
 }

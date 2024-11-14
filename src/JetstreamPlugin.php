@@ -8,15 +8,18 @@ use Filament\Jetstream\Concerns\HasApiTokensFeatures;
 use Filament\Jetstream\Concerns\HasProfileFeatures;
 use Filament\Jetstream\Concerns\HasTeamsFeatures;
 use Filament\Jetstream\Listeners\SwitchTeam;
+use Filament\Jetstream\Models\Team;
 use Filament\Jetstream\Pages\ApiTokens;
 use Filament\Jetstream\Pages\Auth\Login as TwoFactorLogin;
 use Filament\Jetstream\Pages\CreateTeam;
 use Filament\Jetstream\Pages\EditProfile;
 use Filament\Jetstream\Pages\EditTeam;
+use Filament\Jetstream\Policies\TeamPolicy;
 use Filament\Pages\Auth\Login;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Gate;
 
 class JetstreamPlugin implements Plugin
 {
@@ -27,7 +30,7 @@ class JetstreamPlugin implements Plugin
 
     public function getId(): string
     {
-        return 'jetstream';
+        return 'filament-jetstream';
     }
 
     public static function make(): static
@@ -52,11 +55,6 @@ class JetstreamPlugin implements Plugin
                 ForceTwoFactorAuthentication::class,
             ]);
 
-        if ($this->hasTermsAndPrivacyPolicy()) {
-            $panel
-                ->routes(fn () => $this->termsAndPrivacyRoutes());
-        }
-
         if ($this->hasApiTokensFeatures()) {
             $panel
                 ->pages([ApiTokens::class])
@@ -78,5 +76,10 @@ class JetstreamPlugin implements Plugin
          * Listen and switch team if tenant was changed
          */
         Event::listen(TenantSet::class, SwitchTeam::class);
+
+        /**
+         * Register team policies
+         */
+        Gate::policy(Team::class, TeamPolicy::class);
     }
 }

@@ -4,23 +4,21 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Jetstream\HasProfilePhoto;
-use Filament\Jetstream\HasTeams;
 use Filament\Jetstream\TwoFactorAuthenticatable;
 use Filament\Models\Contracts\FilamentUser;
-use Filament\Models\Contracts\HasTenants;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser //, \Filament\Models\Contracts\HasTenants
 {
-    use HasApiTokens;
+    use Notifiable;
     use HasFactory;
     use HasProfilePhoto;
-    use Notifiable;
     use TwoFactorAuthenticatable;
+    // use \Laravel\Sanctum\HasApiTokens;
+    // use \Filament\Jetstream\HasTeams;
 
     /**
      * The attributes that are mass assignable.
@@ -67,7 +65,6 @@ class User extends Authenticatable implements FilamentUser
     {
         return true;
     }
-
 
     /**
      * Get the attributes that should be cast.

@@ -21,10 +21,6 @@ trait HasTeamsFeatures
 {
     public Closure | bool $hasTeamFeature = false;
 
-    public ?string $teamMenuItemLabel = null;
-
-    public ?string $teamMenuItemIcon = null;
-
     public ?Closure $acceptTeamInvitation = null;
 
     public string $userModel = 'App\\Models\\User';
@@ -65,18 +61,21 @@ trait HasTeamsFeatures
         return $this->evaluate($this->hasTeamFeature) === true;
     }
 
-    public function teams(Closure | bool $condition = true, ?string $menuItemLabel = null, ?string $menuItemIcon = null): static
+    /**
+     * @param  Closure|array{name:string, key:string, description:string, permissions:array<int, string>}  $rolesAndPermissions
+     */
+    public function teams(Closure | bool $condition = true, Closure | array | null $rolesAndPermissions = null, ?Closure $acceptTeamInvitation = null): static
     {
         $this->hasTeamFeature = $condition;
 
-        $this->teamMenuItemLabel = $menuItemLabel;
+        $this->acceptTeamInvitation = $acceptTeamInvitation;
 
-        $this->teamMenuItemIcon = $menuItemIcon;
+        $this->rolesAndPermissions = $rolesAndPermissions ?? $this->rolesAndPermissions;
 
         return $this;
     }
 
-    public function models(string $userModel = 'App\\Models\\User', string $teamModel = Team::class, string $membershipModel = Membership::class, string $teamInvitationModel = TeamInvitation::class): static
+    public function useTeamsModels(string $userModel = 'App\\Models\\User', string $teamModel = Team::class, string $membershipModel = Membership::class, string $teamInvitationModel = TeamInvitation::class): static
     {
         $this->userModel = $userModel;
 
@@ -109,23 +108,6 @@ trait HasTeamsFeatures
         return $this->teamInvitationModel;
     }
 
-    public function handleAcceptTeamInvitation(Closure $acceptTeamInvitation): static
-    {
-        $this->acceptTeamInvitation = $acceptTeamInvitation;
-
-        return $this;
-    }
-
-    /**
-     * @param  Closure|array{name:string, key:string, description:string, permissions:array<int, string>}  $rolesAndPermissions
-     */
-    public function teamRolesAndPermissions(Closure | array $rolesAndPermissions): static
-    {
-        $this->rolesAndPermissions = $rolesAndPermissions;
-
-        return $this;
-    }
-
     /**
      * @return array<int, Role>
      */
@@ -133,19 +115,13 @@ trait HasTeamsFeatures
     {
         return collect($this->evaluate($this->rolesAndPermissions))
             ->map(
-                fn ($role) => (new Role($role['key'], $role['name'], $role['permissions']))->description($role['description'])
+                fn ($role) => (new Role(
+                    $role['key'],
+                    $role['name'],
+                    $role['permissions']
+                ))->description($role['description'])
             )
             ->toArray();
-    }
-
-    public function getTeamMenuItemLabel(): string
-    {
-        return $this->evaluate($this->teamMenuItemLabel) ?? __('Team Settings');
-    }
-
-    public function getTeamMenuItemIcon(): string
-    {
-        return $this->evaluate($this->teamMenuItemIcon) ?? __('heroicon-o-cog-6-tooth');
     }
 
     public function teamsRoutes(): array

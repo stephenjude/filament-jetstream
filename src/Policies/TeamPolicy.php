@@ -2,8 +2,8 @@
 
 namespace Filament\Jetstream\Policies;
 
-use Filament\Jetstream\Models\Team;
 use App\Models\User;
+use Filament\Jetstream\Models\Team;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class TeamPolicy
