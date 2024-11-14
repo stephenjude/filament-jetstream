@@ -26,15 +26,15 @@ class InstallCommand extends Command
         $this->callSilent('storage:link');
 
         if (file_exists(resource_path('views/welcome.blade.php'))) {
-            $this->replaceInFile("Route::has('login')", "filament()->hasLogin()", resource_path('views/welcome.blade.php'));
+            $this->replaceInFile("Route::has('login')", 'filament()->hasLogin()', resource_path('views/welcome.blade.php'));
 
-            $this->replaceInFile("{{ route('login') }}", "{{ filament()->getLoginUrl() }}", resource_path('views/welcome.blade.php'));
+            $this->replaceInFile("{{ route('login') }}", '{{ filament()->getLoginUrl() }}', resource_path('views/welcome.blade.php'));
 
-            $this->replaceInFile("Route::has('register')", "filament()->hasRegistration()", resource_path('views/welcome.blade.php'));
+            $this->replaceInFile("Route::has('register')", 'filament()->hasRegistration()', resource_path('views/welcome.blade.php'));
 
-            $this->replaceInFile("{{ route('register') }}", "{{ filament()->getRegistrationUrl() }}", resource_path('views/welcome.blade.php'));
+            $this->replaceInFile("{{ route('register') }}", '{{ filament()->getRegistrationUrl() }}', resource_path('views/welcome.blade.php'));
 
-            $this->replaceInFile("{{ url('/dashboard') }}", "{{ filament()->getHomeUrl() }}", resource_path('views/welcome.blade.php'));
+            $this->replaceInFile("{{ url('/dashboard') }}", '{{ filament()->getHomeUrl() }}', resource_path('views/welcome.blade.php'));
         }
 
         (new Filesystem)->ensureDirectoryExists(app_path('Providers/Filament'));

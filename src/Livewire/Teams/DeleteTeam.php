@@ -42,7 +42,7 @@ class DeleteTeam extends BaseLivewireComponent
         return view('filament-jetstream::livewire.teams.delete-team');
     }
 
-    function deleteTeam(): void
+    public function deleteTeam(): void
     {
         Filament::getTenant()->purge();
 
