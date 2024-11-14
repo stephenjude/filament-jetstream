@@ -66,12 +66,12 @@ class DeleteAccount extends BaseLivewireComponent
 
             $user->deleteProfilePhoto();
 
-            $user->tokens->each->delete();
+            $user->tokens?->each->delete();
 
             $user->delete();
         });
 
-        app(StatefulGuard::class)->logout();
+        filament()->auth()->logout();
 
         return redirect(filament()->getLoginUrl());
     }

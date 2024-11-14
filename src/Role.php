@@ -63,7 +63,7 @@ class Role implements JsonSerializable
      */
     public static function find(string $key): ?Role
     {
-        return collect(static::plugin()?->getTeamRolesAndPermissions())->firstWhere('key', $key);
+        return collect(Jetstream::plugin()?->getTeamRolesAndPermissions())->firstWhere('key', $key);
     }
 
     /**

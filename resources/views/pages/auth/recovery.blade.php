@@ -1,6 +1,6 @@
 <x-filament-panels::page.simple>
     <x-slot name="subheading">
-        {{ __('filament-jetstream::default.two_factor_authentication.or.label') }}
+        {{ __('filament-jetstream::default.form.or.label') }}
         {{ $this->challengeAction }}
     </x-slot>
 

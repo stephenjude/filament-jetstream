@@ -29,7 +29,7 @@ return [
 
             'hint' => 'Please confirm access to your account by entering the authentication code provided by your authenticator application.',
 
-            'error_message' => 'The provided two factor authentication code was invalid.',
+            'error_message' => 'The provided two factor authentication code is invalid.',
 
         ],
 
@@ -99,7 +99,7 @@ return [
 
     ],
 
-    'notifications' => [
+    'notification' => [
 
         'save' => [
 
@@ -180,6 +180,14 @@ return [
 
         ],
 
+        'logged_out_other_sessions' => [
+
+            'success' => [
+                'message' => 'All other browser sessions have been logged out successfully.',
+            ],
+
+        ],
+
         'permission_denied' => [
 
             'cannot_update_team_member' => 'You do not have permission to update this team member.',
@@ -191,14 +199,6 @@ return [
             'cannot_delete_team' => 'You do not have permission to delete this team.',
 
         ],
-    ],
-
-    'menu_item' => [
-
-        'api_tokens' => [
-            'label' => 'API Tokens',
-        ],
-
     ],
 
     'action' => [
@@ -321,9 +321,20 @@ return [
         'cancel_team_invitation' => [
             'label' => 'Cancel',
         ],
+
+        'log_out_other_browsers' => [
+
+            'label' => 'Log Out Other Browser Sessions',
+
+            'title' => 'Log Out Other Browser Sessions',
+
+            'description' => 'Enter your password to confirm you would like to log out of your other browser sessions across all of your devices.',
+
+        ],
+
     ],
 
-    'mails' => [
+    'mail' => [
 
         'team_invitation' => [
 
@@ -365,6 +376,14 @@ return [
 
             'title' => 'Team Settings',
 
+        ],
+
+    ],
+
+    'menu_item' => [
+
+        'api_tokens' => [
+            'label' => 'API Tokens',
         ],
 
     ],
@@ -464,28 +483,6 @@ return [
 
                 'unknown_device' => 'Unknown',
 
-            ],
-
-        ],
-
-        'actions' => [
-
-            'log_out_other_browsers' => [
-
-                'label' => 'Log Out Other Browser Sessions',
-
-                'title' => 'Log Out Other Browser Sessions',
-
-                'description' => 'Enter your password to confirm you would like to log out of your other browser sessions across all of your devices.',
-
-            ],
-
-        ],
-
-        'notifications' => [
-
-            'success' => [
-                'message' => 'All other browser sessions have been logged out successfully.',
             ],
 
         ],

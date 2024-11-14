@@ -11,6 +11,7 @@ use Filament\Jetstream\Listeners\SwitchTeam;
 use Filament\Jetstream\Models\Team;
 use Filament\Jetstream\Pages\ApiTokens;
 use Filament\Jetstream\Pages\Auth\Login as TwoFactorLogin;
+use Filament\Jetstream\Pages\Auth\Register;
 use Filament\Jetstream\Pages\CreateTeam;
 use Filament\Jetstream\Pages\EditProfile;
 use Filament\Jetstream\Pages\EditTeam;
@@ -63,6 +64,7 @@ class JetstreamPlugin implements Plugin
 
         if ($this->hasTeamsFeatures()) {
             $panel
+                ->registration(Register::class)
                 ->tenant($this->teamModel())
                 ->tenantRegistration(CreateTeam::class)
                 ->tenantProfile(EditTeam::class)

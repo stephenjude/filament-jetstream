@@ -119,7 +119,6 @@ class JetstreamServiceProvider extends PackageServiceProvider
         Livewire::component('filament-jetstream::pages.auth.challenge', Challenge::class);
         Livewire::component('filament-jetstream::pages.auth.recovery', Recovery::class);
 
-        Livewire::component('filament-panels::pages.auth.register', Register::class);
         Livewire::component('filament-panels::pages.auth.login', Login::class);
 
         /*

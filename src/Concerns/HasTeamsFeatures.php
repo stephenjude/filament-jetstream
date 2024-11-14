@@ -170,8 +170,8 @@ trait HasTeamsFeatures
 
         Notification::make()
             ->success()
-            ->title(__('filament-jetstream::default.notification.accepted_invitation.title'))
-            ->body(__('filament-jetstream::default.notification.accepted_invitation.message', ['team' => $invitation->team->name]))
+            ->title(__('filament-jetstream::default.notification.accepted_invitation.success.title'))
+            ->body(__('filament-jetstream::default.notification.accepted_invitation.success.message', ['team' => $invitation->team->name]))
             ->send();
 
         return redirect()->to(Filament::getHomeUrl());

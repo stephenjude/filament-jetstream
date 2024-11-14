@@ -52,7 +52,7 @@ class Recovery extends BaseSimplePage
     {
         return Action::make('two_factor_challenge_login')
             ->link()
-            ->label(__('filament-jetstream::default.action.two_factor_authentication.use_authentication_code'))
+            ->label(__('filament-jetstream::default.action.two_factor_authentication.label.use_authentication_code'))
             ->url(filament()->getCurrentPanel()->route('two-factor.challenge'));
     }
 
@@ -88,13 +88,13 @@ class Recovery extends BaseSimplePage
                 ]),
             Actions::make([
                 Actions\Action::make('authenticate')
-                    ->label(__('filament-panels::pages/auth/login.form.action.authenticate.label'))
+                    ->label(__('filament-panels::pages/auth/login.form.actions.authenticate.label'))
                     ->submit('authenticate'),
             ])->fullWidth(),
             Actions::make([
                 Actions\Action::make('logout')
                     ->link()
-                    ->label(__('filament-jetstream::default.action.two_factor_authentication.logout.label'))
+                    ->label(__('filament-jetstream::default.action.two_factor_authentication.label.logout'))
                     ->action(function () {
                         Filament::auth()->logout();
 

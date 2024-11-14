@@ -8,7 +8,6 @@ use Filament\Forms\Form;
 use Filament\Jetstream\Agent;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Notifications\Notification;
-use Illuminate\Contracts\Auth\StatefulGuard;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -31,11 +30,11 @@ class LogoutOtherBrowserSessions extends BaseLivewireComponent
                             ->viewData(['sessions' => self::browserSessions()]),
                         Actions::make([
                             Actions\Action::make('deleteBrowserSessions')
-                                ->label(__('filament-jetstream::default.browser_sessions.action.log_out_other_browsers.label'))
+                                ->label(__('filament-jetstream::default.action.log_out_other_browsers.label'))
                                 ->requiresConfirmation()
-                                ->modalHeading(__('filament-jetstream::default.browser_sessions.action.log_out_other_browsers.title'))
-                                ->modalDescription(__('filament-jetstream::default.browser_sessions.action.log_out_other_browsers.description'))
-                                ->modalSubmitActionLabel(__('filament-jetstream::default.browser_sessions.action.log_out_other_browsers.label'))
+                                ->modalHeading(__('filament-jetstream::default.action.log_out_other_browsers.title'))
+                                ->modalDescription(__('filament-jetstream::default.action.log_out_other_browsers.description'))
+                                ->modalSubmitActionLabel(__('filament-jetstream::default.action.log_out_other_browsers.label'))
                                 ->modalCancelAction(false)
                                 ->form([
                                     Forms\Components\TextInput::make('password')
@@ -45,24 +44,21 @@ class LogoutOtherBrowserSessions extends BaseLivewireComponent
                                         ->required()
                                         ->currentPassword(),
                                 ])
-                                ->action(function (array $data) {
-                                    self::logoutOtherBrowserSessions(app(StatefulGuard::class), $data['password']);
-                                }),
+                                ->action(
+                                    fn (array $data) => $this->logoutOtherBrowserSessions($data['password'])
+                                ),
                         ]),
                     ]),
             ]);
     }
 
-    /**
-     * Log out from other browser sessions.
-     */
-    public static function logoutOtherBrowserSessions(StatefulGuard $guard, string $password): void
+    public function logoutOtherBrowserSessions(string $password): void
     {
         if (config('session.driver') !== 'database') {
             return;
         }
 
-        $guard->logoutOtherDevices($password);
+        auth(filament()->getAuthGuard())->logoutOtherDevices($password);
 
         DB::connection(config('session.connection'))
             ->table(config('session.table', 'sessions'))
@@ -78,7 +74,7 @@ class LogoutOtherBrowserSessions extends BaseLivewireComponent
 
         Notification::make()
             ->success()
-            ->title(__('filament-jetstream::default.browser_sessions.notification.success.message'))
+            ->title(__('filament-jetstream::default.notification.logged_out_other_sessions.success.message'))
             ->send();
     }
 

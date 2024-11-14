@@ -167,7 +167,7 @@ class TwoFactorAuthentication extends BaseLivewireComponent
     protected function generateNewRecoveryCodesAction(): Action
     {
         return Action::make('generateNewRecoveryCodes')
-            ->label(__('filament-jetstream::default.two_factor_authentication.label.generate_recovery_codes'))
+            ->label(__('filament-jetstream::default.action.two_factor_authentication.label.regenerate_recovery_codes'))
             ->outlined()
             ->visible(fn () => $this->authUser()->hasEnabledTwoFactorAuthentication())
             ->requiresConfirmation()
