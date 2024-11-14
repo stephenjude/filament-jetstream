@@ -6,7 +6,7 @@ use Filament\Jetstream\Jetstream;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
- class Membership extends Pivot
+class Membership extends Pivot
 {
     /**
      * Indicates if the IDs are auto-incrementing.
