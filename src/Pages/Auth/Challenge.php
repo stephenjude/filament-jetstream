@@ -23,7 +23,7 @@ class Challenge extends BaseSimplePage
 
     public function getTitle(): string | Htmlable
     {
-        return __('Two Factor Authentication');
+        return __('filament-jetstream::default.two_factor_authentication.section.title');
     }
 
     public function mount(): void
@@ -53,7 +53,7 @@ class Challenge extends BaseSimplePage
     {
         return Action::make('recovery')
             ->link()
-            ->label(__('use a recovery code'))
+            ->label(__('filament-jetstream::default.action.two_factor_authentication.use_recovery_code'))
             ->url(filament()->getCurrentPanel()->route('two-factor.recovery'));
     }
 
@@ -88,8 +88,8 @@ class Challenge extends BaseSimplePage
         return $form->schema([
             TextInput::make('code')
                 ->hiddenLabel()
-                ->hint(__('Please confirm access to your account by entering the authentication code provided by your authenticator application.'))
-                ->label(__('Code'))
+                ->hint(__('filament-jetstream::default.form.code.hint'))
+                ->label(__('filament-jetstream::default.form.code.label'))
                 ->required()
                 ->autocomplete()
                 ->rules([
@@ -99,7 +99,7 @@ class Challenge extends BaseSimplePage
                         $user = $model::find(session('login.id'));
 
                         if (is_null($user)) {
-                            $fail(__('The provided two factor authentication code was invalid.'));
+                            $fail(__('filament-jetstream::default.form.code.error_message'));
 
                             redirect()->to(filament()->getCurrentPanel()->getLoginUrl());
 
@@ -112,7 +112,7 @@ class Challenge extends BaseSimplePage
                         );
 
                         if (! $isValidCode) {
-                            $fail(__('The provided two factor authentication code was invalid.'));
+                            $fail(__('filament-jetstream::default.form.code.error_message'));
 
                             event(new TwoFactorAuthenticationFailed($user));
                         }
@@ -120,13 +120,13 @@ class Challenge extends BaseSimplePage
                 ]),
             Actions::make([
                 Actions\Action::make('authenticate')
-                    ->label(__('filament-panels::pages/auth/login.form.actions.authenticate.label'))
+                    ->label(__('filament-panels::pages/auth/login.form.action.authenticate.label'))
                     ->submit('authenticate'),
             ])->fullWidth(),
             Actions::make([
                 Actions\Action::make('logout')
                     ->link()
-                    ->label(__('Logout'))
+                    ->label(__('filament-jetstream::default.action.two_factor_authentication.logout'))
                     ->action(function () {
                         Filament::auth()->logout();
 

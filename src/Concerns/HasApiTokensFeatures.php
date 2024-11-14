@@ -13,16 +13,16 @@ trait HasApiTokensFeatures
 
     public Closure | array | null $apiTokenPermissions = [];
 
-    public ?string $apiMenuItemLabel = 'API Tokens';
+    public ?string $apiMenuItemLabel = null;
 
-    public ?string $apiMenuItemIcon = 'heroicon-o-key';
+    public ?string $apiMenuItemIcon = null;
 
     public function hasApiTokensFeatures(): bool
     {
         return $this->evaluate($this->hasApiFeature) === true;
     }
 
-    public function apiTokens(Closure | bool $condition = true, Closure | array | null $permissions = null, ?string $menuItemLabel = 'API Tokens', ?string $menuItemIcon = 'heroicon-o-key'): static
+    public function apiTokens(Closure | bool $condition = true, Closure | array | null $permissions = null, ?string $menuItemLabel = null, ?string $menuItemIcon = null): static
     {
         $this->hasApiFeature = $condition;
 
@@ -37,12 +37,12 @@ trait HasApiTokensFeatures
 
     public function getApiMenuItemLabel(): string
     {
-        return $this->evaluate($this->apiMenuItemLabel) ?? __('API Tokens');
+        return $this->evaluate($this->apiMenuItemLabel) ?? __('filament-jetstream::default.menu_item.api_tokens.label');
     }
 
     public function getApiMenuItemIcon(): string
     {
-        return $this->evaluate($this->apiMenuItemIcon) ?? __('heroicon-o-key');
+        return $this->evaluate($this->apiMenuItemIcon) ?? 'heroicon-o-key';
     }
 
     public function getApiTokenPermissions(): array

@@ -151,9 +151,9 @@ trait HasTeamsFeatures
 
         Gate::forUser($user)->authorize('addTeamMember', $team);
 
-        abort_unless(User::where('email', $email)->exists(), __('We were unable to find a registered user with this email address.'));
+        abort_unless(User::where('email', $email)->exists(), __('filament-jetstream::default.action.add_team_member.error_message.email_not_found'));
 
-        abort_if($team->hasUserWithEmail($email), __('This user already belongs to the team.'));
+        abort_if($team->hasUserWithEmail($email), __('filament-jetstream::default.action.add_team_member.error_message.email_already_joined'));
 
         $newTeamMember = (new $this->userModel)->where('email', $email)->firstOrFail();
 
@@ -170,8 +170,8 @@ trait HasTeamsFeatures
 
         Notification::make()
             ->success()
-            ->title(__('Team Invitation Accepted'))
-            ->body(__('Great! You have accepted the invitation to join the :team team.', ['team' => $invitation->team->name]))
+            ->title(__('filament-jetstream::default.notification.accepted_invitation.title'))
+            ->body(__('filament-jetstream::default.notification.accepted_invitation.message', ['team' => $invitation->team->name]))
             ->send();
 
         return redirect()->to(Filament::getHomeUrl());

@@ -24,12 +24,12 @@ class DeleteTeam extends BaseLivewireComponent
                             ->content(fn () => __('filament-jetstream::default.delete_team.section.notice')),
                         Actions::make([
                             Actions\Action::make('deleteAccountAction')
-                                ->label(__('filament-jetstream::default.actions.delete_team.label'))
+                                ->label(__('filament-jetstream::default.action.delete_team.label'))
                                 ->color('danger')
                                 ->requiresConfirmation()
                                 ->modalHeading(__('filament-jetstream::default.delete_team.section.title'))
-                                ->modalDescription(__('filament-jetstream::default.actions.delete_team.notice'))
-                                ->modalSubmitActionLabel(__('filament-jetstream::default.actions.delete_team.label'))
+                                ->modalDescription(__('filament-jetstream::default.action.delete_team.notice'))
+                                ->modalSubmitActionLabel(__('filament-jetstream::default.action.delete_team.label'))
                                 ->modalCancelAction(false)
                                 ->action(fn () => $this->deleteTeam()),
                         ]),
@@ -46,7 +46,7 @@ class DeleteTeam extends BaseLivewireComponent
     {
         Filament::getTenant()->purge();
 
-        $this->sendNotification(__('Team deleted!'));
+        $this->sendNotification(__('filament-jetstream::default.notification.team_deleted.success.message'));
 
         redirect()->to(Filament::getCurrentPanel()?->getUrl());
     }

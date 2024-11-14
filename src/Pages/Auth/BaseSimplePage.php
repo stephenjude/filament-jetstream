@@ -17,14 +17,14 @@ abstract class BaseSimplePage extends SimplePage
     {
         return Notification::make()
             ->title(
-                __('filament-panels::pages/auth/login.notifications.throttled.title', [
+                __('filament-panels::pages/auth/login.notification.throttled.title', [
                     'seconds' => $exception->secondsUntilAvailable,
                     'minutes' => $exception->minutesUntilAvailable,
                 ])
             )
             ->body(
-                array_key_exists('body', __('filament-panels::pages/auth/login.notifications.throttled') ?: []) ? __(
-                    'filament-panels::pages/auth/login.notifications.throttled.body',
+                array_key_exists('body', __('filament-panels::pages/auth/login.notification.throttled') ?: []) ? __(
+                    'filament-panels::pages/auth/login.notification.throttled.body',
                     [
                         'seconds' => $exception->secondsUntilAvailable,
                         'minutes' => $exception->minutesUntilAvailable,

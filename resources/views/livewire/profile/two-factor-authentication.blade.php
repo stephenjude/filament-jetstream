@@ -1,11 +1,11 @@
 <div>
     <x-filament::section :aside="$aside">
         <x-slot name="heading">
-            {{__('Two Factor Authentication')}}
+            {{__('filament-jetstream::default.two_factor_authentication.section.title')}}
         </x-slot>
 
         <x-slot name="description">
-            {{__('Add additional security to your account using two factor authentication.')}}
+            {{__('filament-jetstream::default.two_factor_authentication.section.description')}}
         </x-slot>
 
         <div class="">

@@ -31,11 +31,11 @@ class LogoutOtherBrowserSessions extends BaseLivewireComponent
                             ->viewData(['sessions' => self::browserSessions()]),
                         Actions::make([
                             Actions\Action::make('deleteBrowserSessions')
-                                ->label(__('filament-jetstream::default.browser_sessions.actions.log_out_other_browsers.label'))
+                                ->label(__('filament-jetstream::default.browser_sessions.action.log_out_other_browsers.label'))
                                 ->requiresConfirmation()
-                                ->modalHeading(__('filament-jetstream::default.browser_sessions.actions.log_out_other_browsers.title'))
-                                ->modalDescription(__('filament-jetstream::default.browser_sessions.actions.log_out_other_browsers.description'))
-                                ->modalSubmitActionLabel(__('filament-jetstream::default.browser_sessions.actions.log_out_other_browsers.label'))
+                                ->modalHeading(__('filament-jetstream::default.browser_sessions.action.log_out_other_browsers.title'))
+                                ->modalDescription(__('filament-jetstream::default.browser_sessions.action.log_out_other_browsers.description'))
+                                ->modalSubmitActionLabel(__('filament-jetstream::default.browser_sessions.action.log_out_other_browsers.label'))
                                 ->modalCancelAction(false)
                                 ->form([
                                     Forms\Components\TextInput::make('password')
@@ -78,7 +78,7 @@ class LogoutOtherBrowserSessions extends BaseLivewireComponent
 
         Notification::make()
             ->success()
-            ->title(__('filament-jetstream::default.browser_sessions.notifications.success.message'))
+            ->title(__('filament-jetstream::default.browser_sessions.notification.success.message'))
             ->send();
     }
 

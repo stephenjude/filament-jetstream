@@ -43,7 +43,7 @@ class UpdateTeamName extends BaseLivewireComponent
                             ->required(),
                         Actions::make([
                             Actions\Action::make('save')
-                                ->label(__('filament-jetstream::default.actions.save.label'))
+                                ->label(__('filament-jetstream::default.action.save.label'))
                                 ->submit('updateTeamName'),
                         ])->alignEnd(),
                     ]),

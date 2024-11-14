@@ -52,7 +52,7 @@ class CreateApiToken extends BaseLivewireComponent
 
                         Actions::make([
                             Actions\Action::make('save')
-                                ->label(__('filament-jetstream::default.actions.create_token.label'))
+                                ->label(__('filament-jetstream::default.action.create_token.label'))
                                 ->submit('createToken'),
                         ]),
                     ]),
@@ -77,7 +77,7 @@ class CreateApiToken extends BaseLivewireComponent
         if (empty($permissions)) {
             Notification::make()
                 ->danger()
-                ->body(__('filament-jetstream::default.notifications.create_token.error.message'))
+                ->body(__('filament-jetstream::default.notification.create_token.error.message'))
                 ->send();
 
             return;
@@ -93,10 +93,10 @@ class CreateApiToken extends BaseLivewireComponent
         Notification::make('showApiToken')
             ->success()
             ->body(new HtmlString("API Token: <span>{$plainTextToken}</span>"))
-            ->title(__('filament-jetstream::default.notifications.create_token.success.message'))
+            ->title(__('filament-jetstream::default.notification.create_token.success.message'))
             ->actions([
                 Action::make('copy')
-                    ->label(__('filament-jetstream::default.actions.copy_token.label'))
+                    ->label(__('filament-jetstream::default.action.copy_token.label'))
                     ->icon('heroicon-o-square-2-stack')
                     ->alpineClickHandler('(window.navigator.clipboard.writeText("' . $plainTextToken . '"))')
                     ->dispatch('token-copied', ['token' => $plainTextToken]),
@@ -117,7 +117,7 @@ class CreateApiToken extends BaseLivewireComponent
     {
         Notification::make()
             ->success()
-            ->body(__('filament-jetstream::default.notifications.copy_token.success.message'))
+            ->body(__('filament-jetstream::default.notification.copy_token.success.message'))
             ->icon('heroicon-o-square-2-stack')
             ->send();
 

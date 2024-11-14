@@ -24,7 +24,7 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
             ->paginated(false)
             ->actions([
                 Tables\Actions\Action::make('cancelTeamInvitation')
-                    ->label(__('filament-jetstream::default.actions.cancel_team_invitation.label'))
+                    ->label(__('filament-jetstream::default.action.cancel_team_invitation.label'))
                     ->color('danger')
                     ->requiresConfirmation()
                     ->action(fn ($record) => $this->cancelTeamInvitation($record)),

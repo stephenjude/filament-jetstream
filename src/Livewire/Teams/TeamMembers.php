@@ -42,8 +42,8 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                     ->visible(fn ($record): bool => Gate::check('updateTeamMember', Filament::getTenant()))
                     ->label(fn ($record): string => Role::find($record->role)->name)
                     ->modalWidth('lg')
-                    ->modalHeading(__('filament-jetstream::default.actions.update_team_role.title'))
-                    ->modalSubmitActionLabel(__('filament-jetstream::default.actions.save.label'))
+                    ->modalHeading(__('filament-jetstream::default.action.update_team_role.title'))
+                    ->modalSubmitActionLabel(__('filament-jetstream::default.action.save.label'))
                     ->modalCancelAction(false)
                     ->modalFooterActionsAlignment(Alignment::End)
                     ->form([
@@ -66,7 +66,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                     ->action(fn ($record, array $data) => $this->updateTeamRole($record, $data)),
                 Tables\Actions\Action::make('removeTeamMember')
                     ->visible(fn ($record): bool => $this->authUser()->id !== $record->id && Gate::check('removeTeamMember', Filament::getTenant()))
-                    ->label(__('filament-jetstream::default.actions.remove_team_member.label'))
+                    ->label(__('filament-jetstream::default.action.remove_team_member.label'))
                     ->color('danger')
                     ->requiresConfirmation()
                     ->action(fn ($record) => $this->removeTeamMember($record)),
@@ -74,8 +74,8 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                     ->visible(fn ($record): bool => $this->authUser()->id === $record->id)
                     ->icon('heroicon-o-arrow-right-start-on-rectangle')
                     ->color('danger')
-                    ->label(__('filament-jetstream::default.actions.leave_team.label'))
-                    ->modalDescription(__('filament-jetstream::default.actions.leave_team.notice'))
+                    ->label(__('filament-jetstream::default.action.leave_team.label'))
+                    ->modalDescription(__('filament-jetstream::default.action.leave_team.notice'))
                     ->requiresConfirmation()
                     ->action(fn ($record) => $this->leaveTeam()),
             ]);
@@ -87,7 +87,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
         $team = Filament::getTenant();
 
         if (! Gate::check('updateTeamMember', $team)) {
-            $this->sendNotification(__('You do not have permission to update this team member.'), type: 'danger');
+            $this->sendNotification(__('filament-jetstream::default.notification.permission_denied.cannot_update_team_member'), type: 'danger');
 
             return;
         }
@@ -107,20 +107,20 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
         $team = Filament::getTenant();
 
         if ($teamMember->id === $team->owner->id) {
-            $this->sendNotification(__('You may not leave a team that you created.'), type: 'danger');
+            $this->sendNotification(__('filament-jetstream::default.notification.permission_denied.cannot_leave_team'), type: 'danger');
 
             return;
         }
 
         if (! Gate::check('removeTeamMember', $team)) {
-            $this->sendNotification(__('You do not have permission to remove this team member.'), type: 'danger');
+            $this->sendNotification(__('filament-jetstream::default.notification.permission_denied.cannot_remove_team_member'), type: 'danger');
 
             return;
         }
 
         $team->removeUser($teamMember);
 
-        $this->sendNotification(__('You have removed this team member.'));
+        $this->sendNotification(__('filament-jetstream::default.notification.team_member_removed.success'));
 
         Filament::getTenant()->fresh();
     }
@@ -133,14 +133,14 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
         $team = Filament::getTenant();
 
         if ($teamMember->id === $team->owner->id) {
-            $this->sendNotification(__('You may not leave a team that you created.'), type: 'danger');
+            $this->sendNotification(__('filament-jetstream::default.notification.permission_denied.cannot_leave_team'), type: 'danger');
 
             return;
         }
 
         $team->removeUser($teamMember);
 
-        $this->sendNotification(__('You have left the team.'));
+        $this->sendNotification(__('filament-jetstream::default.notification.leave_team.success'));
 
         $this->redirect(Filament::getHomeUrl());
     }

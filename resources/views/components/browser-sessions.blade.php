@@ -21,8 +21,8 @@
 
                     <div class="ms-3">
                         <div class="text-sm">
-                            {{ $session->agent->platform() ?: __('Unknown') }}
-                            - {{ $session->agent->browser() ?: __('Unknown') }}
+                            {{ $session->agent->platform() ?: __('filament-jetstream::default.browser_sessions.section.labels.unknown_device') }}
+                            - {{ $session->agent->browser() ?: __('filament-jetstream::default.browser_sessions.section.labels.unknown_device') }}
                         </div>
 
                         <div>

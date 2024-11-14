@@ -52,7 +52,7 @@ class UpdateProfileInformation extends BaseLivewireComponent
                             ->unique(get_class(Filament::auth()->user()), ignorable: $this->authUser()),
                         Actions::make([
                             Actions\Action::make('save')
-                                ->label(__('filament-jetstream::default.actions.save.label'))
+                                ->label(__('filament-jetstream::default.action.save.label'))
                                 ->submit('updateProfile'),
                         ]),
                     ]),

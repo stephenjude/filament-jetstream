@@ -58,7 +58,7 @@ class TwoFactorAuthentication extends BaseLivewireComponent
     public function confirmSetupAction(): Action
     {
         return Action::make('confirmSetup')
-            ->label(__('Confirm'))
+            ->label(__('filament-jetstream::default.action.confirm.label'))
             ->visible(fn () => $this->isConfirmingSetup)
             ->submit('confirmSetup');
     }
@@ -66,7 +66,7 @@ class TwoFactorAuthentication extends BaseLivewireComponent
     public function cancelSetupAction(): Action
     {
         return Action::make('cancelSetup')
-            ->label(__('Cancel'))
+            ->label(__('filament-jetstream::default.action.cancel.label'))
             ->outlined()
             ->visible(fn () => $this->isConfirmingSetup)
             ->action(function () {
@@ -87,13 +87,13 @@ class TwoFactorAuthentication extends BaseLivewireComponent
     protected function enableTwoFactorAuthenticationAction(): Action
     {
         return Action::make('enableTwoFactorAuthentication')
-            ->label(__('Enable'))
+            ->label(__('filament-jetstream::default.action.enable.label'))
             ->visible(fn () => ! $this->authUser()->hasEnabledTwoFactorAuthentication())
             ->modalWidth('md')
-            ->modalSubmitActionLabel(__('Confirm'))
+            ->modalSubmitActionLabel(__('filament-jetstream::default.action.confirm.label'))
             ->form([
                 TextInput::make('confirmPassword')
-                    ->label(__('Confirm Password'))
+                    ->label(__('filament-jetstream::default.form.confirm_password.label'))
                     ->password()
                     ->revealable(filament()->arePasswordsRevealable())
                     ->required()
@@ -102,7 +102,7 @@ class TwoFactorAuthentication extends BaseLivewireComponent
                     ->rules([
                         fn () => function (string $attribute, $value, $fail) {
                             if (! Hash::check($value, $this->authUser()->password)) {
-                                $fail('The provided password was incorrect.');
+                                $fail(__('filament-jetstream::default.form.password.error_message'));
                             }
                         },
                     ]),
@@ -132,7 +132,7 @@ class TwoFactorAuthentication extends BaseLivewireComponent
                         ['setup_key' => decrypt($this->authUser()->two_factor_secret)]
                     )),
                 TextInput::make('code')
-                    ->label(__('Code'))
+                    ->label(__('filament-jetstream::default.form.code.label'))
                     ->required(),
             ])
             ->statePath('data');
@@ -141,14 +141,14 @@ class TwoFactorAuthentication extends BaseLivewireComponent
     protected function disableTwoFactorAuthenticationAction(): Action
     {
         return Action::make('disableTwoFactorAuthentication')
-            ->label(__('Disable'))
+            ->label(__('filament-jetstream::default.action.disable.label'))
             ->color('danger')
             ->visible(fn () => $this->authUser()->hasEnabledTwoFactorAuthentication())
             ->modalWidth('md')
-            ->modalSubmitActionLabel(__('Confirm'))
+            ->modalSubmitActionLabel(__('filament-jetstream::default.action.confirm.label'))
             ->form([
                 TextInput::make('currentPassword')
-                    ->label(__('Current Password'))
+                    ->label(__('filament-jetstream::default.form.current_password.label'))
                     ->password()
                     ->revealable(filament()->arePasswordsRevealable())
                     ->required()
@@ -156,7 +156,7 @@ class TwoFactorAuthentication extends BaseLivewireComponent
                     ->rules([
                         fn () => function (string $attribute, $value, $fail) {
                             if (! Hash::check($value, $this->authUser()->password)) {
-                                $fail('The provided password was incorrect.');
+                                $fail(__('filament-jetstream::default.form.password.error_message'));
                             }
                         },
                     ]),
@@ -167,7 +167,7 @@ class TwoFactorAuthentication extends BaseLivewireComponent
     protected function generateNewRecoveryCodesAction(): Action
     {
         return Action::make('generateNewRecoveryCodes')
-            ->label(__('Regenerate Recovery Codes'))
+            ->label(__('filament-jetstream::default.two_factor_authentication.label.generate_recovery_codes'))
             ->outlined()
             ->visible(fn () => $this->authUser()->hasEnabledTwoFactorAuthentication())
             ->requiresConfirmation()

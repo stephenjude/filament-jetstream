@@ -29,12 +29,12 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
             ->paginated(false)
             ->actions([
                 Tables\Actions\Action::make('updateToken')
-                    ->label(__('filament-jetstream::default.actions.update_token.label'))
-                    ->modalHeading(__('filament-jetstream::default.actions.update_token.title'))
+                    ->label(__('filament-jetstream::default.action.update_token.label'))
+                    ->modalHeading(__('filament-jetstream::default.action.update_token.title'))
                     ->modalWidth('lg')
                     ->modalCancelAction(false)
                     ->modalFooterActionsAlignment(Alignment::End)
-                    ->modalSubmitActionLabel(__('filament-jetstream::default.actions.update_token.modal.label'))
+                    ->modalSubmitActionLabel(__('filament-jetstream::default.action.update_token.modal.label'))
                     ->form(fn (PersonalAccessToken $record, Form $form) => $form->schema(fn () => collect(Jetstream::plugin()->getApiTokenPermissions())
                         ->map(fn ($permission) => Checkbox::make($permission)->label(__($permission))->default($record->can($permission)))
                         ->toArray())
@@ -42,9 +42,9 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
                     ->action(fn ($record, array $data) => $this->updateToken($record, $data)),
                 Tables\Actions\Action::make('deleteToken')
                     ->color('danger')
-                    ->label(__('filament-jetstream::default.actions.delete_token.label'))
-                    ->modalHeading(__('filament-jetstream::default.actions.delete_token.title'))
-                    ->modalDescription(__('filament-jetstream::default.actions.delete_token.description'))
+                    ->label(__('filament-jetstream::default.action.delete_token.label'))
+                    ->modalHeading(__('filament-jetstream::default.action.delete_token.title'))
+                    ->modalDescription(__('filament-jetstream::default.action.delete_token.description'))
                     ->action(fn ($record) => $this->deleteToken($record)),
             ]);
     }
@@ -62,7 +62,7 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
     {
         $record->delete();
 
-        $this->sendNotification(__('Token deleted!'));
+        $this->sendNotification(__('filament-jetstream::default.notification.token_deleted.success'));
     }
 
     public function render()

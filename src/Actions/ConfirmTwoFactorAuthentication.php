@@ -31,7 +31,7 @@ class ConfirmTwoFactorAuthentication
             empty($code) ||
             ! $this->provider->verify(decrypt($user->two_factor_secret), $code)) {
             throw ValidationException::withMessages([
-                'data.code' => __('The provided two factor authentication code was invalid.'),
+                'data.code' => __('filament-jetstream::default.form.code.label'),
             ]);
         }
 

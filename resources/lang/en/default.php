@@ -16,7 +16,21 @@ return [
         ],
 
         'password' => [
+
             'label' => 'Password',
+
+            'error_message' => 'The provided password was incorrect.',
+
+        ],
+
+        'code' => [
+
+            'label' => 'Code',
+
+            'hint' => 'Please confirm access to your account by entering the authentication code provided by your authenticator application.',
+
+            'error_message' => 'The provided two factor authentication code was invalid.',
+
         ],
 
         'profile_photo' => [
@@ -31,8 +45,16 @@ return [
             'label' => 'New Password',
         ],
 
-        'new_password_confirmation' => [
+        'confirm_password' => [
             'label' => 'Confirm Password',
+        ],
+
+        'recovery_code' => [
+
+            'label' => 'Recovery Code',
+
+            'hint' => 'Please confirm access to your account by entering one of your emergency recovery codes.',
+
         ],
 
         'token_name' => [
@@ -46,6 +68,11 @@ return [
         'team_name' => [
             'label' => 'Team Name',
         ],
+
+        'or' => [
+            'label' => 'Or ',
+        ],
+
     ],
 
     'table' => [
@@ -102,12 +129,114 @@ return [
 
         ],
 
+        'token_deleted' => [
+
+            'success' => [
+                'message' => 'Token deleted!',
+            ],
+
+        ],
+
+        'team_deleted' => [
+
+            'success' => [
+                'message' => 'Team deleted!',
+            ],
+
+        ],
+
+        'team_member_removed' => [
+
+            'success' => [
+                'message' => 'You have removed this team member.',
+            ],
+
+        ],
+
+        'leave_team' => [
+
+            'success' => [
+                'message' => 'You have left the team.',
+            ],
+
+        ],
+
+        'accepted_invitation' => [
+
+            'success' => [
+
+                'title' => 'Team Invitation Accepted',
+
+                'message' => 'Great! You have accepted the invitation to join the :team team.',
+
+            ],
+        ],
+
+        'rate_limited' => [
+
+            'title' => 'Too many requests',
+
+            'message' => 'Please try again in :seconds seconds',
+
+        ],
+
+        'permission_denied' => [
+
+            'cannot_update_team_member' => 'You do not have permission to update this team member.',
+
+            'cannot_leave_team' => 'You may not leave a team that you created.',
+
+            'cannot_remove_team_member' => 'You do not have permission to remove this team member.',
+
+            'cannot_delete_team' => 'You do not have permission to delete this team.',
+
+        ],
     ],
 
-    'actions' => [
+    'menu_item' => [
+
+        'api_tokens' => [
+            'label' => 'API Tokens',
+        ],
+
+    ],
+
+    'action' => [
 
         'save' => [
             'label' => 'Save',
+        ],
+
+        'confirm' => [
+            'label' => 'Confirm',
+        ],
+
+        'cancel' => [
+            'label' => 'Cancel',
+        ],
+
+        'disable' => [
+            'label' => 'Disable',
+        ],
+
+        'enable' => [
+            'label' => 'Enable',
+        ],
+
+        'two_factor_authentication' => [
+
+            'label' => [
+
+                'regenerate_recovery_codes' => 'Regenerate Recovery Codes',
+
+                'use_recovery_code' => 'use a recovery code',
+
+                'use_authentication_code' => 'use an authentication code',
+
+                'logout' => 'Logout',
+
+            ],
+
         ],
 
         'update_token' => [
@@ -157,7 +286,18 @@ return [
         ],
 
         'add_team_member' => [
+
             'label' => 'Add',
+
+            'error_message' => [
+
+                'email_already_joined' => 'This user already belongs to the team.',
+
+                'email_not_found' => 'We were unable to find a registered user with this email address.',
+
+                'email_already_invited' => 'This user has already been invited to the team.',
+
+            ],
         ],
 
         'update_team_role' => [
@@ -183,6 +323,55 @@ return [
         ],
     ],
 
+    'mails' => [
+
+        'team_invitation' => [
+
+            'subject' => 'Team Invitation',
+
+            'message' => [
+
+                'invitation' => 'You have been invited to join the :team team!',
+
+                'requirement' => 'If you do not have an account, you may create one by clicking the button below. After creating an account, you may click the invitation acceptance button in this email to accept the team invitation:',
+
+                'instruction' => 'If you already have an account, you may accept this invitation by clicking the button below:',
+
+                'notice' => 'If you did not expect to receive an invitation to this team, you may discard this email.',
+
+            ],
+
+            'label' => [
+
+                'create_account' => 'Create Account',
+
+                'accept_invitation' => 'Accept Invitation',
+
+            ],
+
+        ],
+
+    ],
+
+    'page' => [
+
+        'create_team' => [
+
+            'title' => 'Create Team',
+
+        ],
+
+        'edit_team' => [
+
+            'title' => 'Team Settings',
+
+        ],
+
+    ],
+
+    'profile_photo' => [
+    ],
+
     'update_profile_information' => [
 
         'section' => [
@@ -202,6 +391,18 @@ return [
             'title' => 'Update Password',
 
             'description' => 'Ensure your account is using a long, random password to stay secure.',
+
+        ],
+
+    ],
+
+    'two_factor_authentication' => [
+
+        'section' => [
+
+            'title' => 'Two Factor Authentication',
+
+            'description' => 'Add additional security to your account using two factor authentication.',
 
         ],
 
@@ -261,6 +462,8 @@ return [
 
                 'last_active' => 'Last active',
 
+                'unknown_device' => 'Unknown',
+
             ],
 
         ],
@@ -284,6 +487,16 @@ return [
             'success' => [
                 'message' => 'All other browser sessions have been logged out successfully.',
             ],
+
+        ],
+
+    ],
+
+    'create_team' => [
+
+        'section' => [
+
+            'title' => 'Create Team',
 
         ],
 

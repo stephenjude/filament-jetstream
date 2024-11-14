@@ -37,8 +37,8 @@ abstract class BaseLivewireComponent extends Component implements HasActions, Ha
     protected function sendRateLimitedNotification(TooManyRequestsException $exception): void
     {
         Notification::make()
-            ->title(__('Too many requests'))
-            ->body(__('Please try again in :seconds seconds', ['seconds' => $exception->secondsUntilAvailable]))
+            ->title(__('filament-jetstream::default.notification.rate_limited.title'))
+            ->body(__('filament-jetstream::default.notification.rate_limited.message', ['seconds' => $exception->secondsUntilAvailable]))
             ->danger()
             ->send();
     }

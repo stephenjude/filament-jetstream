@@ -1,6 +1,6 @@
 <x-filament-panels::page.simple>
     <x-slot name="subheading">
-        {{__('Or ')}}
+        {{ __('filament-jetstream::default.two_factor_authentication.or.label') }}
         {{ $this->challengeAction }}
     </x-slot>
 

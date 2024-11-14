@@ -60,7 +60,7 @@ class UpdatePassword extends BaseLivewireComponent
                             ->live(debounce: 500)
                             ->same('passwordConfirmation'),
                         TextInput::make('passwordConfirmation')
-                            ->label(__('filament-jetstream::default.form.new_password_confirmation.label'))
+                            ->label(__('filament-jetstream::default.form.confirm_password.label'))
                             ->password()
                             ->revealable(filament()->arePasswordsRevealable())
                             ->required()
@@ -68,7 +68,7 @@ class UpdatePassword extends BaseLivewireComponent
                             ->dehydrated(false),
                         Actions::make([
                             Actions\Action::make('save')
-                                ->label(__('filament-jetstream::default.actions.save.label'))
+                                ->label(__('filament-jetstream::default.action.save.label'))
                                 ->submit('updatePassword'),
                         ]),
                     ]),

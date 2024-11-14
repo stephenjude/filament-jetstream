@@ -52,7 +52,7 @@ class Recovery extends BaseSimplePage
     {
         return Action::make('two_factor_challenge_login')
             ->link()
-            ->label(__('use an authentication code'))
+            ->label(__('filament-jetstream::default.action.two_factor_authentication.use_authentication_code'))
             ->url(filament()->getCurrentPanel()->route('two-factor.challenge'));
     }
 
@@ -61,8 +61,8 @@ class Recovery extends BaseSimplePage
         return $form->schema([
             TextInput::make('recovery_code')
                 ->hiddenLabel()
-                ->hint(__('Please confirm access to your account by entering one of your emergency recovery codes.'))
-                ->label(__('Recovery Code'))
+                ->hint(__('filament-jetstream::default.form.recovery_code.hint'))
+                ->label(__('filament-jetstream::default.form.recovery_code.label'))
                 ->required()
                 ->autocomplete()
                 ->autofocus()->rules([
@@ -70,7 +70,7 @@ class Recovery extends BaseSimplePage
                         $model = Filament::auth()->getProvider()->getModel();
 
                         if (! $user = $model::find(session('login.id'))) {
-                            $fail(__('The provided two factor recovery code was invalid.'));
+                            $fail(__('filament-jetstream::default.form.code.error_message'));
 
                             redirect()->to(filament()->getCurrentPanel()->getLoginUrl());
 
@@ -82,19 +82,19 @@ class Recovery extends BaseSimplePage
                         );
 
                         if (! $validCode) {
-                            $fail(__('The provided two factor recovery code was invalid.'));
+                            $fail(__('filament-jetstream::default.form.code.error_message'));
                         }
                     },
                 ]),
             Actions::make([
                 Actions\Action::make('authenticate')
-                    ->label(__('filament-panels::pages/auth/login.form.actions.authenticate.label'))
+                    ->label(__('filament-panels::pages/auth/login.form.action.authenticate.label'))
                     ->submit('authenticate'),
             ])->fullWidth(),
             Actions::make([
                 Actions\Action::make('logout')
                     ->link()
-                    ->label(__('Logout'))
+                    ->label(__('filament-jetstream::default.action.two_factor_authentication.logout.label'))
                     ->action(function () {
                         Filament::auth()->logout();
 

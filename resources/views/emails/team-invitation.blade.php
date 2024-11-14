@@ -1,23 +1,23 @@
 @component('mail::message')
-{{ __('You have been invited to join the :team team!', ['team' => $invitation->team->name]) }}
+{{ __('filament-jetstream::default.mails.team_invitation.message.invitation', ['team' => $invitation->team->name]) }}
 
-@if (\Filament\Facades\Filament::hasRegistration())
-{{ __('If you do not have an account, you may create one by clicking the button below. After creating an account, you may click the invitation acceptance button in this email to accept the team invitation:') }}
+@if (filament()->hasRegistration())
+{{ __('filament-jetstream::default.mails.team_invitation.message.requirement') }}
 
-@component('mail::button', ['url' => \Filament\Facades\Filament::getRegistrationUrl()])
-{{ __('Create Account') }}
+@component('mail::button', ['url' => filament()->getRegistrationUrl()])
+{{ __('filament-jetstream::default.mails.team_invitation.label.create_account') }}
 @endcomponent
 
-{{ __('If you already have an account, you may accept this invitation by clicking the button below:') }}
+{{ __('filament-jetstream::default.mails.team_invitation.message.requirement') }}
 
 @else
-{{ __('You may accept this invitation by clicking the button below:') }}
+{{ __('filament-jetstream::default.mails.team_invitation.message.instruction') }}
 @endif
 
 
 @component('mail::button', ['url' => $acceptUrl])
-{{ __('Accept Invitation') }}
+{{ __('filament-jetstream::default.mails.team_invitation.label.accept_invitation') }}
 @endcomponent
 
-{{ __('If you did not expect to receive an invitation to this team, you may discard this email.') }}
+{{ __('filament-jetstream::default.mails.team_invitation.message.notice') }}
 @endcomponent

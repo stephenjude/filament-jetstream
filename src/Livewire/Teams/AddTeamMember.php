@@ -48,12 +48,12 @@ class AddTeamMember extends BaseLivewireComponent
                                 return $rule->where('team_id', Filament::getTenant()->id);
                             })
                             ->validationMessages([
-                                'unique' => __('This user has already been invited to the team.'),
+                                'unique' => __('filament-jetstream::default.action.add_team_member.error_message.email_already_invited'),
                             ])
                             ->rules([
                                 fn (): \Closure => function (string $attribute, $value, \Closure $fail) {
                                     if (Filament::getTenant()->hasUserWithEmail($value)) {
-                                        $fail(__('This user already belongs to the team.'));
+                                        $fail(__('filament-jetstream::default.action.add_team_member.error_message.email_already_invited'));
                                     }
                                 },
                             ]),
@@ -73,7 +73,7 @@ class AddTeamMember extends BaseLivewireComponent
                             }),
                         Actions::make([
                             Actions\Action::make('addTeamMember')
-                                ->label(__('filament-jetstream::default.actions.add_team_member.label'))
+                                ->label(__('filament-jetstream::default.action.add_team_member.label'))
                                 ->submit('addTeamMember'),
                         ])->alignEnd(),
                     ]),
