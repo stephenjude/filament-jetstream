@@ -4,9 +4,7 @@ namespace Filament\Jetstream\Concerns;
 
 use Closure;
 use Filament\Jetstream\Pages\Auth\Challenge;
-use Filament\Jetstream\Pages\Auth\Policy;
 use Filament\Jetstream\Pages\Auth\Recovery;
-use Filament\Jetstream\Pages\Auth\Terms;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules\Password;
 

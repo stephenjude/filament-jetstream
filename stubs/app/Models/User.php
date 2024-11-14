@@ -13,9 +13,9 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements FilamentUser //, \Filament\Models\Contracts\HasTenants
 {
-    use Notifiable;
     use HasFactory;
     use HasProfilePhoto;
+    use Notifiable;
     use TwoFactorAuthenticatable;
     // use \Laravel\Sanctum\HasApiTokens;
     // use \Filament\Jetstream\HasTeams;
