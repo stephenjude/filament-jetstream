@@ -100,7 +100,7 @@ class AppPanelProvider extends PanelProvider
                 ->tenantProfile(EditTeam::class)
                 ->userMenuItems([
                     MenuItem::make()
-                        ->label('Team Settings')
+                        ->label(__('Team Settings'))
                         ->icon('heroicon-o-cog-6-tooth')
                         ->url(fn () => $this->shouldRegisterMenuItem()
                             ? url(EditTeam::getUrl())
