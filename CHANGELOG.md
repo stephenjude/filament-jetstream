@@ -2,6 +2,10 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 0.0.14 - 2024-11-16
+
+- Use translatable label by @zvizvi in #23
+
 ## 0.0.13 - 2024-08-03
 
 - Fixed duplicate team creation during user registration
