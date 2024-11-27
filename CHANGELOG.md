@@ -2,6 +2,10 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 0.0.15 - 2024-11-27
+
+- Make Team Settings label translate reactive by @zvizvi in #24
+
 ## 0.0.14 - 2024-11-16
 
 - Use translatable label by @zvizvi in #23
