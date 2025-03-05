@@ -2,6 +2,20 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 0.0.16 - 2025-03-05
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 2.2.0 to 2.3.0 by @dependabot in https://github.com/stephenjude/filament-jetstream/pull/28
+* Bump aglipanci/laravel-pint-action from 2.4 to 2.5 by @dependabot in https://github.com/stephenjude/filament-jetstream/pull/29
+* Add support for Laravel 12. by @LucaPipolo in https://github.com/stephenjude/filament-jetstream/pull/30
+
+### New Contributors
+
+* @LucaPipolo made their first contribution in https://github.com/stephenjude/filament-jetstream/pull/30
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/0.0.15...0.0.16
+
 ## 0.0.15 - 2024-11-27
 
 - Make Team Settings label translate reactive by @zvizvi in #24
