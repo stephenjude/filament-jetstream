@@ -7,7 +7,6 @@ use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Jetstream\Actions\GenerateNewRecoveryCodes;
 use Filament\Jetstream\Actions\RecoveryCode;
 use Filament\Jetstream\Contracts\TwoFactorAuthenticationProvider;
 use Filament\Jetstream\Events\RecoveryCodesGenerated;
@@ -53,7 +52,7 @@ class TwoFactorAuthentication extends BaseLivewireComponent
                 Actions::make([
                     Actions\Action::make('enableTwoFactorAuthentication')
                         ->label(__('filament-jetstream::default.action.enable.label'))
-                        ->visible(fn () => !$this->isConfirmingSetup && ! $this->authUser()->hasEnabledTwoFactorAuthentication())
+                        ->visible(fn () => ! $this->isConfirmingSetup && ! $this->authUser()->hasEnabledTwoFactorAuthentication())
                         ->modalWidth('md')
                         ->modalSubmitActionLabel(__('filament-jetstream::default.action.confirm.label'))
                         ->form([
