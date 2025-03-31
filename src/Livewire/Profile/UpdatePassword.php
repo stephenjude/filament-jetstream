@@ -40,13 +40,7 @@ class UpdatePassword extends BaseLivewireComponent
                             ->revealable(filament()->arePasswordsRevealable())
                             ->required()
                             ->autocomplete('current-password')
-                            ->rules([
-                                fn () => function (string $attribute, $value, $fail) {
-                                    if (! Hash::check($value, $this->authUser()->password)) {
-                                        $fail('The provided password does not match your current password.');
-                                    }
-                                },
-                            ]),
+                            ->currentPassword(),
                         TextInput::make('password')
                             ->label(__('filament-jetstream::default.form.password.label'))
                             ->password()

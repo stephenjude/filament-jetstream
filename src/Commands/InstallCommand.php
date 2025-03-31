@@ -2,7 +2,6 @@
 
 namespace Filament\Jetstream\Commands;
 
-use Filament\Facades\Filament;
 use Illuminate\Console\Command;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
@@ -50,6 +49,11 @@ class InstallCommand extends Command
 
         // Teams...
         if ($this->option('teams')) {
+            $this->callSilent('vendor:publish', ['--tag' => 'jetstream-team-migrations', '--force' => true]);
+
+            // Factories...
+            copy(__DIR__ . '/../../database/factories/TeamFactory.php', base_path('database/factories/TeamFactory.php'));
+
             // Implement \Filament\Models\Contracts\HasTenants contract in User Model...
             $this->replaceInFile('//, \Filament\Models\Contracts\HasTenants', ', \Filament\Models\Contracts\HasTenants', app_path('Models/User.php'));
 
@@ -77,7 +81,7 @@ class InstallCommand extends Command
         $this->info('DONE: Jetstream installed successfully.');
 
         if ($this->option('api')) {
-            $this->comment('TODO: Run `php artisan install:api` to install Laravel Sanctum.');
+            $this->call('install:api', ['--without-migration-prompt' => true]);
         }
 
         return self::SUCCESS;

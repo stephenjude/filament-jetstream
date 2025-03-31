@@ -20,7 +20,6 @@ use Filament\Jetstream\Pages\ApiTokens;
 use Filament\Jetstream\Pages\Auth\Challenge;
 use Filament\Jetstream\Pages\Auth\Login;
 use Filament\Jetstream\Pages\Auth\Recovery;
-use Filament\Jetstream\Pages\Auth\Register;
 use Filament\Jetstream\Pages\EditProfile;
 use Filament\Jetstream\Pages\EditTeam;
 use Illuminate\Contracts\Cache\Repository;
@@ -45,9 +44,13 @@ class JetstreamServiceProvider extends PackageServiceProvider
         $package->name(static::$name)
             ->hasCommands($this->getCommands());
 
-        if (file_exists($package->basePath('/../database/migrations'))) {
-            $package->hasMigrations($this->getMigrations());
-        }
+        $this->publishes([
+            __DIR__ . '/../database/migrations/0001_01_01_000000_create_users_table.php' => database_path('migrations/0001_01_01_000000_create_users_table.php'),
+        ], 'filament-jetstream-migrations');
+
+        $this->publishes([
+            __DIR__ . '/../database/migrations/0001_01_01_000000_create_users_table.php' => database_path('migrations/0001_01_01_000000_create_users_table.php'),
+        ], 'filament-jetstream-team-migrations');
 
         if (file_exists($package->basePath('/../resources/lang'))) {
             $package->hasTranslations();
@@ -87,8 +90,8 @@ class JetstreamServiceProvider extends PackageServiceProvider
     protected function getMigrations(): array
     {
         return [
-            'create_user_tables',
-            'create_team_tables',
+            '0001_01_01_000000_create_users_table.php',
+            '0001_01_01_000000_create_teams_table.php',
         ];
     }
 

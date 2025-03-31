@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\User;
-use Filament\Jetstream\Features;
+use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -54,7 +54,7 @@ class UserFactory extends Factory
      */
     public function withPersonalTeam(?callable $callback = null): static
     {
-        if (! Features::hasTeamFeatures()) {
+        if (! Jetstream::plugin()->hasTeamsFeatures()) {
             return $this->state([]);
         }
 

@@ -27,17 +27,9 @@
                 <div class="mb-4">
                     {!! $this->authUser()->twoFactorQrCodeSvg() !!}
                 </div>
+            @endif
 
-                <form wire:submit="confirmSetup">
-                    <div class="mb-4">
-                        {{ $this->form }}
-                    </div>
-                    <div class="flex gap-2">
-                        {{$this->confirmSetup}}
-                        {{$this->cancelSetup}}
-                    </div>
-                </form>
-            @elseif($this->enableTwoFactorAuthentication->isVisible())
+            @if(!$this->isConfirmingSetup && !$this->authUser()->hasEnabledTwoFactorAuthentication())
                 <h2 class="text-xl font-medium mb-4">
                     You have not enabled two factor authentication.
                 </h2>
@@ -46,9 +38,9 @@
                     When two factor authentication is enabled, you will be prompted for a secure, random token during
                     authentication. You may retrieve this token from your phone's Google Authenticator application.
                 </p>
+            @endif
 
-                {{$this->enableTwoFactorAuthentication}}
-            @elseif($this->disableTwoFactorAuthentication->isVisible())
+            @if($this->authUser()->hasEnabledTwoFactorAuthentication())
                 <h2 class="text-xl font-medium mb-4">You have enabled two factor authentication.</h2>
 
                 <p class="text-sm mb-4">
@@ -61,15 +53,15 @@
                         <p class="text-sm font-medium mb-2">{{$code}}</p>
                     @endforeach
                 </div>
-
-                {{$this->generateNewRecoveryCodes}}
-
-                {{$this->disableTwoFactorAuthentication}}
             @endif
+
+            <form>
+                {{ $this->form }}
+            </form>
         </div>
     </x-filament::section>
 
-    <x-filament-actions::modals />
+    <x-filament-actions::modals/>
 
     {{-- Success is as dangerous as failure. --}}
 </div>

@@ -3,24 +3,27 @@
 namespace Filament\Jetstream\Livewire\Profile;
 
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
-use Filament\Actions\Action;
+use Filament\Forms\Components\Actions;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Jetstream\Actions\ConfirmTwoFactorAuthentication;
-use Filament\Jetstream\Actions\DisableTwoFactorAuthentication;
-use Filament\Jetstream\Actions\EnableTwoFactorAuthentication;
 use Filament\Jetstream\Actions\GenerateNewRecoveryCodes;
+use Filament\Jetstream\Actions\RecoveryCode;
+use Filament\Jetstream\Contracts\TwoFactorAuthenticationProvider;
+use Filament\Jetstream\Events\RecoveryCodesGenerated;
+use Filament\Jetstream\Events\TwoFactorAuthenticationConfirmed;
+use Filament\Jetstream\Events\TwoFactorAuthenticationDisabled;
+use Filament\Jetstream\Events\TwoFactorAuthenticationEnabled;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class TwoFactorAuthentication extends BaseLivewireComponent
 {
     public ?array $data = [];
 
     public bool $aside = true;
-
-    public ?string $redirectTo = null;
 
     public bool $isConfirmingSetup = false;
 
@@ -34,20 +37,102 @@ class TwoFactorAuthentication extends BaseLivewireComponent
         return view('filament-jetstream::livewire.profile.two-factor-authentication');
     }
 
-    public function confirmSetup(): void
+    public function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Placeholder::make('setup_key')
+                    ->visible(fn () => $this->isConfirmingSetup)
+                    ->label(fn () => __('Setup Key: :setup_key', [
+                        'setup_key' => decrypt($this->authUser()->two_factor_secret),
+                    ])),
+                TextInput::make('code')
+                    ->visible(fn () => $this->isConfirmingSetup)
+                    ->label(__('filament-jetstream::default.form.code.label'))
+                    ->required(),
+                Actions::make([
+                    Actions\Action::make('enableTwoFactorAuthentication')
+                        ->label(__('filament-jetstream::default.action.enable.label'))
+                        ->visible(fn () => !$this->isConfirmingSetup && ! $this->authUser()->hasEnabledTwoFactorAuthentication())
+                        ->modalWidth('md')
+                        ->modalSubmitActionLabel(__('filament-jetstream::default.action.confirm.label'))
+                        ->form([
+                            TextInput::make('confirmPassword')
+                                ->label(__('filament-jetstream::default.form.confirm_password.label'))
+                                ->password()
+                                ->revealable(filament()->arePasswordsRevealable())
+                                ->required()
+                                ->autofocus()
+                                ->autocomplete('confirm-password')
+                                ->rules([
+                                    fn () => function (string $attribute, $value, $fail) {
+                                        if (! Hash::check($value, $this->authUser()->password)) {
+                                            $fail(__('filament-jetstream::default.form.password.error_message'));
+                                        }
+                                    },
+                                ]),
+                        ])
+                        ->action(fn () => $this->enableTwoFactorAuthentication()),
+                    Actions\Action::make('confirmSetup')
+                        ->label(__('filament-jetstream::default.action.confirm.label'))
+                        ->visible(fn () => $this->isConfirmingSetup)
+                        ->submit('confirmTwoFactorAuthenticationSetup'),
+                    Actions\Action::make('cancelSetup')
+                        ->label(__('filament-jetstream::default.action.cancel.label'))
+                        ->outlined()
+                        ->visible(fn () => $this->isConfirmingSetup)
+                        ->action(fn () => $this->disableTwoFactorAuthentication()),
+                    Actions\Action::make('generateNewRecoveryCodes')
+                        ->label(__('filament-jetstream::default.action.two_factor_authentication.label.regenerate_recovery_codes'))
+                        ->outlined()
+                        ->visible(fn () => $this->authUser()->hasEnabledTwoFactorAuthentication())
+                        ->requiresConfirmation()
+                        ->action(fn () => $this->regenerateNewRecoveryCodes()),
+                    Actions\Action::make('disableTwoFactorAuthentication')
+                        ->label(__('filament-jetstream::default.action.disable.label'))
+                        ->color('danger')
+                        ->visible(fn () => $this->authUser()->hasEnabledTwoFactorAuthentication())
+                        ->modalWidth('md')
+                        ->modalSubmitActionLabel(__('filament-jetstream::default.action.confirm.label'))
+                        ->form([
+                            TextInput::make('currentPassword')
+                                ->label(__('filament-jetstream::default.form.current_password.label'))
+                                ->password()
+                                ->revealable(filament()->arePasswordsRevealable())
+                                ->required()
+                                ->autocomplete('current-password')
+                                ->currentPassword(),
+                        ])
+                        ->action(fn () => $this->disableTwoFactorAuthentication()),
+                ]),
+            ])
+            ->statePath('data');
+    }
+
+    public function confirmTwoFactorAuthenticationSetup(): void
     {
         try {
             $this->rateLimit(5);
 
             $data = $this->form->getState();
 
-            app(ConfirmTwoFactorAuthentication::class)($this->authUser(), $data['code']);
+            $provider = app(TwoFactorAuthenticationProvider::class);
+
+            $code = $data['code'];
+
+            if (empty($user->two_factor_secret) ||
+                empty($code) ||
+                ! $provider->verify(decrypt($user->two_factor_secret), $code)) {
+                throw ValidationException::withMessages([
+                    'data.code' => __('filament-jetstream::default.form.code.error_message'),
+                ]);
+            }
+
+            $user->forceFill(['two_factor_confirmed_at' => now()])->save();
+
+            TwoFactorAuthenticationConfirmed::dispatch($user);
 
             $this->isConfirmingSetup = false;
-
-            if ($this->redirectTo) {
-                redirect()->to($this->redirectTo);
-            }
         } catch (TooManyRequestsException $exception) {
             $this->sendRateLimitedNotification($exception);
 
@@ -55,122 +140,59 @@ class TwoFactorAuthentication extends BaseLivewireComponent
         }
     }
 
-    public function confirmSetupAction(): Action
+    protected function enableTwoFactorAuthentication(): void
     {
-        return Action::make('confirmSetup')
-            ->label(__('filament-jetstream::default.action.confirm.label'))
-            ->visible(fn () => $this->isConfirmingSetup)
-            ->submit('confirmSetup');
+        try {
+            $this->rateLimit(5);
+
+            $user = $this->authUser();
+
+            if (! $user->two_factor_secret) {
+                $provider = app(TwoFactorAuthenticationProvider::class);
+
+                $user->forceFill([
+                    'two_factor_secret' => encrypt($provider->generateSecretKey()),
+                    'two_factor_recovery_codes' => encrypt(
+                        json_encode(Collection::times(8, fn () => RecoveryCode::generate())->all())
+                    ),
+                ])->save();
+
+                TwoFactorAuthenticationEnabled::dispatch($user);
+            }
+
+            $this->isConfirmingSetup = true;
+        } catch (TooManyRequestsException $exception) {
+            $this->sendRateLimitedNotification($exception);
+
+            return;
+        }
     }
 
-    public function cancelSetupAction(): Action
+    protected function disableTwoFactorAuthentication(): void
     {
-        return Action::make('cancelSetup')
-            ->label(__('filament-jetstream::default.action.cancel.label'))
-            ->outlined()
-            ->visible(fn () => $this->isConfirmingSetup)
-            ->action(function () {
-                try {
-                    $this->rateLimit(5);
+        $user = $this->authUser();
 
-                    app(DisableTwoFactorAuthentication::class)($this->authUser());
+        if (! is_null($user->two_factor_secret) ||
+            ! is_null($user->two_factor_recovery_codes) ||
+            ! is_null($user->two_factor_confirmed_at)) {
+            $user->forceFill([
+                'two_factor_secret' => null,
+                'two_factor_recovery_codes' => null,
+                'two_factor_confirmed_at' => null,
+            ])->save();
 
-                    $this->isConfirmingSetup = false;
-                } catch (TooManyRequestsException $exception) {
-                    $this->sendRateLimitedNotification($exception);
-
-                    return;
-                }
-            });
+            TwoFactorAuthenticationDisabled::dispatch($user);
+        }
     }
 
-    protected function enableTwoFactorAuthenticationAction(): Action
+    protected function regenerateNewRecoveryCodes(): void
     {
-        return Action::make('enableTwoFactorAuthentication')
-            ->label(__('filament-jetstream::default.action.enable.label'))
-            ->visible(fn () => ! $this->authUser()->hasEnabledTwoFactorAuthentication())
-            ->modalWidth('md')
-            ->modalSubmitActionLabel(__('filament-jetstream::default.action.confirm.label'))
-            ->form([
-                TextInput::make('confirmPassword')
-                    ->label(__('filament-jetstream::default.form.confirm_password.label'))
-                    ->password()
-                    ->revealable(filament()->arePasswordsRevealable())
-                    ->required()
-                    ->autofocus()
-                    ->autocomplete('confirm-password')
-                    ->rules([
-                        fn () => function (string $attribute, $value, $fail) {
-                            if (! Hash::check($value, $this->authUser()->password)) {
-                                $fail(__('filament-jetstream::default.form.password.error_message'));
-                            }
-                        },
-                    ]),
-            ])
-            ->action(function () {
-                try {
-                    $this->rateLimit(5);
+        $user = $this->authUser();
 
-                    app(EnableTwoFactorAuthentication::class)($this->authUser());
+        $user->forceFill([
+            'two_factor_recovery_codes' => encrypt(json_encode(Collection::times(8, fn () => RecoveryCode::generate())->all())),
+        ])->save();
 
-                    $this->isConfirmingSetup = true;
-                } catch (TooManyRequestsException $exception) {
-                    $this->sendRateLimitedNotification($exception);
-
-                    return;
-                }
-            });
-    }
-
-    public function form(Form $form): Form
-    {
-        return $form
-            ->schema([
-                Placeholder::make('setup_key')
-                    ->label(fn () => __(
-                        'Setup Key: :setup_key',
-                        ['setup_key' => decrypt($this->authUser()->two_factor_secret)]
-                    )),
-                TextInput::make('code')
-                    ->label(__('filament-jetstream::default.form.code.label'))
-                    ->required(),
-            ])
-            ->statePath('data');
-    }
-
-    protected function disableTwoFactorAuthenticationAction(): Action
-    {
-        return Action::make('disableTwoFactorAuthentication')
-            ->label(__('filament-jetstream::default.action.disable.label'))
-            ->color('danger')
-            ->visible(fn () => $this->authUser()->hasEnabledTwoFactorAuthentication())
-            ->modalWidth('md')
-            ->modalSubmitActionLabel(__('filament-jetstream::default.action.confirm.label'))
-            ->form([
-                TextInput::make('currentPassword')
-                    ->label(__('filament-jetstream::default.form.current_password.label'))
-                    ->password()
-                    ->revealable(filament()->arePasswordsRevealable())
-                    ->required()
-                    ->autocomplete('current-password')
-                    ->rules([
-                        fn () => function (string $attribute, $value, $fail) {
-                            if (! Hash::check($value, $this->authUser()->password)) {
-                                $fail(__('filament-jetstream::default.form.password.error_message'));
-                            }
-                        },
-                    ]),
-            ])
-            ->action(fn () => app(DisableTwoFactorAuthentication::class)($this->authUser()));
-    }
-
-    protected function generateNewRecoveryCodesAction(): Action
-    {
-        return Action::make('generateNewRecoveryCodes')
-            ->label(__('filament-jetstream::default.action.two_factor_authentication.label.regenerate_recovery_codes'))
-            ->outlined()
-            ->visible(fn () => $this->authUser()->hasEnabledTwoFactorAuthentication())
-            ->requiresConfirmation()
-            ->action(fn () => app(GenerateNewRecoveryCodes::class)($this->authUser()));
+        RecoveryCodesGenerated::dispatch($user);
     }
 }
