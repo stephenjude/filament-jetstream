@@ -65,9 +65,9 @@ class AppPanelProvider extends PanelProvider
                     ->updatePassword()
                     ->profileInformation()
                     ->logoutBrowserSessions()
-                    ->twoFactorAuthentication()
-                    // ->apiTokens()
-                    // ->teams()
+                    ->twoFactorAuthentication(),
+                // ->apiTokens()
+                // ->teams()
             ]);
     }
 

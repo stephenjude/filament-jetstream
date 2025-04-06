@@ -3,7 +3,6 @@
 namespace Filament\Jetstream\Pages;
 
 use Filament\Facades\Filament;
-use Filament\Jetstream\Jetstream;
 
 class EditProfile extends \Filament\Pages\Auth\EditProfile
 {
