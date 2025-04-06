@@ -2,34 +2,24 @@
 
 namespace Filament\Jetstream\Concerns;
 
-use App\Models\User;
 use Closure;
 use Filament\Facades\Filament;
 use Filament\Jetstream\Events\AddingTeamMember;
 use Filament\Jetstream\Events\TeamMemberAdded;
 use Filament\Jetstream\Jetstream;
-use Filament\Jetstream\Models\Membership;
-use Filament\Jetstream\Models\Team;
-use Filament\Jetstream\Models\TeamInvitation;
 use Filament\Jetstream\Role;
 use Filament\Notifications\Notification;
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
 
 trait HasTeamsFeatures
 {
     public Closure | bool $hasTeamFeature = false;
 
     public ?Closure $acceptTeamInvitation = null;
-
-    public string $userModel = 'App\\Models\\User';
-
-    public string $teamModel = Team::class;
-
-    public string $membershipModel = Membership::class;
-
-    public string $teamInvitationModel = TeamInvitation::class;
 
     /** @var array{name:string, key:string, description:string, permissions:array<int, string>}|null */
     public ?array $rolesAndPermissions = [
@@ -75,39 +65,6 @@ trait HasTeamsFeatures
         return $this;
     }
 
-    public function useTeamsModels(string $userModel = 'App\\Models\\User', string $teamModel = Team::class, string $membershipModel = Membership::class, string $teamInvitationModel = TeamInvitation::class): static
-    {
-        $this->userModel = $userModel;
-
-        $this->teamModel = $teamModel;
-
-        $this->membershipModel = $membershipModel;
-
-        $this->teamInvitationModel = $teamInvitationModel;
-
-        return $this;
-    }
-
-    public function userModel(): string
-    {
-        return $this->userModel;
-    }
-
-    public function teamModel(): string
-    {
-        return $this->teamModel;
-    }
-
-    public function membershipModel(): string
-    {
-        return $this->membershipModel;
-    }
-
-    public function teamInvitationModel(): string
-    {
-        return $this->teamInvitationModel;
-    }
-
     /**
      * @return array<int, Role>
      */
@@ -137,31 +94,28 @@ trait HasTeamsFeatures
 
     public function defaultAcceptTeamInvitation(string | int $invitationId): RedirectResponse
     {
-        $model = Jetstream::plugin()->teamInvitationModel;
+        $model = Jetstream::teamInvitationModel();
 
         $invitation = $model::whereKey($invitationId)->firstOrFail();
 
         $team = $invitation->team;
 
-        $email = $invitation->email;
+        $newTeamMember = Jetstream::userModel()::firstOrCreate(
+            ['email' => $invitation->email],
+            ['name' => '', 'password' => bcrypt(Str::password())]
+        );
 
-        $role = $invitation->role;
-
-        $user = $team->owner;
-
-        Gate::forUser($user)->authorize('addTeamMember', $team);
-
-        abort_unless(User::where('email', $email)->exists(), __('filament-jetstream::default.action.add_team_member.error_message.email_not_found'));
-
-        abort_if($team->hasUserWithEmail($email), __('filament-jetstream::default.action.add_team_member.error_message.email_already_joined'));
-
-        $newTeamMember = (new $this->userModel)->where('email', $email)->firstOrFail();
+        abort_if(
+            $team->hasUserWithEmail($newTeamMember->email),
+            403,
+            __('filament-jetstream::default.action.add_team_member.error_message.email_already_joined')
+        );
 
         AddingTeamMember::dispatch($team, $newTeamMember);
 
         $team->users()->attach(
             $newTeamMember,
-            ['role' => $role]
+            ['role' => $invitation->role]
         );
 
         TeamMemberAdded::dispatch($team, $newTeamMember);
@@ -174,6 +128,16 @@ trait HasTeamsFeatures
             ->body(__('filament-jetstream::default.notification.accepted_invitation.success.message', ['team' => $invitation->team->name]))
             ->send();
 
-        return redirect()->to(Filament::getHomeUrl());
+        $passwordResetUrl = null;
+
+        Password::broker(Filament::getAuthPasswordBroker())
+            ->sendResetLink(
+                credentials: ['email' => $newTeamMember->email],
+                callback: function (CanResetPassword $user, string $token) use (&$passwordResetUrl) {
+                    return $passwordResetUrl = Filament::getResetPasswordUrl($token, $user);
+                }
+            );
+
+        return redirect()->to($passwordResetUrl ?? Filament::getHomeUrl());
     }
 }

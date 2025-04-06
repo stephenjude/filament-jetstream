@@ -24,6 +24,6 @@ class TeamInvitation extends Model
      */
     public function team()
     {
-        return $this->belongsTo(Jetstream::plugin()->teamModel);
+        return $this->belongsTo(config('filament-jetstream.models.team'));
     }
 }

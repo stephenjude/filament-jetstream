@@ -49,7 +49,7 @@ class InstallCommand extends Command
 
         // Teams...
         if ($this->option('teams')) {
-            $this->callSilent('vendor:publish', ['--tag' => 'jetstream-team-migrations', '--force' => true]);
+            $this->callSilently('vendor:publish', ['--tag' => 'filament-jetstream-team-migrations', '--force' => true]);
 
             // Factories...
             copy(__DIR__ . '/../../database/factories/TeamFactory.php', base_path('database/factories/TeamFactory.php'));
@@ -74,7 +74,7 @@ class InstallCommand extends Command
         }
 
         // Add Filament Default Panel to Service Provider...
-        ServiceProvider::addProviderToBootstrapFile('App\Providers\Filament\AppPanelProvider');
+        ServiceProvider::addProviderToBootstrapFile('App\Providers\Filament\ClientPanelProvider');
 
         $this->cleanup();
 

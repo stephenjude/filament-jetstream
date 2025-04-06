@@ -2,26 +2,26 @@
 
 namespace Filament\Jetstream;
 
-use Illuminate\Support\Arr;
-
 class Jetstream
 {
-    /**
-     * Find the path to a localized Markdown resource.
-     *
-     * @param  string  $name
-     * @return string|null
-     */
-    public static function localizedMarkdownPath($name)
+    public static function userModel(): string
     {
-        $localName = preg_replace('#(\.md)$#i', '.' . app()->getLocale() . '$1', $name);
+        return config('filament-jetstream.models.user');
+    }
 
-        return Arr::first([
-            resource_path('markdown/' . $localName),
-            resource_path('markdown/' . $name),
-        ], function ($path) {
-            return file_exists($path);
-        });
+    public static function teamModel(): string
+    {
+        return config('filament-jetstream.models.team');
+    }
+
+    public static function membershipModel(): string
+    {
+        return config('filament-jetstream.models.membership');
+    }
+
+    public static function teamInvitationModel(): string
+    {
+        return config('filament-jetstream.models.invitation');
     }
 
     public static function plugin(): JetstreamPlugin

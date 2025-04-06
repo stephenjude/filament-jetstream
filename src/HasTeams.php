@@ -33,7 +33,7 @@ trait HasTeams
             $this->switchTeam($this->personalTeam());
         }
 
-        return $this->belongsTo(Jetstream::plugin()->teamModel, 'current_team_id');
+        return $this->belongsTo(Jetstream::teamModel(), 'current_team_id');
     }
 
     /**
@@ -74,7 +74,7 @@ trait HasTeams
      */
     public function ownedTeams()
     {
-        return $this->hasMany(Jetstream::plugin()->teamModel);
+        return $this->hasMany(Jetstream::teamModel());
     }
 
     /**
@@ -84,9 +84,7 @@ trait HasTeams
      */
     public function teams()
     {
-        $plugin = Jetstream::plugin();
-
-        return $this->belongsToMany($plugin->teamModel, $plugin->membershipModel)
+        return $this->belongsToMany(Jetstream::teamModel(), Jetstream::membershipModel())
             ->withPivot('role')
             ->withTimestamps()
             ->as('membership');

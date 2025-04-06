@@ -65,7 +65,7 @@ class JetstreamPlugin implements Plugin
         if ($this->hasTeamsFeatures()) {
             $panel
                 ->registration(Register::class)
-                ->tenant($this->teamModel())
+                ->tenant(app(Jetstream::class)->teamModel())
                 ->tenantRegistration(CreateTeam::class)
                 ->tenantProfile(EditTeam::class)
                 ->routes(fn () => $this->teamsRoutes());

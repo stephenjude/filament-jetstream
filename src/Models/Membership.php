@@ -24,11 +24,11 @@ class Membership extends Pivot
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(Jetstream::plugin()->userModel);
+        return $this->belongsTo(config('filament-jetstream.models.user'));
     }
 
     public function team(): BelongsTo
     {
-        return $this->belongsTo(Jetstream::plugin()->teamModel);
+        return $this->belongsTo(config('filament-jetstream.models.team'));
     }
 }

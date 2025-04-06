@@ -42,14 +42,15 @@ class JetstreamServiceProvider extends PackageServiceProvider
          * More info: https://github.com/spatie/laravel-package-tools
          */
         $package->name(static::$name)
-            ->hasCommands($this->getCommands());
+            ->hasCommands($this->getCommands())
+            ->hasConfigFile('filament-jetstream');
 
         $this->publishes([
             __DIR__ . '/../database/migrations/0001_01_01_000000_create_users_table.php' => database_path('migrations/0001_01_01_000000_create_users_table.php'),
         ], 'filament-jetstream-migrations');
 
         $this->publishes([
-            __DIR__ . '/../database/migrations/0001_01_01_000000_create_users_table.php' => database_path('migrations/0001_01_01_000000_create_users_table.php'),
+            __DIR__ . '/../database/migrations/0001_01_01_000000_create_teams_table.php' => database_path('migrations/0001_01_01_000000_create_teams_table.php'),
         ], 'filament-jetstream-team-migrations');
 
         if (file_exists($package->basePath('/../resources/lang'))) {

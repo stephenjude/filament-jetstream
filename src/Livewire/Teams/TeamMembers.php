@@ -23,7 +23,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
     public function table(Table $table): Table
     {
         return $table
-            ->query(fn () => Jetstream::plugin()->membershipModel::with('user')->where('team_id', Filament::getTenant()->id))
+            ->query(fn () => config('filament-jetstream.models.membership')::with('user')->where('team_id', Filament::getTenant()->id))
             ->columns([
                 Tables\Columns\Layout\Split::make([
                     Tables\Columns\ImageColumn::make('profile_photo_url')

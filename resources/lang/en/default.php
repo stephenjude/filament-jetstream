@@ -341,15 +341,11 @@ return [
             'subject' => 'Team Invitation',
 
             'message' => [
-
                 'invitation' => 'You have been invited to join the :team team!',
 
-                'requirement' => 'If you do not have an account, you may create one by clicking the button below. After creating an account, you may click the invitation acceptance button in this email to accept the team invitation:',
-
-                'instruction' => 'If you already have an account, you may accept this invitation by clicking the button below:',
+                'instruction' => 'You may accept this invitation by clicking the button below:',
 
                 'notice' => 'If you did not expect to receive an invitation to this team, you may discard this email.',
-
             ],
 
             'label' => [

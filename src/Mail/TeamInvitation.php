@@ -14,16 +14,10 @@ class TeamInvitation extends Mailable
     use SerializesModels;
 
     /**
-     * The team invitation instance.
-     */
-    public TeamInvitationModel $invitation;
-
-    /**
      * Create a new message instance.
      */
-    public function __construct(TeamInvitationModel $invitation)
+    public function __construct(public TeamInvitationModel $invitation)
     {
-        $this->invitation = $invitation;
     }
 
     /**
