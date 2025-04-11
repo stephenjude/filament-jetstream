@@ -2,7 +2,6 @@
 
 namespace Filament\Jetstream\Models;
 
-use Filament\Jetstream\Jetstream;
 use Illuminate\Database\Eloquent\Model;
 
 class TeamInvitation extends Model
