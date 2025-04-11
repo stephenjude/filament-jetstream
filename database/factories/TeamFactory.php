@@ -3,13 +3,16 @@
 namespace Database\Factories;
 
 use App\Models\User;
+use Filament\Jetstream\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Team>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Filament\Jetstream\Models\Team>
  */
 class TeamFactory extends Factory
 {
+    protected $model = Team::class;
+
     /**
      * Define the model's default state.
      *

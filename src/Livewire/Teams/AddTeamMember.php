@@ -15,6 +15,7 @@ use Filament\Jetstream\Events\InvitingTeamMember;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Mail\TeamInvitation;
+use Filament\Jetstream\Models\Team;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Unique;
 
@@ -22,16 +23,19 @@ class AddTeamMember extends BaseLivewireComponent
 {
     public ?array $data = [];
 
-    public function mount(): void
-    {
-        $data = Filament::getTenant()->only(['name']);
+    public Team $team;
 
-        $this->form->fill($data);
+    public function mount(Team $team): void
+    {
+        $this->team = $team;
+
+        $this->form->fill($this->team->only(['name']));
     }
 
     public function form(Form $form): Form
     {
         return $form
+            ->statePath('data')
             ->schema([
                 Section::make(__('filament-jetstream::default.add_team_member.section.title'))
                     ->aside()
@@ -39,21 +43,27 @@ class AddTeamMember extends BaseLivewireComponent
                     ->schema([
                         Placeholder::make('addTeamMemberNotice')
                             ->hiddenLabel()
-                            ->content(fn () => __('filament-jetstream::default.add_team_member.section.notice')),
+                            ->content(fn() => __('filament-jetstream::default.add_team_member.section.notice')),
                         TextInput::make('email')
                             ->label(__('filament-jetstream::default.form.email.label'))
                             ->email()
                             ->required()
                             ->unique(table: Jetstream::teamInvitationModel(), modifyRuleUsing: function (Unique $rule) {
-                                return $rule->where('team_id', Filament::getTenant()->id);
+                                return $rule->where('team_id', $this->team->id);
                             })
                             ->validationMessages([
-                                'unique' => __('filament-jetstream::default.action.add_team_member.error_message.email_already_invited'),
+                                'unique' => __(
+                                    'filament-jetstream::default.action.add_team_member.error_message.email_already_invited'
+                                ),
                             ])
                             ->rules([
-                                fn (): \Closure => function (string $attribute, $value, \Closure $fail) {
-                                    if (Filament::getTenant()->hasUserWithEmail($value)) {
-                                        $fail(__('filament-jetstream::default.action.add_team_member.error_message.email_already_invited'));
+                                fn(): \Closure => function (string $attribute, $value, \Closure $fail) {
+                                    if ($this->team->hasUserWithEmail($value)) {
+                                        $fail(
+                                            __(
+                                                'filament-jetstream::default.action.add_team_member.error_message.email_already_invited'
+                                            )
+                                        );
                                     }
                                 },
                             ]),
@@ -74,14 +84,15 @@ class AddTeamMember extends BaseLivewireComponent
                         Actions::make([
                             Actions\Action::make('addTeamMember')
                                 ->label(__('filament-jetstream::default.action.add_team_member.label'))
-                                ->submit('addTeamMember'),
+                                ->action(function () {
+                                    $this->addTeamMember($this->team);
+                                }),
                         ])->alignEnd(),
                     ]),
-            ])
-            ->statePath('data');
+            ]);
     }
 
-    public function addTeamMember(): void
+    public function addTeamMember(Team $team): void
     {
         try {
             $this->rateLimit(5);
@@ -92,9 +103,6 @@ class AddTeamMember extends BaseLivewireComponent
         }
 
         $data = $this->form->getState();
-
-        /** @var App/Models/Team $team */
-        $team = Filament::getTenant();
 
         $email = $data['email'];
 

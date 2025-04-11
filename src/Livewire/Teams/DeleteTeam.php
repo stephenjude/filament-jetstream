@@ -7,10 +7,18 @@ use Filament\Forms;
 use Filament\Forms\Components\Actions;
 use Filament\Forms\Form;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
+use Filament\Jetstream\Models\Team;
 use Illuminate\View\View;
 
 class DeleteTeam extends BaseLivewireComponent
 {
+    public Team $team;
+
+    public function mount(Team $team): void
+    {
+        $this->team = $team;
+    }
+
     public function form(Form $form): Form
     {
         return $form
@@ -21,7 +29,7 @@ class DeleteTeam extends BaseLivewireComponent
                     ->schema([
                         Forms\Components\Placeholder::make('notice')
                             ->hiddenLabel()
-                            ->content(fn () => __('filament-jetstream::default.delete_team.section.notice')),
+                            ->content(fn() => __('filament-jetstream::default.delete_team.section.notice')),
                         Actions::make([
                             Actions\Action::make('deleteAccountAction')
                                 ->label(__('filament-jetstream::default.action.delete_team.label'))
@@ -31,7 +39,7 @@ class DeleteTeam extends BaseLivewireComponent
                                 ->modalDescription(__('filament-jetstream::default.action.delete_team.notice'))
                                 ->modalSubmitActionLabel(__('filament-jetstream::default.action.delete_team.label'))
                                 ->modalCancelAction(false)
-                                ->action(fn () => $this->deleteTeam()),
+                                ->action(fn() => $this->deleteTeam($this->team)),
                         ]),
                     ]),
             ]);
@@ -42,9 +50,9 @@ class DeleteTeam extends BaseLivewireComponent
         return view('filament-jetstream::livewire.teams.delete-team');
     }
 
-    public function deleteTeam(): void
+    public function deleteTeam(Team $team): void
     {
-        Filament::getTenant()->purge();
+        $team->purge();
 
         $this->sendNotification(__('filament-jetstream::default.notification.team_deleted.success.message'));
 

@@ -4,6 +4,7 @@ namespace Filament\Jetstream\Livewire\Teams;
 
 use Filament\Facades\Filament;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
+use Filament\Jetstream\Models\Team;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
@@ -12,10 +13,17 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
 {
     use Tables\Concerns\InteractsWithTable;
 
+    public Team $team;
+
+    public function mount(Team $team): void
+    {
+        $this->team = $team;
+    }
+
     public function table(Table $table): Table
     {
         return $table
-            ->query(fn () => Filament::getTenant()?->teamInvitations()->latest())
+            ->query(fn () => $this->team->teamInvitations()->latest())
             ->columns([
                 Tables\Columns\Layout\Split::make([
                     Tables\Columns\TextColumn::make('email'),
@@ -27,15 +35,15 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
                     ->label(__('filament-jetstream::default.action.cancel_team_invitation.label'))
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->action(fn ($record) => $this->cancelTeamInvitation($record)),
+                    ->action(fn ($record) => $this->cancelTeamInvitation($this->team, $record)),
             ]);
     }
 
-    public function cancelTeamInvitation(Model $invitation)
+    public function cancelTeamInvitation(Team $team, Model $invitation)
     {
         $invitation->delete();
 
-        Filament::getTenant()?->fresh();
+        $team->fresh();
 
         $this->sendNotification();
     }

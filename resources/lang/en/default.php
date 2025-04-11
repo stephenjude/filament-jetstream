@@ -343,7 +343,7 @@ return [
             'message' => [
                 'invitation' => 'You have been invited to join the :team team!',
 
-                'instruction' => 'You may accept this invitation by clicking the button below:',
+                'instruction' => 'Click the button below to accept the invitation and get started:',
 
                 'notice' => 'If you did not expect to receive an invitation to this team, you may discard this email.',
             ],

@@ -10,5 +10,12 @@ return [
         'team' => \Filament\Jetstream\Models\Team::class,
         'membership' => \Filament\Jetstream\Models\Membership::class,
         'invitation' => \Filament\Jetstream\Models\TeamInvitation::class,
+        'role' => \Filament\Jetstream\Role::class,
     ],
+
+    /*
+     * The filament panel using the Jetstream plugin. This is used for the pulling the plugin
+     * configuration.
+     */
+    'panel' => 'app',
 ];

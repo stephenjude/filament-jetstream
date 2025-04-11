@@ -10,16 +10,19 @@ use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
+use Filament\Jetstream\Models\Team;
 
 class UpdateTeamName extends BaseLivewireComponent
 {
     public ?array $data = [];
 
-    public function mount(): void
-    {
-        $data = Filament::getTenant()->only(['name']);
+    public Team $team;
 
-        $this->form->fill($data);
+    public function mount(Team $team): void
+    {
+        $this->team = $team;
+
+        $this->form->fill($team->only(['name']));
     }
 
     public function form(Form $form): Form
@@ -44,14 +47,14 @@ class UpdateTeamName extends BaseLivewireComponent
                         Actions::make([
                             Actions\Action::make('save')
                                 ->label(__('filament-jetstream::default.action.save.label'))
-                                ->submit('updateTeamName'),
+                                ->action(fn() => $this->updateTeamName($this->team)),
                         ])->alignEnd(),
                     ]),
             ])
             ->statePath('data');
     }
 
-    public function updateTeamName(): void
+    public function updateTeamName(Team $team): void
     {
         try {
             $this->rateLimit(5);
@@ -63,7 +66,7 @@ class UpdateTeamName extends BaseLivewireComponent
 
         $data = $this->form->getState();
 
-        Filament::getTenant()->forceFill([
+       $team->forceFill([
             'name' => $data['name'],
         ])->save();
 

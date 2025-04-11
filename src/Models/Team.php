@@ -6,10 +6,13 @@ use Filament\Jetstream\Events\TeamCreated;
 use Filament\Jetstream\Events\TeamDeleted;
 use Filament\Jetstream\Events\TeamUpdated;
 use Filament\Jetstream\Jetstream;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Team extends Model
 {
+    use HasFactory;
+
     /**
      * The attributes that are mass assignable.
      *

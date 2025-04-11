@@ -2,6 +2,7 @@
 
 namespace Filament\Jetstream;
 
+use Illuminate\Support\Collection;
 use JsonSerializable;
 
 class Role implements JsonSerializable
@@ -34,6 +35,31 @@ class Role implements JsonSerializable
      */
     public $description;
 
+    /** @var array{name:string, key:string, description:string, permissions:array<int, string>}|null */
+    public static ?array $rolesAndPermissions = [
+        [
+            'key' => 'admin',
+            'name' => 'Administrator',
+            'description' => 'Administrator users can perform any action.',
+            'permissions' => [
+                'create',
+                'read',
+                'update',
+                'delete',
+            ],
+        ],
+        [
+            'key' => 'editor',
+            'name' => 'Editor',
+            'description' => 'Editor users have the ability to read, create, and update.',
+            'permissions' => [
+                'read',
+                'create',
+                'update',
+            ],
+        ],
+    ];
+
     /**
      * Create a new role instance.
      *
@@ -63,7 +89,15 @@ class Role implements JsonSerializable
      */
     public static function find(string $key): ?Role
     {
-        return collect(Jetstream::plugin()?->getTeamRolesAndPermissions())->firstWhere('key', $key);
+        return static::roles()->firstWhere('key', $key);
+    }
+
+    /**
+     * Get all roles and their permissions.
+     */
+    public static function roles(): Collection
+    {
+        return collect(static::$rolesAndPermissions);
     }
 
     /**

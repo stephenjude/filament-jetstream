@@ -7,7 +7,6 @@ use Filament\Facades\Filament;
 use Filament\Jetstream\Events\AddingTeamMember;
 use Filament\Jetstream\Events\TeamMemberAdded;
 use Filament\Jetstream\Jetstream;
-use Filament\Jetstream\Role;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Http\RedirectResponse;
@@ -17,34 +16,9 @@ use Illuminate\Support\Str;
 
 trait HasTeamsFeatures
 {
-    public Closure | bool $hasTeamFeature = false;
+    public Closure|bool $hasTeamFeature = false;
 
     public ?Closure $acceptTeamInvitation = null;
-
-    /** @var array{name:string, key:string, description:string, permissions:array<int, string>}|null */
-    public ?array $rolesAndPermissions = [
-        [
-            'key' => 'admin',
-            'name' => 'Administrator',
-            'description' => 'Administrator users can perform any action.',
-            'permissions' => [
-                'create',
-                'read',
-                'update',
-                'delete',
-            ],
-        ],
-        [
-            'key' => 'editor',
-            'name' => 'Editor',
-            'description' => 'Editor users have the ability to read, create, and update.',
-            'permissions' => [
-                'read',
-                'create',
-                'update',
-            ],
-        ],
-    ];
 
     public function hasTeamsFeatures(): bool
     {
@@ -54,13 +28,11 @@ trait HasTeamsFeatures
     /**
      * @param  Closure|array{name:string, key:string, description:string, permissions:array<int, string>}  $rolesAndPermissions
      */
-    public function teams(Closure | bool $condition = true, Closure | array | null $rolesAndPermissions = null, ?Closure $acceptTeamInvitation = null): static
+    public function teams(Closure|bool $condition = true, ?Closure $acceptTeamInvitation = null): static
     {
         $this->hasTeamFeature = $condition;
 
         $this->acceptTeamInvitation = $acceptTeamInvitation;
-
-        $this->rolesAndPermissions = $rolesAndPermissions ?? $this->rolesAndPermissions;
 
         return $this;
     }
@@ -84,7 +56,7 @@ trait HasTeamsFeatures
     public function teamsRoutes(): array
     {
         return [
-            Route::get('/team-invitations/{invitation}', fn ($invitation) => $this->acceptTeamInvitation === null
+            Route::get('/team-invitations/{invitation}', fn($invitation) => $this->acceptTeamInvitation === null
                 ? $this->defaultAcceptTeamInvitation($invitation)
                 : $this->evaluate($this->acceptTeamInvitation, ['invitationId' => $invitation]))
                 ->middleware(['signed'])
@@ -92,7 +64,7 @@ trait HasTeamsFeatures
         ];
     }
 
-    public function defaultAcceptTeamInvitation(string | int $invitationId): RedirectResponse
+    public function defaultAcceptTeamInvitation(string|int $invitationId): RedirectResponse
     {
         $model = Jetstream::teamInvitationModel();
 
@@ -125,7 +97,12 @@ trait HasTeamsFeatures
         Notification::make()
             ->success()
             ->title(__('filament-jetstream::default.notification.accepted_invitation.success.title'))
-            ->body(__('filament-jetstream::default.notification.accepted_invitation.success.message', ['team' => $invitation->team->name]))
+            ->body(
+                __(
+                    'filament-jetstream::default.notification.accepted_invitation.success.message',
+                    ['team' => $invitation->team->name]
+                )
+            )
             ->send();
 
         $passwordResetUrl = null;
