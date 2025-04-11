@@ -16,7 +16,7 @@ use Illuminate\Support\Str;
 
 trait HasTeamsFeatures
 {
-    public Closure|bool $hasTeamFeature = false;
+    public Closure | bool $hasTeamFeature = false;
 
     public ?Closure $acceptTeamInvitation = null;
 
@@ -28,7 +28,7 @@ trait HasTeamsFeatures
     /**
      * @param  Closure|array{name:string, key:string, description:string, permissions:array<int, string>}  $rolesAndPermissions
      */
-    public function teams(Closure|bool $condition = true, ?Closure $acceptTeamInvitation = null): static
+    public function teams(Closure | bool $condition = true, ?Closure $acceptTeamInvitation = null): static
     {
         $this->hasTeamFeature = $condition;
 
@@ -56,7 +56,7 @@ trait HasTeamsFeatures
     public function teamsRoutes(): array
     {
         return [
-            Route::get('/team-invitations/{invitation}', fn($invitation) => $this->acceptTeamInvitation === null
+            Route::get('/team-invitations/{invitation}', fn ($invitation) => $this->acceptTeamInvitation === null
                 ? $this->defaultAcceptTeamInvitation($invitation)
                 : $this->evaluate($this->acceptTeamInvitation, ['invitationId' => $invitation]))
                 ->middleware(['signed'])
@@ -64,7 +64,7 @@ trait HasTeamsFeatures
         ];
     }
 
-    public function defaultAcceptTeamInvitation(string|int $invitationId): RedirectResponse
+    public function defaultAcceptTeamInvitation(string | int $invitationId): RedirectResponse
     {
         $model = Jetstream::teamInvitationModel();
 

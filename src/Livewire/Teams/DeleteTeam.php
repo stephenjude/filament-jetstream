@@ -29,7 +29,7 @@ class DeleteTeam extends BaseLivewireComponent
                     ->schema([
                         Forms\Components\Placeholder::make('notice')
                             ->hiddenLabel()
-                            ->content(fn() => __('filament-jetstream::default.delete_team.section.notice')),
+                            ->content(fn () => __('filament-jetstream::default.delete_team.section.notice')),
                         Actions::make([
                             Actions\Action::make('deleteAccountAction')
                                 ->label(__('filament-jetstream::default.action.delete_team.label'))
@@ -39,7 +39,7 @@ class DeleteTeam extends BaseLivewireComponent
                                 ->modalDescription(__('filament-jetstream::default.action.delete_team.notice'))
                                 ->modalSubmitActionLabel(__('filament-jetstream::default.action.delete_team.label'))
                                 ->modalCancelAction(false)
-                                ->action(fn() => $this->deleteTeam($this->team)),
+                                ->action(fn () => $this->deleteTeam($this->team)),
                         ]),
                     ]),
             ]);
