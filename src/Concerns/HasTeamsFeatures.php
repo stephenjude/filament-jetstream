@@ -120,7 +120,7 @@ trait HasTeamsFeatures
             ['name' => '', 'password' => bcrypt(Str::password())]
         );
 
-        if ( method_exists($newTeamMember, 'notify')) {
+        if (method_exists($newTeamMember, 'notify')) {
             $notification = app(VerifyEmail::class);
             $notification->url = Filament::getVerifyEmailUrl($user);
 

@@ -6,8 +6,9 @@ class Jetstream
 {
     public static function getForeignKey(string $class)
     {
-       return str($class)->classBasename()->snake()->append('_id')->toString();
+        return str($class)->classBasename()->snake()->append('_id')->toString();
     }
+
     public static function plugin(): JetstreamPlugin
     {
         return filament()
