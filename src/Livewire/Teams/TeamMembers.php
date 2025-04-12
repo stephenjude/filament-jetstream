@@ -29,7 +29,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
 
     public function table(Table $table): Table
     {
-        $model =Jetstream::plugin()->membershipModel();
+        $model = Jetstream::plugin()->membershipModel();
 
         $teamForeignKeyColumn = Jetstream::getForeignKeyColumn(get_class($this->team));
 
