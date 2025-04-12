@@ -49,7 +49,7 @@ class JetstreamPlugin implements Plugin
     {
         $panel
             ->login($this->enabledTwoFactorAuthetication() ? TwoFactorLogin::class : Login::class)
-            ->routes(fn() => $this->enabledTwoFactorAuthetication() ? $this->twoFactorAuthenticationRoutes() : [])
+            ->routes(fn () => $this->enabledTwoFactorAuthetication() ? $this->twoFactorAuthenticationRoutes() : [])
             ->profile(EditProfile::class)
             ->authMiddleware([
                 ForceTwoFactorAuthentication::class,
@@ -67,7 +67,7 @@ class JetstreamPlugin implements Plugin
                 ->tenant($this->teamModel())
                 ->tenantRegistration(CreateTeam::class)
                 ->tenantProfile(EditTeam::class)
-                ->routes(fn() => $this->teamsRoutes());
+                ->routes(fn () => $this->teamsRoutes());
         }
     }
 
