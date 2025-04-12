@@ -11,7 +11,6 @@ use Filament\Jetstream\Models\Membership;
 use Filament\Jetstream\Models\Team;
 use Filament\Jetstream\Models\TeamInvitation;
 use Filament\Jetstream\Role;
-use Filament\Notifications\Auth\VerifyEmail;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Http\RedirectResponse;
@@ -38,9 +37,6 @@ trait HasTeamsFeatures
         return $this->evaluate($this->hasTeamFeature) === true;
     }
 
-    /**
-     * @param  Closure|array{name:string, key:string, description:string, permissions:array<int, string>}  $rolesAndPermissions
-     */
     public function teams(Closure | bool $condition = true, ?Closure $acceptTeamInvitation = null): static
     {
         $this->hasTeamFeature = $condition;
@@ -110,7 +106,6 @@ trait HasTeamsFeatures
     {
         $model = Jetstream::plugin()->teamInvitationModel();
 
-        /** @var \Filament\Jetstream\Models\TeamInvitation $invitation */
         $invitation = $model::whereKey($invitationId)->with('team')->firstOrFail();
 
         $team = $invitation->team;
@@ -124,9 +119,9 @@ trait HasTeamsFeatures
         ])->save();
 
         abort_if(
-            $team->hasUserWithEmail($newTeamMember->email),
-            403,
-            __('filament-jetstream::default.action.add_team_member.error_message.email_already_joined')
+            boolean: $team->hasUserWithEmail($newTeamMember->email),
+            code: 403,
+            message: __('filament-jetstream::default.action.add_team_member.error_message.email_already_joined')
         );
 
         AddingTeamMember::dispatch($team, $newTeamMember);
@@ -146,7 +141,7 @@ trait HasTeamsFeatures
             ->success()
             ->title(__('filament-jetstream::default.notification.accepted_invitation.success.title'))
             ->body(__('filament-jetstream::default.notification.accepted_invitation.success.message', [
-                'team' => $invitation->team->name
+                'team' => $invitation->team->name,
             ]))
             ->send();
 
