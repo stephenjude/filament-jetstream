@@ -3,10 +3,12 @@
 namespace Filament\Jetstream\Livewire\Teams;
 
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
+use Filament\Jetstream\Mail\TeamInvitation;
 use Filament\Jetstream\Models\Team;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 
 class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Contracts\HasTable
 {
@@ -30,6 +32,11 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
             ])
             ->paginated(false)
             ->actions([
+                Tables\Actions\Action::make('resendTeamInvitation')
+                    ->label(__('filament-jetstream::default.action.resend_team_invitation.label'))
+                    ->color('primary')
+                    ->requiresConfirmation()
+                    ->action(fn ($record) => $this->resendTeamInvitation($this->team, $record)),
                 Tables\Actions\Action::make('cancelTeamInvitation')
                     ->label(__('filament-jetstream::default.action.cancel_team_invitation.label'))
                     ->color('danger')
@@ -38,13 +45,20 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
             ]);
     }
 
+    public function resendTeamInvitation(Team $team, Model $invitation)
+    {
+        Mail::to($invitation->email)->send(new TeamInvitation($invitation));
+
+        $this->sendNotification(__('filament-jetstream::default.notification.team_invitation_sent.success.message'));
+    }
+
     public function cancelTeamInvitation(Team $team, Model $invitation)
     {
         $invitation->delete();
 
         $team->fresh();
 
-        $this->sendNotification();
+        $this->sendNotification(__('filament-jetstream::default.notification.team_invitation_cancelled.success.message'));
     }
 
     public function render()

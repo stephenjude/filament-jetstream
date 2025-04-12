@@ -114,7 +114,7 @@ class AddTeamMember extends BaseLivewireComponent
 
         Mail::to($email)->send(new TeamInvitation($invitation));
 
-        $this->sendNotification();
+        $this->sendNotification(__('filament-jetstream::default.notification.team_invitation_sent.success.message'));
 
         $this->redirect(Filament::getTenantProfileUrl());
     }

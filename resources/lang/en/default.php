@@ -149,7 +149,18 @@ return [
             'success' => [
                 'message' => 'You have removed this team member.',
             ],
+        ],
 
+        'team_invitation_sent' => [
+            'success' => [
+                'message' => 'Team invitation sent.',
+            ],
+        ],
+
+        'team_invitation_cancelled' => [
+            'success' => [
+                'message' => 'Team invitation cancelled.',
+            ],
         ],
 
         'leave_team' => [
@@ -315,6 +326,10 @@ return [
             'label' => 'Leave',
 
             'notice' => 'Are you sure you would like to leave this team?',
+        ],
+
+        'resend_team_invitation' => [
+            'label' => 'Resend',
         ],
 
         'cancel_team_invitation' => [
