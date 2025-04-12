@@ -3,6 +3,7 @@
 namespace Filament\Jetstream\Pages;
 
 use Filament\Facades\Filament;
+use Filament\Jetstream\Jetstream;
 
 class EditProfile extends \Filament\Pages\Auth\EditProfile
 {
@@ -17,7 +18,7 @@ class EditProfile extends \Filament\Pages\Auth\EditProfile
         parent::mount();
 
         if ($id = $this->getUser()?->currentTeam?->id) {
-            once(fn () => Filament::setTenant(config('filament-jetstream.models.team')::find($id)));
+            once(fn() => Filament::setTenant(Jetstream::plugin()->teamModel::find($id)));
         }
     }
 

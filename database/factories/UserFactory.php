@@ -54,7 +54,7 @@ class UserFactory extends Factory
      */
     public function withPersonalTeam(?callable $callback = null): static
     {
-        if (! Jetstream::plugin()->hasTeamsFeatures()) {
+        if (! Jetstream::plugin()?->hasTeamsFeatures()) {
             return $this->state([]);
         }
 

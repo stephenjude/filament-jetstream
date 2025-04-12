@@ -2,6 +2,7 @@
 
 namespace Filament\Jetstream\Models;
 
+use Filament\Jetstream\Jetstream;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -23,11 +24,11 @@ class Membership extends Pivot
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(config('filament-jetstream.models.user'));
+        return $this->belongsTo(Jetstream::plugin()->userModel());
     }
 
     public function team(): BelongsTo
     {
-        return $this->belongsTo(config('filament-jetstream.models.team'));
+        return $this->belongsTo(Jetstream::plugin()->teamModel());
     }
 }

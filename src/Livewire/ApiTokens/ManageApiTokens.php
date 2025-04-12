@@ -35,7 +35,7 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
                     ->modalCancelAction(false)
                     ->modalFooterActionsAlignment(Alignment::End)
                     ->modalSubmitActionLabel(__('filament-jetstream::default.action.update_token.modal.label'))
-                    ->form(fn (PersonalAccessToken $record, Form $form) => $form->schema(fn () => collect(Jetstream::plugin()->getApiTokenPermissions())
+                    ->form(fn (PersonalAccessToken $record, Form $form) => $form->schema(fn () => collect(Jetstream::plugin()?->getApiTokenPermissions())
                         ->map(fn ($permission) => Checkbox::make($permission)->label(__($permission))->default($record->can($permission)))
                         ->toArray())
                         ->columns())
@@ -52,7 +52,7 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
     public function updateToken(PersonalAccessToken $record, array $data)
     {
         $record->forceFill([
-            'abilities' => Jetstream::plugin()->validPermissions(array_keys(array_filter($data))),
+            'abilities' => Jetstream::plugin()?->validPermissions(array_keys(array_filter($data))),
         ])->save();
 
         $this->sendNotification();

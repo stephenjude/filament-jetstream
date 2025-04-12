@@ -10,6 +10,8 @@ use Illuminate\Validation\Rules\Password;
 
 trait HasProfileFeatures
 {
+    public string $userModel = 'App\\Models\\User';
+
     public Closure | bool $updateProfileInformation = true;
 
     public Closure | bool $updateProfilePhoto = true;
@@ -127,5 +129,17 @@ trait HasProfileFeatures
         $this->deleteAccount = $condition;
 
         return $this;
+    }
+
+    public function configureUserModel(string $userModel = 'App\\Models\\User'): static
+    {
+        $this->userModel = $userModel;
+
+        return $this;
+    }
+
+    public function userModel(): string
+    {
+        return $this->userModel;
     }
 }

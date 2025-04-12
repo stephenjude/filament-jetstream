@@ -47,10 +47,9 @@ class JetstreamPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
-
         $panel
             ->login($this->enabledTwoFactorAuthetication() ? TwoFactorLogin::class : Login::class)
-            ->routes(fn () => $this->enabledTwoFactorAuthetication() ? $this->twoFactorAuthenticationRoutes() : [])
+            ->routes(fn() => $this->enabledTwoFactorAuthetication() ? $this->twoFactorAuthenticationRoutes() : [])
             ->profile(EditProfile::class)
             ->authMiddleware([
                 ForceTwoFactorAuthentication::class,
@@ -65,10 +64,10 @@ class JetstreamPlugin implements Plugin
         if ($this->hasTeamsFeatures()) {
             $panel
                 ->registration(Register::class)
-                ->tenant(app(Jetstream::class)->teamModel())
+                ->tenant($this->teamModel())
                 ->tenantRegistration(CreateTeam::class)
                 ->tenantProfile(EditTeam::class)
-                ->routes(fn () => $this->teamsRoutes());
+                ->routes(fn() => $this->teamsRoutes());
         }
     }
 

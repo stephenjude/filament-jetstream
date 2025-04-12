@@ -45,7 +45,7 @@ class CreateApiToken extends BaseLivewireComponent
                         Grid::make()
                             ->columns()
                             ->schema(
-                                fn () => collect(Jetstream::plugin()->getApiTokenPermissions())
+                                fn () => collect(Jetstream::plugin()?->getApiTokenPermissions())
                                     ->map(fn ($permission) => Checkbox::make($permission)->label(__($permission)))
                                     ->toArray()
                             ),
@@ -72,7 +72,7 @@ class CreateApiToken extends BaseLivewireComponent
 
         $data = $this->form->getState();
 
-        $permissions = Jetstream::plugin()->validPermissions(array_keys(array_filter(Arr::except($data, 'name'))));
+        $permissions = Jetstream::plugin()?->validPermissions(array_keys(array_filter(Arr::except($data, 'name'))));
 
         if (empty($permissions)) {
             Notification::make()
@@ -104,7 +104,7 @@ class CreateApiToken extends BaseLivewireComponent
             ->persistent()
             ->send();
 
-        $this->redirect(Jetstream::plugin()->getApiTokenUrl(Filament::getCurrentPanel()));
+        $this->redirect(Jetstream::plugin()?->getApiTokenUrl(Filament::getCurrentPanel()));
     }
 
     public function render()

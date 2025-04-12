@@ -7,6 +7,11 @@ use Filament\Facades\Filament;
 use Filament\Jetstream\Events\AddingTeamMember;
 use Filament\Jetstream\Events\TeamMemberAdded;
 use Filament\Jetstream\Jetstream;
+use Filament\Jetstream\Models\Membership;
+use Filament\Jetstream\Models\Team;
+use Filament\Jetstream\Models\TeamInvitation;
+use Filament\Jetstream\Role;
+use Filament\Notifications\Auth\VerifyEmail;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Http\RedirectResponse;
@@ -16,7 +21,15 @@ use Illuminate\Support\Str;
 
 trait HasTeamsFeatures
 {
-    public Closure|bool $hasTeamFeature = false;
+    public string $teamModel = Team::class;
+
+    public string $roleModel = Role::class;
+
+    public string $membershipModel = Membership::class;
+
+    public string $teamInvitationModel = TeamInvitation::class;
+
+    public Closure | bool $hasTeamFeature = false;
 
     public ?Closure $acceptTeamInvitation = null;
 
@@ -28,7 +41,7 @@ trait HasTeamsFeatures
     /**
      * @param  Closure|array{name:string, key:string, description:string, permissions:array<int, string>}  $rolesAndPermissions
      */
-    public function teams(Closure|bool $condition = true, ?Closure $acceptTeamInvitation = null): static
+    public function teams(Closure | bool $condition = true, ?Closure $acceptTeamInvitation = null): static
     {
         $this->hasTeamFeature = $condition;
 
@@ -42,21 +55,13 @@ trait HasTeamsFeatures
      */
     public function getTeamRolesAndPermissions(): array
     {
-        return collect($this->evaluate($this->rolesAndPermissions))
-            ->map(
-                fn ($role) => (new Role(
-                    $role['key'],
-                    $role['name'],
-                    $role['permissions']
-                ))->description($role['description'])
-            )
-            ->toArray();
+        return $this->roleModel::roles()->toArray();
     }
 
     public function teamsRoutes(): array
     {
         return [
-            Route::get('/team-invitations/{invitation}', fn($invitation) => $this->acceptTeamInvitation === null
+            Route::get('/team-invitations/{invitation}', fn ($invitation) => $this->acceptTeamInvitation === null
                 ? $this->defaultAcceptTeamInvitation($invitation)
                 : $this->evaluate($this->acceptTeamInvitation, ['invitationId' => $invitation]))
                 ->middleware(['signed'])
@@ -64,18 +69,63 @@ trait HasTeamsFeatures
         ];
     }
 
-    public function defaultAcceptTeamInvitation(string|int $invitationId): RedirectResponse
-    {
-        $model = Jetstream::teamInvitationModel();
+    public function configureTeamModels(
+        string $teamModel = Team::class,
+        string $roleModel = Role::class,
+        string $membershipModel = Membership::class,
+        string $teamInvitationModel = TeamInvitation::class
+    ): static {
+        $this->teamModel = $teamModel;
 
-        $invitation = $model::whereKey($invitationId)->firstOrFail();
+        $this->roleModel = $roleModel;
+
+        $this->membershipModel = $membershipModel;
+
+        $this->teamInvitationModel = $teamInvitationModel;
+
+        return $this;
+    }
+
+    public function teamModel(): string
+    {
+        return $this->teamModel;
+    }
+
+    public function membershipModel(): string
+    {
+        return $this->membershipModel;
+    }
+
+    public function teamInvitationModel(): string
+    {
+        return $this->teamInvitationModel;
+    }
+
+    public function roleModel(): string
+    {
+        return $this->roleModel;
+    }
+
+    public function defaultAcceptTeamInvitation(string | int $invitationId): RedirectResponse
+    {
+        $model = Jetstream::plugin()->teamInvitationModel();
+
+        /** @var \Filament\Jetstream\Models\TeamInvitation $invitation */
+        $invitation = $model::whereKey($invitationId)->with('team')->firstOrFail();
 
         $team = $invitation->team;
 
-        $newTeamMember = Jetstream::userModel()::firstOrCreate(
+        $newTeamMember = Jetstream::plugin()->userModel()::firstOrCreate(
             ['email' => $invitation->email],
             ['name' => '', 'password' => bcrypt(Str::password())]
         );
+
+        if ( method_exists($newTeamMember, 'notify')) {
+            $notification = app(VerifyEmail::class);
+            $notification->url = Filament::getVerifyEmailUrl($user);
+
+            $newTeamMember->notify($notification);
+        }
 
         abort_if(
             $team->hasUserWithEmail($newTeamMember->email),
@@ -89,6 +139,8 @@ trait HasTeamsFeatures
             $newTeamMember,
             ['role' => $invitation->role]
         );
+
+        $newTeamMember->switchTeam($team);
 
         TeamMemberAdded::dispatch($team, $newTeamMember);
 

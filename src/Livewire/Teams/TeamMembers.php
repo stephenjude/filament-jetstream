@@ -30,12 +30,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
     public function table(Table $table): Table
     {
         return $table
-            ->query(
-                fn() => config('filament-jetstream.models.membership')::with('user')->where(
-                    'team_id',
-                    $this->team->id
-                )
-            )
+            ->query(fn () => $this->team->users())
             ->columns([
                 Tables\Columns\Layout\Split::make([
                     Tables\Columns\ImageColumn::make('profile_photo_url')
@@ -50,8 +45,8 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
             ->paginated(false)
             ->actions([
                 Tables\Actions\Action::make('updateTeamRole')
-                    ->visible(fn($record): bool => Gate::check('updateTeamMember', $this->team))
-                    ->label(fn($record): string => Role::find($record->role)->name)
+                    ->visible(fn ($record): bool => Gate::check('updateTeamMember', $this->team))
+                    ->label(fn ($record): string => Role::find($record->role)->name)
                     ->modalWidth('lg')
                     ->modalHeading(__('filament-jetstream::default.action.update_team_role.title'))
                     ->modalSubmitActionLabel(__('filament-jetstream::default.action.save.label'))
@@ -70,36 +65,36 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                                         ->in($roles->pluck('key'))
                                         ->options($roles->pluck('name', 'key'))
                                         ->descriptions($roles->pluck('description', 'key'))
-                                        ->default(fn($record) => $record->role),
+                                        ->default(fn ($record) => $record->role),
                                 ];
                             }),
                     ])
-                    ->action(fn($record, array $data) => $this->updateTeamRole($record, $data)),
+                    ->action(fn ($record, array $data) => $this->updateTeamRole($record, $data)),
                 Tables\Actions\Action::make('removeTeamMember')
                     ->visible(
-                        fn($record): bool => $this->authUser()->id !== $record->id && Gate::check(
-                                'removeTeamMember',
-                                $this->team
-                            )
+                        fn ($record): bool => $this->authUser()->id !== $record->id && Gate::check(
+                            'removeTeamMember',
+                            $this->team
+                        )
                     )
                     ->label(__('filament-jetstream::default.action.remove_team_member.label'))
                     ->color('danger')
                     ->requiresConfirmation()
-                    ->action(fn($record) => $this->removeTeamMember($this->team, $record)),
+                    ->action(fn ($record) => $this->removeTeamMember($this->team, $record)),
                 Tables\Actions\Action::make('leaveTeam')
-                    ->visible(fn($record): bool => $this->authUser()->id === $record->id)
+                    ->visible(fn ($record): bool => $this->authUser()->id === $record->id)
                     ->icon('heroicon-o-arrow-right-start-on-rectangle')
                     ->color('danger')
                     ->label(__('filament-jetstream::default.action.leave_team.label'))
                     ->modalDescription(__('filament-jetstream::default.action.leave_team.notice'))
                     ->requiresConfirmation()
-                    ->action(fn($record) => $this->leaveTeam()),
+                    ->action(fn ($record) => $this->leaveTeam()),
             ]);
     }
 
     public function updateTeamRole(Team $team, Model $teamMember, array $data): void
     {
-        if (!Gate::check('updateTeamMember', $team)) {
+        if (! Gate::check('updateTeamMember', $team)) {
             $this->sendNotification(
                 __('filament-jetstream::default.notification.permission_denied.cannot_update_team_member'),
                 type: 'danger'
@@ -128,7 +123,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
             return;
         }
 
-        if (!Gate::check('removeTeamMember', $team)) {
+        if (! Gate::check('removeTeamMember', $team)) {
             $this->sendNotification(
                 __('filament-jetstream::default.notification.permission_denied.cannot_remove_team_member'),
                 type: 'danger'

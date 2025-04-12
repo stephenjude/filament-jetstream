@@ -4,28 +4,14 @@ namespace Filament\Jetstream;
 
 class Jetstream
 {
-    public static function userModel(): string
+    public static function getForeignKey(string $class)
     {
-        return config('filament-jetstream.models.user');
+       return str($class)->classBasename()->snake()->append('_id')->toString();
     }
-
-    public static function teamModel(): string
-    {
-        return config('filament-jetstream.models.team');
-    }
-
-    public static function membershipModel(): string
-    {
-        return config('filament-jetstream.models.membership');
-    }
-
-    public static function teamInvitationModel(): string
-    {
-        return config('filament-jetstream.models.invitation');
-    }
-
     public static function plugin(): JetstreamPlugin
     {
-        return JetstreamPlugin::get();
+        return filament()
+            ->getPanel(config('filament-jetstream.panel'))
+            ->getPlugin('filament-jetstream');
     }
 }

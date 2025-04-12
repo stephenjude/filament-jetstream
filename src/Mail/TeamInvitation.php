@@ -2,8 +2,8 @@
 
 namespace Filament\Jetstream\Mail;
 
-use Filament\Jetstream\Models\TeamInvitation as TeamInvitationModel;
 use Illuminate\Bus\Queueable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\URL;
@@ -16,7 +16,7 @@ class TeamInvitation extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(public TeamInvitationModel $invitation) {}
+    public function __construct(public Model $invitation) {}
 
     /**
      * Build the message.
@@ -33,7 +33,10 @@ class TeamInvitation extends Mailable
             'invitation' => $this->invitation,
         ]);
 
-        return $this->markdown('filament-jetstream::emails.team-invitation', ['acceptUrl' => $url])
-            ->subject(__('filament-jetstream::default.mail.team_invitation.subject'));
+        return $this->subject(__('filament-jetstream::default.mail.team_invitation.subject'))
+            ->markdown('filament-jetstream::emails.team-invitation', [
+                'acceptUrl' => $url,
+                'teamName' => $this->invitation->team?->name,
+            ]);
     }
 }

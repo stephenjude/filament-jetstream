@@ -2,6 +2,7 @@
 
 namespace Filament\Jetstream\Models;
 
+use Filament\Jetstream\Jetstream;
 use Illuminate\Database\Eloquent\Model;
 
 class TeamInvitation extends Model
@@ -23,6 +24,10 @@ class TeamInvitation extends Model
      */
     public function team()
     {
-        return $this->belongsTo(config('filament-jetstream.models.team'));
+        $model = Jetstream::plugin()->teamModel();
+
+        $foreignKey = Jetstream::getForeignKey($model);
+
+        return $this->belongsTo($model, $foreignKey);
     }
 }

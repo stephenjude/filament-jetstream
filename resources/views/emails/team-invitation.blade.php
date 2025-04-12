@@ -1,5 +1,5 @@
 @component('mail::message')
-{{ __('filament-jetstream::default.mail.team_invitation.message.invitation', ['team' => $invitation->team->name]) }}
+{{ __('filament-jetstream::default.mail.team_invitation.message.invitation', ['team' => $teamName]) }}
 
 {{ __('filament-jetstream::default.mail.team_invitation.message.instruction') }}
 

@@ -53,7 +53,11 @@ class Team extends Model
      */
     public function owner()
     {
-        return $this->belongsTo(Jetstream::userModel(), 'user_id');
+        $model = Jetstream::plugin()->userModel();
+
+        $foreignKey = Jetstream::getForeignKey($model);
+
+        return $this->belongsTo($model, $foreignKey);
     }
 
     /**
@@ -73,7 +77,7 @@ class Team extends Model
      */
     public function users()
     {
-        return $this->belongsToMany(Jetstream::userModel(), Jetstream::membershipModel())
+        return $this->belongsToMany(Jetstream::plugin()->userModel(), Jetstream::plugin()->membershipModel())
             ->withPivot('role')
             ->withTimestamps()
             ->as('membership');
@@ -121,7 +125,7 @@ class Team extends Model
      */
     public function teamInvitations()
     {
-        return $this->hasMany(Jetstream::teamInvitationModel());
+        return $this->hasMany(Jetstream::plugin()->teamInvitationModel());
     }
 
     /**
