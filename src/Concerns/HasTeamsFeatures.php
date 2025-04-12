@@ -11,7 +11,6 @@ use Filament\Jetstream\Models\Membership;
 use Filament\Jetstream\Models\Team;
 use Filament\Jetstream\Models\TeamInvitation;
 use Filament\Jetstream\Role;
-use Filament\Notifications\Auth\VerifyEmail;
 use Filament\Notifications\Notification;
 use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Http\RedirectResponse;
@@ -146,7 +145,7 @@ trait HasTeamsFeatures
             ->success()
             ->title(__('filament-jetstream::default.notification.accepted_invitation.success.title'))
             ->body(__('filament-jetstream::default.notification.accepted_invitation.success.message', [
-                'team' => $invitation->team->name
+                'team' => $invitation->team->name,
             ]))
             ->send();
 

@@ -98,7 +98,7 @@ class Role implements JsonSerializable
     public static function roles(): Collection
     {
         return collect(static::$rolesAndPermissions)
-            ->map(fn(array $role) => (new static($role['key'], $role['name'], $role['permissions']))
+            ->map(fn (array $role) => (new static($role['key'], $role['name'], $role['permissions']))
                 ->description($role['description']));
     }
 
