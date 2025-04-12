@@ -55,7 +55,7 @@ class Team extends Model
     {
         $model = Jetstream::plugin()->userModel();
 
-        $foreignKey = Jetstream::getForeignKey($model);
+        $foreignKey = Jetstream::getForeignKeyColumn($model);
 
         return $this->belongsTo($model, $foreignKey);
     }

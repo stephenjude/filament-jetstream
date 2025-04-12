@@ -115,17 +115,13 @@ trait HasTeamsFeatures
 
         $team = $invitation->team;
 
-        $newTeamMember = Jetstream::plugin()->userModel()::firstOrCreate(
-            ['email' => $invitation->email],
-            ['name' => '', 'password' => bcrypt(Str::password())]
-        );
+        $newTeamMember = Jetstream::plugin()->userModel()::firstOrCreate(['email' => $invitation->email]);
 
-        if ( method_exists($newTeamMember, 'notify')) {
-            $notification = app(VerifyEmail::class);
-            $notification->url = Filament::getVerifyEmailUrl($user);
-
-            $newTeamMember->notify($notification);
-        }
+        $newTeamMember->forceFill([
+            'name' => $newTeamMember->name ?? str($invitation->email)->before('@')->toString(),
+            'email_verified_at' => now(),
+            'password' => bcrypt(Str::password()),
+        ])->save();
 
         abort_if(
             $team->hasUserWithEmail($newTeamMember->email),
@@ -149,12 +145,9 @@ trait HasTeamsFeatures
         Notification::make()
             ->success()
             ->title(__('filament-jetstream::default.notification.accepted_invitation.success.title'))
-            ->body(
-                __(
-                    'filament-jetstream::default.notification.accepted_invitation.success.message',
-                    ['team' => $invitation->team->name]
-                )
-            )
+            ->body(__('filament-jetstream::default.notification.accepted_invitation.success.message', [
+                'team' => $invitation->team->name
+            ]))
             ->send();
 
         $passwordResetUrl = null;

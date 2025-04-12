@@ -29,8 +29,12 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
 
     public function table(Table $table): Table
     {
+        $model =Jetstream::plugin()->membershipModel();
+
+        $teamForeignKeyColumn = Jetstream::getForeignKeyColumn(get_class($this->team));
+
         return $table
-            ->query(fn () => $this->team->users())
+            ->query(fn () => $model::with('user')->where($teamForeignKeyColumn, $this->team->id))
             ->columns([
                 Tables\Columns\Layout\Split::make([
                     Tables\Columns\ImageColumn::make('profile_photo_url')
@@ -69,7 +73,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                                 ];
                             }),
                     ])
-                    ->action(fn ($record, array $data) => $this->updateTeamRole($record, $data)),
+                    ->action(fn ($record, array $data) => $this->updateTeamRole($this->team, $record, $data)),
                 Tables\Actions\Action::make('removeTeamMember')
                     ->visible(
                         fn ($record): bool => $this->authUser()->id !== $record->id && Gate::check(
@@ -92,7 +96,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
             ]);
     }
 
-    public function updateTeamRole(Team $team, Model $teamMember, array $data): void
+    public function updateTeamRole(Model $team, Model $teamMember, array $data): void
     {
         if (! Gate::check('updateTeamMember', $team)) {
             $this->sendNotification(
@@ -132,9 +136,9 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
             return;
         }
 
-        $team->removeUser($teamMember);
+        $team->removeUser($teamMember->user);
 
-        $this->sendNotification(__('filament-jetstream::default.notification.team_member_removed.success'));
+        $this->sendNotification(__('filament-jetstream::default.notification.team_member_removed.success.message'));
 
         $team->fresh();
     }

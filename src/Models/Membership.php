@@ -24,11 +24,19 @@ class Membership extends Pivot
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(Jetstream::plugin()->userModel());
+        $model = Jetstream::plugin()->userModel();
+
+        $foreignKey = Jetstream::getForeignKeyColumn($model);
+
+        return $this->belongsTo($model, $foreignKey);
     }
 
     public function team(): BelongsTo
     {
-        return $this->belongsTo(Jetstream::plugin()->teamModel());
+        $model = Jetstream::plugin()->teamModel();
+
+        $foreignKey = Jetstream::getForeignKeyColumn($model);
+
+        return $this->belongsTo($model, $foreignKey);
     }
 }

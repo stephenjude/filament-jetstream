@@ -50,7 +50,7 @@ class AddTeamMember extends BaseLivewireComponent
                             ->required()
                             ->unique(table: Jetstream::plugin()->teamInvitationModel(), modifyRuleUsing: function (Unique $rule) {
                                 return $rule->where(
-                                    Jetstream::getForeignKey(Jetstream::plugin()->teamModel()),
+                                    Jetstream::getForeignKeyColumn(Jetstream::plugin()->teamModel()),
                                     $this->team->id
                                 );
                             })

@@ -146,7 +146,6 @@ return [
         ],
 
         'team_member_removed' => [
-
             'success' => [
                 'message' => 'You have removed this team member.',
             ],
