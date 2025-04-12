@@ -2,7 +2,6 @@
 
 namespace Filament\Jetstream\Livewire\Teams;
 
-use Filament\Facades\Filament;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Models\Team;
 use Filament\Tables;
