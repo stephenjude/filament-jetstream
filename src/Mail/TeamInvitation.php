@@ -2,6 +2,7 @@
 
 namespace Filament\Jetstream\Mail;
 
+use Filament\Jetstream\Jetstream;
 use Illuminate\Bus\Queueable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Mail\Mailable;
@@ -26,7 +27,7 @@ class TeamInvitation extends Mailable
     public function build()
     {
         $path = __('filament.:path.team-invitations.accept', [
-            'path' => filament()->getId(),
+            'path' => Jetstream::panel()->getId()
         ]);
 
         $url = URL::signedRoute($path, [

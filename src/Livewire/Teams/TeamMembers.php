@@ -43,7 +43,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                         ->circular()
                         ->size(25)
                         ->grow(false),
-                    Tables\Columns\TextColumn::make('user.name'),
+                    Tables\Columns\TextColumn::make('user.email'),
                 ]),
             ])
             ->paginated(false)

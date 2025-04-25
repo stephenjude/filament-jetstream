@@ -8,6 +8,7 @@ use Filament\Jetstream\Models\Team;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 
 class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Contracts\HasTable
@@ -36,10 +37,12 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
                     ->label(__('filament-jetstream::default.action.resend_team_invitation.label'))
                     ->color('primary')
                     ->requiresConfirmation()
+                    ->visible(fn()=>Gate::check('updateTeamMember', $this->team))
                     ->action(fn ($record) => $this->resendTeamInvitation($this->team, $record)),
                 Tables\Actions\Action::make('cancelTeamInvitation')
                     ->label(__('filament-jetstream::default.action.cancel_team_invitation.label'))
                     ->color('danger')
+                    ->visible(fn()=>Gate::check('removeTeamMember', $this->team))
                     ->requiresConfirmation()
                     ->action(fn ($record) => $this->cancelTeamInvitation($this->team, $record)),
             ]);

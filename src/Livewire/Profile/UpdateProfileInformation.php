@@ -77,9 +77,7 @@ class UpdateProfileInformation extends BaseLivewireComponent
 
         $isUpdatingPhoto = $data['profile_photo_path'] !== $user->profile_photo_path;
 
-        $user->fill(Arr::except($data, ['profile_photo_path']));
-
-        $user->save();
+        $user->forceFill(Arr::except($data, ['profile_photo_path']))->save();
 
         if ($isUpdatingEmail) {
             $user->forceFill(['email_verified_at' => null]);

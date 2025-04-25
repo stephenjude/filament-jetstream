@@ -28,7 +28,7 @@ trait HasTeamsFeatures
 
     public string $teamInvitationModel = TeamInvitation::class;
 
-    public Closure | bool $hasTeamFeature = false;
+    public Closure|bool $hasTeamFeature = false;
 
     public ?Closure $acceptTeamInvitation = null;
 
@@ -37,7 +37,7 @@ trait HasTeamsFeatures
         return $this->evaluate($this->hasTeamFeature) === true;
     }
 
-    public function teams(Closure | bool $condition = true, ?Closure $acceptTeamInvitation = null): static
+    public function teams(Closure|bool $condition = true, ?Closure $acceptTeamInvitation = null): static
     {
         $this->hasTeamFeature = $condition;
 
@@ -57,7 +57,7 @@ trait HasTeamsFeatures
     public function teamsRoutes(): array
     {
         return [
-            Route::get('/team-invitations/{invitation}', fn ($invitation) => $this->acceptTeamInvitation === null
+            Route::get('/team-invitations/{invitation}', fn($invitation) => $this->acceptTeamInvitation === null
                 ? $this->defaultAcceptTeamInvitation($invitation)
                 : $this->evaluate($this->acceptTeamInvitation, ['invitationId' => $invitation]))
                 ->middleware(['signed'])
@@ -102,7 +102,7 @@ trait HasTeamsFeatures
         return $this->roleModel;
     }
 
-    public function defaultAcceptTeamInvitation(string | int $invitationId): RedirectResponse
+    public function defaultAcceptTeamInvitation(string|int $invitationId): RedirectResponse
     {
         $model = Jetstream::plugin()->teamInvitationModel();
 
@@ -110,12 +110,12 @@ trait HasTeamsFeatures
 
         $team = $invitation->team;
 
-        $newTeamMember = Jetstream::plugin()->userModel()::firstOrCreate(['email' => $invitation->email]);
+        $newTeamMember = Jetstream::plugin()->userModel()::firstOrCreate(['email' => $invitation->email], [
+            'password' => bcrypt(Str::password()),
+        ]);
 
         $newTeamMember->forceFill([
-            'name' => $newTeamMember->name ?? str($invitation->email)->before('@')->toString(),
             'email_verified_at' => now(),
-            'password' => bcrypt(Str::password()),
         ])->save();
 
         abort_if(
@@ -140,9 +140,11 @@ trait HasTeamsFeatures
         Notification::make()
             ->success()
             ->title(__('filament-jetstream::default.notification.accepted_invitation.success.title'))
-            ->body(__('filament-jetstream::default.notification.accepted_invitation.success.message', [
-                'team' => $invitation->team->name,
-            ]))
+            ->body(
+                __('filament-jetstream::default.notification.accepted_invitation.success.message', [
+                    'team' => $invitation->team->name,
+                ])
+            )
             ->send();
 
         $passwordResetUrl = null;

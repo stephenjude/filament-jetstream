@@ -8,6 +8,7 @@ use Filament\Jetstream\Events\TeamUpdated;
 use Filament\Jetstream\Jetstream;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Team extends Model
 {
@@ -75,9 +76,22 @@ class Team extends Model
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users()
+    public function users():BelongsToMany
     {
-        return $this->belongsToMany(Jetstream::plugin()->userModel(), Jetstream::plugin()->membershipModel())
+        $userModel= Jetstream::plugin()->userModel();
+
+        $membershipModel =  Jetstream::plugin()->membershipModel();
+
+        $foreignPivotKey = Jetstream::getForeignKeyColumn(Jetstream::plugin()->teamModel());
+
+        $relatedPivotKey = Jetstream::getForeignKeyColumn($userModel);
+
+        return $this->belongsToMany(
+            $userModel,
+            $membershipModel,
+            $foreignPivotKey,
+            $relatedPivotKey,
+        )
             ->withPivot('role')
             ->withTimestamps()
             ->as('membership');
@@ -125,7 +139,9 @@ class Team extends Model
      */
     public function teamInvitations()
     {
-        return $this->hasMany(Jetstream::plugin()->teamInvitationModel());
+        $foreignKey = Jetstream::getForeignKeyColumn(Jetstream::plugin()->teamModel());
+
+        return $this->hasMany(Jetstream::plugin()->teamInvitationModel(), $foreignKey);
     }
 
     /**

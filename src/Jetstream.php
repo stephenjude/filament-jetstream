@@ -2,6 +2,8 @@
 
 namespace Filament\Jetstream;
 
+use Filament\Panel;
+
 class Jetstream
 {
     public static function getForeignKeyColumn(string $class)
@@ -11,8 +13,13 @@ class Jetstream
 
     public static function plugin(): JetstreamPlugin
     {
-        return filament()
-            ->getPanel(config('filament-jetstream.panel'))
+        return static::panel()
             ->getPlugin('filament-jetstream');
+    }
+
+    public static function panel(): Panel
+    {
+        return filament()
+            ->getPanel(config('filament-jetstream.panel'));
     }
 }

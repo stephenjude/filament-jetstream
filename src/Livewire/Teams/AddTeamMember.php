@@ -16,6 +16,7 @@ use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Mail\TeamInvitation;
 use Filament\Jetstream\Models\Team;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Unique;
 
@@ -39,16 +40,19 @@ class AddTeamMember extends BaseLivewireComponent
             ->schema([
                 Section::make(__('filament-jetstream::default.add_team_member.section.title'))
                     ->aside()
+                    ->visible(fn() => Gate::check('addTeamMember', $this->team))
                     ->description(__('filament-jetstream::default.add_team_member.section.description'))
                     ->schema([
                         Placeholder::make('addTeamMemberNotice')
                             ->hiddenLabel()
-                            ->content(fn () => __('filament-jetstream::default.add_team_member.section.notice')),
+                            ->content(fn() => __('filament-jetstream::default.add_team_member.section.notice')),
                         TextInput::make('email')
                             ->label(__('filament-jetstream::default.form.email.label'))
                             ->email()
                             ->required()
-                            ->unique(table: Jetstream::plugin()->teamInvitationModel(), modifyRuleUsing: function (Unique $rule) {
+                            ->unique(table: Jetstream::plugin()->teamInvitationModel(), modifyRuleUsing: function (
+                                Unique $rule
+                            ) {
                                 return $rule->where(
                                     Jetstream::getForeignKeyColumn(Jetstream::plugin()->teamModel()),
                                     $this->team->id
@@ -59,11 +63,17 @@ class AddTeamMember extends BaseLivewireComponent
                                     'filament-jetstream::default.action.add_team_member.error_message.email_already_invited'
                                 ),
                             ])
-                            ->rules([fn (): \Closure => function (string $attribute, $value, \Closure $fail) {
-                                if ($this->team->hasUserWithEmail($value)) {
-                                    $fail(__('filament-jetstream::default.action.add_team_member.error_message.email_already_invited'));
+                            ->rules([
+                                fn(): \Closure => function (string $attribute, $value, \Closure $fail) {
+                                    if ($this->team->hasUserWithEmail($value)) {
+                                        $fail(
+                                            __(
+                                                'filament-jetstream::default.action.add_team_member.error_message.email_already_invited'
+                                            )
+                                        );
+                                    }
                                 }
-                            }]),
+                            ]),
                         Grid::make()
                             ->columns(1)
                             ->schema(function () {

@@ -8,6 +8,7 @@ use Filament\Forms\Components\Actions;
 use Filament\Forms\Form;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Models\Team;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class DeleteTeam extends BaseLivewireComponent
@@ -26,6 +27,7 @@ class DeleteTeam extends BaseLivewireComponent
                 Forms\Components\Section::make(__('filament-jetstream::default.delete_team.section.title'))
                     ->description(__('filament-jetstream::default.delete_team.section.description'))
                     ->aside()
+                    ->visible(fn() =>Gate::check('delete', $this->team))
                     ->schema([
                         Forms\Components\Placeholder::make('notice')
                             ->hiddenLabel()
