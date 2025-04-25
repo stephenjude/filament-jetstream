@@ -73,14 +73,12 @@ class Team extends Model
 
     /**
      * Get all of the users that belong to the team.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function users():BelongsToMany
+    public function users(): BelongsToMany
     {
-        $userModel= Jetstream::plugin()->userModel();
+        $userModel = Jetstream::plugin()->userModel();
 
-        $membershipModel =  Jetstream::plugin()->membershipModel();
+        $membershipModel = Jetstream::plugin()->membershipModel();
 
         $foreignPivotKey = Jetstream::getForeignKeyColumn(Jetstream::plugin()->teamModel());
 

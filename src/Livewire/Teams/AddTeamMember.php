@@ -40,12 +40,12 @@ class AddTeamMember extends BaseLivewireComponent
             ->schema([
                 Section::make(__('filament-jetstream::default.add_team_member.section.title'))
                     ->aside()
-                    ->visible(fn() => Gate::check('addTeamMember', $this->team))
+                    ->visible(fn () => Gate::check('addTeamMember', $this->team))
                     ->description(__('filament-jetstream::default.add_team_member.section.description'))
                     ->schema([
                         Placeholder::make('addTeamMemberNotice')
                             ->hiddenLabel()
-                            ->content(fn() => __('filament-jetstream::default.add_team_member.section.notice')),
+                            ->content(fn () => __('filament-jetstream::default.add_team_member.section.notice')),
                         TextInput::make('email')
                             ->label(__('filament-jetstream::default.form.email.label'))
                             ->email()
@@ -64,7 +64,7 @@ class AddTeamMember extends BaseLivewireComponent
                                 ),
                             ])
                             ->rules([
-                                fn(): \Closure => function (string $attribute, $value, \Closure $fail) {
+                                fn (): \Closure => function (string $attribute, $value, \Closure $fail) {
                                     if ($this->team->hasUserWithEmail($value)) {
                                         $fail(
                                             __(
@@ -72,7 +72,7 @@ class AddTeamMember extends BaseLivewireComponent
                                             )
                                         );
                                     }
-                                }
+                                },
                             ]),
                         Grid::make()
                             ->columns(1)
