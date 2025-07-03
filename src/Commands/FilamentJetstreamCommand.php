@@ -71,7 +71,7 @@ class FilamentJetstreamCommand extends Command
     protected function installFilamentPackage(): bool
     {
         if (! $this->hasComposerPackage('filament/filament')) {
-            return $this->requireComposerPackages('filament/filament:^3.2');
+            return $this->requireComposerPackages('filament/filament:^4.0');
         }
 
         return true;
