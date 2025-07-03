@@ -3,7 +3,7 @@
 namespace App\Listeners;
 
 use App\Models\Team;
-use Filament\Events\Auth\Registered;
+use Filament\Auth\Events\Registered;
 use Laravel\Jetstream\Features;
 
 class CreatePersonalTeam
@@ -25,8 +25,8 @@ class CreatePersonalTeam
 
         if (Features::hasTeamFeatures()) {
             $team = Team::forceCreate([
-                'user_id' => $user->id,
-                'name' => explode(' ', $user->name, 2)[0] . "'s Team",
+                'user_id' => $user->getAuthIdentifier(),
+                'name' => explode(' ', ($user->name ?? 'Unknown'), 2)[0] . "'s Team",
                 'personal_team' => true,
             ]);
 

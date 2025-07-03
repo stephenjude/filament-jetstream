@@ -3,8 +3,8 @@
 namespace App\Filament\Pages;
 
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Pages\Tenancy\RegisterTenant;
+use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
 
 class CreateTeam extends RegisterTenant
@@ -14,10 +14,10 @@ class CreateTeam extends RegisterTenant
         return __('Create Team');
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 TextInput::make('name')
                     ->translateLabel(),
             ]);

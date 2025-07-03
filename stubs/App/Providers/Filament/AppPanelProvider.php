@@ -8,6 +8,7 @@ use App\Filament\Pages\EditProfile;
 use App\Filament\Pages\EditTeam;
 use App\Listeners\SwitchTeam;
 use App\Models\Team;
+use Filament\Actions\Action;
 use Filament\Events\TenantSet;
 use Filament\Facades\Filament;
 use Filament\Http\Middleware\Authenticate;
@@ -48,7 +49,7 @@ class AppPanelProvider extends PanelProvider
                 'primary' => Color::Gray,
             ])
             ->userMenuItems([
-                MenuItem::make()
+                Action::make()
                     ->label('Profile')
                     ->icon('heroicon-o-user-circle')
                     ->url(fn () => $this->shouldRegisterMenuItem()
@@ -84,7 +85,7 @@ class AppPanelProvider extends PanelProvider
 
         if (Features::hasApiFeatures()) {
             $panel->userMenuItems([
-                MenuItem::make()
+                Action::make()
                     ->label('API Tokens')
                     ->icon('heroicon-o-key')
                     ->url(fn () => $this->shouldRegisterMenuItem()
@@ -99,7 +100,7 @@ class AppPanelProvider extends PanelProvider
                 ->tenantRegistration(CreateTeam::class)
                 ->tenantProfile(EditTeam::class)
                 ->userMenuItems([
-                    MenuItem::make()
+                    Action::make()
                         ->label(__('Team Settings'))
                         ->icon('heroicon-o-cog-6-tooth')
                         ->url(fn () => $this->shouldRegisterMenuItem()
