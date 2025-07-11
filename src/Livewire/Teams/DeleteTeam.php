@@ -27,7 +27,7 @@ class DeleteTeam extends BaseLivewireComponent
                 Forms\Components\Section::make(__('filament-jetstream::default.delete_team.section.title'))
                     ->description(__('filament-jetstream::default.delete_team.section.description'))
                     ->aside()
-                    ->visible(fn() =>Gate::check('delete', $this->team))
+                    ->visible(fn () => Gate::check('delete', $this->team))
                     ->schema([
                         Forms\Components\Placeholder::make('notice')
                             ->hiddenLabel()
