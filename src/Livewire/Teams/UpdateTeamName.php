@@ -6,8 +6,10 @@ use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Models\Team;
+use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
@@ -32,9 +34,9 @@ class UpdateTeamName extends BaseLivewireComponent
                     ->aside()
                     ->description(__('filament-jetstream::default.update_team_name.section.description'))
                     ->schema([
-                        Placeholder::make('team_owner')
+                        TextEntry::make('team_owner')
                             ->label(__('filament-jetstream::default.form.team_owner.label'))
-                            ->content(fn (): string => __(':name (:email)', [
+                            ->state(fn (): string => __(':name (:email)', [
                                 'name' => $this->authUser()->name,
                                 'email' => $this->authUser()->email,
                             ])),

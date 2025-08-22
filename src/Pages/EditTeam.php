@@ -2,19 +2,18 @@
 
 namespace Filament\Jetstream\Pages;
 
-use Filament\Forms\Components\Livewire;
 use Filament\Jetstream\Livewire\Teams\AddTeamMember;
 use Filament\Jetstream\Livewire\Teams\DeleteTeam;
 use Filament\Jetstream\Livewire\Teams\PendingTeamInvitations;
 use Filament\Jetstream\Livewire\Teams\TeamMembers;
 use Filament\Jetstream\Livewire\Teams\UpdateTeamName;
 use Filament\Pages\Tenancy\EditTenantProfile;
-use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Schema;
 
 class EditTeam extends EditTenantProfile
 {
-    protected static string $view = 'filament-jetstream::pages.edit-team';
+    protected string $view = 'filament-jetstream::pages.edit-team';
 
     protected static ?int $navigationSort = 2;
 

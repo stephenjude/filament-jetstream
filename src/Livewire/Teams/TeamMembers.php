@@ -2,14 +2,15 @@
 
 namespace Filament\Jetstream\Livewire\Teams;
 
+use Filament\Actions\Action;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Radio;
 use Filament\Jetstream\Events\TeamMemberUpdated;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Models\Team;
 use Filament\Jetstream\Role;
+use Filament\Schemas\Components\Grid;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -47,7 +48,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                 ]),
             ])
             ->paginated(false)
-            ->actions([
+            ->recordActions([
                 Action::make('updateTeamRole')
                     ->visible(fn ($record): bool => Gate::check('updateTeamMember', $this->team))
                     ->label(fn ($record): string => Role::find($record->role)->name)
@@ -56,7 +57,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                     ->modalSubmitActionLabel(__('filament-jetstream::default.action.save.label'))
                     ->modalCancelAction(false)
                     ->modalFooterActionsAlignment(Alignment::End)
-                    ->form([
+                    ->schema([
                         Grid::make()
                             ->columns(1)
                             ->schema(function () {
@@ -92,7 +93,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                     ->label(__('filament-jetstream::default.action.leave_team.label'))
                     ->modalDescription(__('filament-jetstream::default.action.leave_team.notice'))
                     ->requiresConfirmation()
-                    ->action(fn ($record) => $this->leaveTeam()),
+                    ->action(fn ($record) => $this->leaveTeam($record)),
             ]);
     }
 

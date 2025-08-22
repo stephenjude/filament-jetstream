@@ -2,18 +2,20 @@
 
 namespace Filament\Jetstream\Livewire\Teams;
 
+use Closure;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Actions\Action;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\TextInput;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Jetstream\Events\InvitingTeamMember;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Mail\TeamInvitation;
 use Filament\Jetstream\Models\Team;
+use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\Gate;
@@ -43,9 +45,9 @@ class AddTeamMember extends BaseLivewireComponent
                     ->visible(fn () => Gate::check('addTeamMember', $this->team))
                     ->description(__('filament-jetstream::default.add_team_member.section.description'))
                     ->schema([
-                        Placeholder::make('addTeamMemberNotice')
+                        TextEntry::make('addTeamMemberNotice')
                             ->hiddenLabel()
-                            ->content(fn () => __('filament-jetstream::default.add_team_member.section.notice')),
+                            ->state(fn () => __('filament-jetstream::default.add_team_member.section.notice')),
                         TextInput::make('email')
                             ->label(__('filament-jetstream::default.form.email.label'))
                             ->email()
@@ -64,7 +66,7 @@ class AddTeamMember extends BaseLivewireComponent
                                 ),
                             ])
                             ->rules([
-                                fn (): \Closure => function (string $attribute, $value, \Closure $fail) {
+                                fn (): Closure => function (string $attribute, $value, Closure $fail) {
                                     if ($this->team->hasUserWithEmail($value)) {
                                         $fail(
                                             __(

@@ -7,7 +7,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Jetstream\Events\AddingTeam;
 use Filament\Pages\Tenancy\RegisterTenant;
 use Filament\Schemas\Schema;
-use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
 
 class CreateTeam extends RegisterTenant

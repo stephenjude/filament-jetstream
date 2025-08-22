@@ -39,7 +39,7 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
                     ->color('primary')
                     ->requiresConfirmation()
                     ->visible(fn () => Gate::check('updateTeamMember', $this->team))
-                    ->action(fn ($record) => $this->resendTeamInvitation($this->team, $record)),
+                    ->action(fn ($record) => $this->resendTeamInvitation($record)),
                 Action::make('cancelTeamInvitation')
                     ->label(__('filament-jetstream::default.action.cancel_team_invitation.label'))
                     ->color('danger')
@@ -49,7 +49,7 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
             ]);
     }
 
-    public function resendTeamInvitation(Team $team, Model $invitation)
+    public function resendTeamInvitation(Model $invitation)
     {
         Mail::to($invitation->email)->send(new TeamInvitation($invitation));
 
