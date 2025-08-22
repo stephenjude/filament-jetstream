@@ -3,16 +3,18 @@
 namespace Filament\Jetstream\Livewire\ApiTokens;
 
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
-use Filament\Facades\Filament;
 use Filament\Actions\Action;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Components\Grid;
-use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Schema;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
 use Laravel\Sanctum\PersonalAccessToken;
@@ -22,7 +24,9 @@ class CreateApiToken extends BaseLivewireComponent
 {
     public ?array $data = [];
 
-    public function mount(): void {}
+    public function mount(): void
+    {
+    }
 
     public function form(Schema $schema): Schema
     {
@@ -38,16 +42,16 @@ class CreateApiToken extends BaseLivewireComponent
                             ->required()
                             ->string()
                             ->maxLength(255),
-                        Placeholder::make('permissions')
-                            ->label(__('filament-jetstream::default.form.permissions.label')),
+                        TextEntry::make('permissions')
+                            ->label(__('filament-jetstream::default.form.permissions.label'))
+                        ->state(''),
                         Grid::make()
                             ->columns()
                             ->schema(
-                                fn () => collect(Jetstream::plugin()?->getApiTokenPermissions())
-                                    ->map(fn ($permission) => Checkbox::make($permission)->label(__($permission)))
+                                fn() => collect(Jetstream::plugin()?->getApiTokenPermissions())
+                                    ->map(fn($permission) => Checkbox::make($permission)->label(__($permission)))
                                     ->toArray()
                             ),
-
                         Actions::make([
                             Action::make('save')
                                 ->label(__('filament-jetstream::default.action.create_token.label'))
@@ -96,7 +100,7 @@ class CreateApiToken extends BaseLivewireComponent
                 Action::make('copy')
                     ->label(__('filament-jetstream::default.action.copy_token.label'))
                     ->icon('heroicon-o-square-2-stack')
-                    ->alpineClickHandler('(window.navigator.clipboard.writeText("' . $plainTextToken . '"))')
+                    ->alpineClickHandler('(window.navigator.clipboard.writeText("'.$plainTextToken.'"))')
                     ->dispatch('token-copied', ['token' => $plainTextToken]),
             ])
             ->persistent()

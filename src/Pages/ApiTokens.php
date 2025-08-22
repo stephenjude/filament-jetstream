@@ -12,7 +12,7 @@ class ApiTokens extends Page
 
     protected static bool $isDiscovered = false;
 
-    protected static ?string $slug = 'api-tokens';
+    protected static ?string $slug = 'tokens';
 
     protected static ?string $title = 'API Tokens';
 
@@ -20,9 +20,9 @@ class ApiTokens extends Page
 
     protected string $view = 'filament-jetstream::pages.api-tokens';
 
-    public static function getRelativeRouteName(): string
+    public static function getRelativeRouteName(Panel $panel): string
     {
-        return 'api-tokens';
+        return 'tokens';
     }
 
     public static function registerRoutes(Panel $panel): void

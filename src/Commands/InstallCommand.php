@@ -18,7 +18,6 @@ class InstallCommand extends Command
      */
     public function handle(): int
     {
-
         // Add Filament Default Panel to Service Provider...
         (new Filesystem)->ensureDirectoryExists(app_path('Providers/Filament'));
         ServiceProvider::addProviderToBootstrapFile('App\Providers\Filament\AppPanelProvider');
@@ -56,36 +55,36 @@ class InstallCommand extends Command
         }
 
         // Factories...
-        copy(__DIR__ . '/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
+        copy(__DIR__.'/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
 
         // User Model...
-        copy(__DIR__ . '/../../stubs/app/Models/User.php', app_path('Models/User.php'));
+        copy(__DIR__.'/../../stubs/app/Models/User.php', app_path('Models/User.php'));
 
         // Default Filament Panel...
         copy(
-            __DIR__ . '/../../stubs/app/Providers/AppPanelProvider.php',
+            __DIR__.'/../../stubs/app/Providers/AppPanelProvider.php',
             app_path('Providers/Filament/AppPanelProvider.php')
         );
 
-        // Teams...
+        // Setup Team
         if ($this->option('teams')) {
             $this->call('vendor:publish', ['--tag' => 'filament-jetstream-team-migrations', '--force' => true]);
 
-            // Factories...
-            copy(__DIR__ . '/../../database/factories/TeamFactory.php', base_path('database/factories/TeamFactory.php'));
+            // Factories
+            copy(__DIR__.'/../../database/factories/TeamFactory.php', base_path('database/factories/TeamFactory.php'));
 
-            // Implement \Filament\Models\Contracts\HasTenants contract in User Model...
+            // Implement \Filament\Models\Contracts\HasTenants contract in User Model
             $this->replaceInFile(
-                '//use Filament\Models\Contracts\HasTenants;',
+                '// use Filament\Models\Contracts\HasTenants;',
                 'use Filament\Models\Contracts\HasTenants;',
                 app_path('Models/User.php')
             );
 
             $this->replaceInFile(', MustVerifyEmail', ', MustVerifyEmail, HasTenants', app_path('Models/User.php'));
 
-            // Add \Filament\Jetstream\HasTeams trait to User Model...
+            // Add \Filament\Jetstream\HasTeams trait to User Model
             $this->replaceInFile(
-                '//use Filament\Jetstream\HasTeams',
+                '// use Filament\Jetstream\HasTeams',
                 'use Filament\Jetstream\HasTeams',
                 app_path('Models/User.php')
             );
@@ -96,15 +95,20 @@ class InstallCommand extends Command
                 app_path('Models/User.php')
             );
 
-            // Add Teams feature to Filament Panel...
-            $this->replaceInFile('// ->teams()', '->teams()', app_path('Providers/Filament/AppPanelProvider.php'));
+            // Add Teams features to Filament Panel
+            $this->replaceInFile(
+                '->twoFactorAuthentication()',
+                '->twoFactorAuthentication()
+                    ->teams()',
+                app_path('Providers/Filament/AppPanelProvider.php')
+            );
         }
 
-        // API Tokens...
+        // API Tokens
         if ($this->option('api')) {
             // Add HasApiTokens trait to User Model...
             $this->replaceInFile(
-                '//use Laravel\Sanctum\HasApiTokens;',
+                '// use Laravel\Sanctum\HasApiTokens;',
                 'use Laravel\Sanctum\HasApiTokens;',
                 app_path('Models/User.php')
             );
@@ -117,27 +121,29 @@ class InstallCommand extends Command
 
             // Add API token feature to Filament Panel...
             $this->replaceInFile(
-                '// ->apiTokens()',
-                '->apiTokens()',
+                '->twoFactorAuthentication()',
+                '->twoFactorAuthentication()
+                    ->apiTokens()',
                 app_path('Providers/Filament/AppPanelProvider.php')
             );
-        }
 
-        if ($this->option('api')) {
             $this->call('install:api', ['--without-migration-prompt' => true]);
         }
-
-        // Publish default migrations
-        $this->call('vendor:publish', ['--tag' => 'filament-jetstream-migrations']);
-
-        // Link local storage...
-        $this->call('storage:link');
 
         // Publish filament assets
         $this->call('filament:install', ['--scaffold' => true, '--notifications' => true]);
 
-        // Install 2FA
-        $this->call('filament-two-factor-authentication:install');
+        // Publish passkey migrations
+        $this->call('vendor:publish', ['--tag' => 'passkeys-migrations']);
+
+        // Publish jetstream migrations
+        $this->call('vendor:publish', ['--tag' => 'filament-jetstream-migrations']);
+
+        // Publish 2FA migrations
+        $this->call('vendor:publish', ['--tag' => 'filament-two-factor-authentication-migrations']);
+
+        // Link local storage
+        $this->call('storage:link');
 
         $this->info('DONE: Filament Jetstream starter kit installed successfully.');
 

@@ -3,6 +3,7 @@
 namespace Filament\Jetstream\Concerns;
 
 use Closure;
+use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use Filament\Navigation\MenuItem;
 use Filament\Panel;
@@ -52,9 +53,9 @@ trait HasApiTokensFeatures
         return array_combine($permissions, $permissions);
     }
 
-    public function apiTokenMenuItem(Panel $panel): MenuItem
+    public function apiTokenMenuItem(Panel $panel): Action
     {
-        return MenuItem::make()
+        return Action::make('api_tokens')
             ->visible(fn (): bool => $this->hasApiTokensFeatures())
             ->label(fn () => $this->getApiMenuItemLabel())
             ->icon(fn () => $this->getApiMenuItemIcon())
@@ -65,15 +66,7 @@ trait HasApiTokensFeatures
 
     public function getApiTokenUrl(Panel $panel): ?string
     {
-        if (! $panel->hasTenancy()) {
-            return $panel->route('api-tokens');
-        }
-
-        if ($tenant = Filament::getTenant()) {
-            return $panel->route('api-tokens', ['tenant' => $tenant->id]);
-        }
-
-        return null;
+        return $panel->getUrl().'/tokens';
     }
 
     public function validPermissions(array $permissions): array

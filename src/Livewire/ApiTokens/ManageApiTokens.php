@@ -2,6 +2,7 @@
 
 namespace Filament\Jetstream\Livewire\ApiTokens;
 
+use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Schemas\Schema;
 use Filament\Jetstream\Jetstream;
@@ -27,7 +28,7 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
                 ]),
             ])
             ->paginated(false)
-            ->actions([
+            ->recordActions([
                 Action::make('updateToken')
                     ->label(__('filament-jetstream::default.action.update_token.label'))
                     ->modalHeading(__('filament-jetstream::default.action.update_token.title'))
