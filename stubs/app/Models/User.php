@@ -2,23 +2,28 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Filament\Jetstream\HasProfilePhoto;
-use Filament\Jetstream\TwoFactorAuthenticatable;
 use Filament\Models\Contracts\FilamentUser;
+//use Filament\Models\Contracts\HasTenants;
+//use Laravel\Sanctum\HasApiTokens;
+//use Filament\Jetstream\HasTeams;
 use Filament\Panel;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
+use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticatable;
 
-class User extends Authenticatable implements FilamentUser // , \Filament\Models\Contracts\HasTenants
+
+class User extends Authenticatable implements FilamentUser, HasPasskeys, MustVerifyEmail
 {
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
-    // use \Laravel\Sanctum\HasApiTokens;
-    // use \Filament\Jetstream\HasTeams;
+    // use HasApiTokens;
+    // use HasTeams;
 
     /**
      * The attributes that are mass assignable.

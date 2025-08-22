@@ -5,11 +5,11 @@ namespace Filament\Jetstream\Pages;
 use Filament\Facades\Filament;
 use Filament\Jetstream\Jetstream;
 
-class EditProfile extends \Filament\Pages\Auth\EditProfile
+class EditProfile extends \Filament\Auth\Pages\EditProfile
 {
-    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+    protected static string|null|\BackedEnum $navigationIcon = 'heroicon-o-user-circle';
 
-    protected static string $view = 'filament-jetstream::pages.edit-profile';
+    protected string $view = 'filament-jetstream::pages.edit-profile';
 
     protected static ?string $navigationLabel = 'Profile';
 

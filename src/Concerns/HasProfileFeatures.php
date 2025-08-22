@@ -3,34 +3,33 @@
 namespace Filament\Jetstream\Concerns;
 
 use Closure;
-use Filament\Jetstream\Pages\Auth\Challenge;
-use Filament\Jetstream\Pages\Auth\Recovery;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\Rules\Password;
 
 trait HasProfileFeatures
 {
     public string $userModel = 'App\\Models\\User';
 
-    public Closure | bool $updateProfileInformation = true;
+    public Closure|bool $updateProfileInformation = true;
 
-    public Closure | bool $updateProfilePhoto = true;
+    public Closure|bool $updateProfilePhoto = true;
 
     public string $profilePhotoDisk = 'public';
 
-    public Closure | bool $updatePassword = true;
+    public Closure|bool $updatePassword = true;
 
-    public Closure | Password | null $passwordRule = null;
+    public Closure|Password|null $passwordRule = null;
 
-    protected Closure | bool $forceTwoFactorAuthentication = false;
+    protected Closure|bool $forceTwoFactorAuthentication = false;
 
-    protected Closure | bool $twoFactorAuthentication = true;
+    protected Closure|bool $enablePasskeyAuthentication = false;
 
-    public Closure | bool $logoutOtherBrowserSessions = true;
+    protected Closure|bool $twoFactorAuthentication = true;
 
-    public Closure | bool $deleteAccount = true;
+    public Closure|bool $logoutOtherBrowserSessions = true;
 
-    public function profilePhoto(Closure | bool $condition = true, string $disk = 'public'): static
+    public Closure|bool $deleteAccount = true;
+
+    public function profilePhoto(Closure|bool $condition = true, string $disk = 'public'): static
     {
         $this->updateProfilePhoto = $condition;
 
@@ -54,7 +53,7 @@ trait HasProfileFeatures
         return $this->evaluate($this->updateProfileInformation) === true;
     }
 
-    public function profileInformation(Closure | bool $condition = true): static
+    public function profileInformation(Closure|bool $condition = true): static
     {
         $this->updateProfileInformation = $condition;
 
@@ -71,7 +70,7 @@ trait HasProfileFeatures
         return $this->evaluate($this->passwordRule) ?? Password::default();
     }
 
-    public function updatePassword(Closure | bool $condition = true, ?Password $rule = null): static
+    public function updatePassword(Closure|bool $condition = true, ?Password $rule = null): static
     {
         $this->updatePassword = $condition;
 
@@ -80,11 +79,16 @@ trait HasProfileFeatures
         return $this;
     }
 
-    public function twoFactorAuthentication(bool | Closure $condition = true, bool | Closure $forced = false): static
-    {
+    public function twoFactorAuthentication(
+        bool|Closure $condition = true,
+        bool|Closure $forced = false,
+        bool|Closure $enablePasskey = true
+    ): static {
         $this->twoFactorAuthentication = $condition;
 
         $this->forceTwoFactorAuthentication = $forced;
+
+        $this->enablePasskeyAuthentication = $enablePasskey;
 
         return $this;
     }
@@ -94,17 +98,14 @@ trait HasProfileFeatures
         return $this->evaluate($this->twoFactorAuthentication) === true;
     }
 
+    public function enabledPasskeyAuthetication(): bool
+    {
+        return $this->evaluate($this->enablePasskeyAuthentication) === true;
+    }
+
     public function forceTwoFactorAuthetication(): bool
     {
         return $this->evaluate($this->forceTwoFactorAuthentication) === true;
-    }
-
-    public function twoFactorAuthenticationRoutes(): array
-    {
-        return [
-            Route::get('/two-factor-challenge', Challenge::class)->name('two-factor.challenge'),
-            Route::get('/two-factor-recovery', Recovery::class)->name('two-factor.recovery'),
-        ];
     }
 
     public function enabledLogoutOtherBrowserSessions(): bool
@@ -112,7 +113,7 @@ trait HasProfileFeatures
         return $this->evaluate($this->logoutOtherBrowserSessions) === true;
     }
 
-    public function logoutBrowserSessions(Closure | bool $condition = true): static
+    public function logoutBrowserSessions(Closure|bool $condition = true): static
     {
         $this->logoutOtherBrowserSessions = $condition;
 
@@ -124,7 +125,7 @@ trait HasProfileFeatures
         return $this->evaluate($this->deleteAccount) === true;
     }
 
-    public function deleteAccount(Closure | bool $condition = true): static
+    public function deleteAccount(Closure|bool $condition = true): static
     {
         $this->deleteAccount = $condition;
 

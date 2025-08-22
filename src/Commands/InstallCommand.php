@@ -8,7 +8,7 @@ use Illuminate\Support\ServiceProvider;
 
 class InstallCommand extends Command
 {
-    public $signature = 'filament:jetstream:install {--teams : Indicates if team support should be installed}
+    public $signature = 'filament-jetstream:install {--teams : Indicates if team support should be installed}
                                               {--api : Indicates if API support should be installed}';
 
     public $description = 'Install the Laravel Jetstream and Filament Panel components.';
@@ -18,47 +18,85 @@ class InstallCommand extends Command
      */
     public function handle(): int
     {
-        // Publish...
-        $this->callSilent('vendor:publish', ['--tag' => 'filament-jetstream-migrations', '--force' => true]);
+        // Publish Migration...
+        $this->call('vendor:publish', ['--tag' => 'filament-jetstream-migrations']);
 
-        // Storage...
-        $this->callSilent('storage:link');
+        // Add Filament Default Panel to Service Provider...
+        (new Filesystem)->ensureDirectoryExists(app_path('Providers/Filament'));
+        ServiceProvider::addProviderToBootstrapFile('App\Providers\Filament\AppPanelProvider');
 
         if (file_exists(resource_path('views/welcome.blade.php'))) {
-            $this->replaceInFile("Route::has('login')", 'filament()->hasLogin()', resource_path('views/welcome.blade.php'));
+            $this->replaceInFile(
+                "Route::has('login')",
+                'filament()->hasLogin()',
+                resource_path('views/welcome.blade.php')
+            );
 
-            $this->replaceInFile("{{ route('login') }}", '{{ filament()->getLoginUrl() }}', resource_path('views/welcome.blade.php'));
+            $this->replaceInFile(
+                "{{ route('login') }}",
+                '{{ filament()->getLoginUrl() }}',
+                resource_path('views/welcome.blade.php')
+            );
 
-            $this->replaceInFile("Route::has('register')", 'filament()->hasRegistration()', resource_path('views/welcome.blade.php'));
+            $this->replaceInFile(
+                "Route::has('register')",
+                'filament()->hasRegistration()',
+                resource_path('views/welcome.blade.php')
+            );
 
-            $this->replaceInFile("{{ route('register') }}", '{{ filament()->getRegistrationUrl() }}', resource_path('views/welcome.blade.php'));
+            $this->replaceInFile(
+                "{{ route('register') }}",
+                '{{ filament()->getRegistrationUrl() }}',
+                resource_path('views/welcome.blade.php')
+            );
 
-            $this->replaceInFile("{{ url('/dashboard') }}", '{{ filament()->getHomeUrl() }}', resource_path('views/welcome.blade.php'));
+            $this->replaceInFile(
+                "{{ url('/dashboard') }}",
+                '{{ filament()->getHomeUrl() }}',
+                resource_path('views/welcome.blade.php')
+            );
         }
 
-        (new Filesystem)->ensureDirectoryExists(app_path('Providers/Filament'));
-
         // Factories...
-        copy(__DIR__ . '/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
+        copy(__DIR__.'/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
 
         // User Model...
-        copy(__DIR__ . '/../../stubs/app/Models/User.php', app_path('Models/User.php'));
+        copy(__DIR__.'/../../stubs/app/Models/User.php', app_path('Models/User.php'));
 
         // Default Filament Panel...
-        copy(__DIR__ . '/../../stubs/app/Providers/AppPanelProvider.php', app_path('Providers/Filament/AppPanelProvider.php'));
+        copy(
+            __DIR__.'/../../stubs/app/Providers/AppPanelProvider.php',
+            app_path('Providers/Filament/AppPanelProvider.php')
+        );
 
         // Teams...
         if ($this->option('teams')) {
-            $this->callSilently('vendor:publish', ['--tag' => 'filament-jetstream-team-migrations', '--force' => true]);
+            $this->call('vendor:publish', ['--tag' => 'filament-jetstream-team-migrations', '--force' => true]);
 
             // Factories...
-            copy(__DIR__ . '/../../database/factories/TeamFactory.php', base_path('database/factories/TeamFactory.php'));
+            copy(__DIR__.'/../../database/factories/TeamFactory.php', base_path('database/factories/TeamFactory.php'));
 
             // Implement \Filament\Models\Contracts\HasTenants contract in User Model...
-            $this->replaceInFile('//, \Filament\Models\Contracts\HasTenants', ', \Filament\Models\Contracts\HasTenants', app_path('Models/User.php'));
+            $this->replaceInFile(
+                '//use Filament\Models\Contracts\HasTenants;',
+                'use Filament\Models\Contracts\HasTenants;',
+                app_path('Models/User.php')
+            );
+
+            $this->replaceInFile(', MustVerifyEmail', ', MustVerifyEmail, HasTenants', app_path('Models/User.php'));
 
             // Add \Filament\Jetstream\HasTeams trait to User Model...
-            $this->replaceInFile('// use \Filament\Jetstream\HasTeams;', 'use \Filament\Jetstream\HasTeams;', app_path('Models/User.php'));
+            $this->replaceInFile(
+                '//use Filament\Jetstream\HasTeams',
+                'use Filament\Jetstream\HasTeams',
+                app_path('Models/User.php')
+            );
+
+            $this->replaceInFile(
+                '// use HasTeams;',
+                'use HasTeams;',
+                app_path('Models/User.php')
+            );
 
             // Add Teams feature to Filament Panel...
             $this->replaceInFile('// ->teams()', '->teams()', app_path('Providers/Filament/AppPanelProvider.php'));
@@ -67,22 +105,41 @@ class InstallCommand extends Command
         // API Tokens...
         if ($this->option('api')) {
             // Add HasApiTokens trait to User Model...
-            $this->replaceInFile('// use \Laravel\Sanctum\HasApiTokens;', 'use \Laravel\Sanctum\HasApiTokens;', app_path('Models/User.php'));
+            $this->replaceInFile(
+                '//use Laravel\Sanctum\HasApiTokens;',
+                'use Laravel\Sanctum\HasApiTokens;',
+                app_path('Models/User.php')
+            );
+
+            $this->replaceInFile(
+                '// use HasApiTokens;',
+                'use HasApiTokens;',
+                app_path('Models/User.php')
+            );
 
             // Add API token feature to Filament Panel...
-            $this->replaceInFile('// ->apiTokens()', '->apiTokens()', app_path('Providers/Filament/AppPanelProvider.php'));
+            $this->replaceInFile(
+                '// ->apiTokens()',
+                '->apiTokens()',
+                app_path('Providers/Filament/AppPanelProvider.php')
+            );
         }
-
-        // Add Filament Default Panel to Service Provider...
-        ServiceProvider::addProviderToBootstrapFile('App\Providers\Filament\ClientPanelProvider');
-
-        $this->cleanup();
-
-        $this->info('DONE: Jetstream installed successfully.');
 
         if ($this->option('api')) {
             $this->call('install:api', ['--without-migration-prompt' => true]);
         }
+
+        // Install filament assets
+        $this->call('filament:install', ['--scaffold' => true, '--notifications' => true]);
+
+        // Link local storage...
+        $this->call('storage:link');
+
+        if ($this->confirm('Do you really want to run migrations?')) {
+            $this->call('migrate');
+        }
+
+        $this->info('DONE: Filament Jetstream starter kit installed successfully.');
 
         return self::SUCCESS;
     }
@@ -98,14 +155,5 @@ class InstallCommand extends Command
     protected function replaceInFile($search, $replace, $path)
     {
         file_put_contents($path, str_replace($search, $replace, file_get_contents($path)));
-    }
-
-    public function cleanup()
-    {
-        $this->replaceInFile('// use \Filament\Jetstream\HasTeams;', '', app_path('Models/User.php'));
-
-        $this->replaceInFile('// use \Laravel\Sanctum\HasApiTokens;', '', app_path('Models/User.php'));
-
-        $this->replaceInFile('//, \Filament\Models\Contracts\HasTenants', '', app_path('Models/User.php'));
     }
 }

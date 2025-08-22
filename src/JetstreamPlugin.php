@@ -10,17 +10,16 @@ use Filament\Jetstream\Concerns\HasTeamsFeatures;
 use Filament\Jetstream\Listeners\SwitchTeam;
 use Filament\Jetstream\Models\Team;
 use Filament\Jetstream\Pages\ApiTokens;
-use Filament\Jetstream\Pages\Auth\Login as TwoFactorLogin;
 use Filament\Jetstream\Pages\Auth\Register;
 use Filament\Jetstream\Pages\CreateTeam;
 use Filament\Jetstream\Pages\EditProfile;
 use Filament\Jetstream\Pages\EditTeam;
 use Filament\Jetstream\Policies\TeamPolicy;
-use Filament\Pages\Auth\Login;
 use Filament\Panel;
 use Filament\Support\Concerns\EvaluatesClosures;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Gate;
+use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticationPlugin;
 
 class JetstreamPlugin implements Plugin
 {
@@ -48,11 +47,12 @@ class JetstreamPlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel
-            ->login($this->enabledTwoFactorAuthetication() ? TwoFactorLogin::class : Login::class)
-            ->routes(fn () => $this->enabledTwoFactorAuthetication() ? $this->twoFactorAuthenticationRoutes() : [])
             ->profile(EditProfile::class)
-            ->authMiddleware([
-                ForceTwoFactorAuthentication::class,
+            ->plugins([
+                TwoFactorAuthenticationPlugin::make()
+                    ->enableTwoFactorAuthentication(condition: fn () => $this->enabledTwoFactorAuthetication())
+                    ->enablePasskeyAuthentication(condition: fn () => $this->enabledPasskeyAuthetication())
+                    ->forceTwoFactorSetup(condition: fn () => $this->forceTwoFactorAuthetication()),
             ]);
 
         if ($this->hasApiTokensFeatures()) {
