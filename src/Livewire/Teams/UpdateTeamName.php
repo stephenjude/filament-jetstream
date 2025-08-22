@@ -5,11 +5,11 @@ namespace Filament\Jetstream\Livewire\Teams;
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Placeholder;
-use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Schema;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Models\Team;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 class UpdateTeamName extends BaseLivewireComponent
 {

@@ -4,9 +4,9 @@ namespace Filament\Jetstream\Pages;
 
 use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Schema;
 use Filament\Jetstream\Events\AddingTeam;
 use Filament\Pages\Tenancy\RegisterTenant;
+use Filament\Schemas\Schema;
 use Filament\Schemas\Schema;
 use Illuminate\Database\Eloquent\Model;
 
@@ -37,7 +37,7 @@ class CreateTeam extends RegisterTenant
         $user->switchTeam(
             $team = $user->ownedTeams()->create([
                 'name' => $data['name'],
-                'personal_team' => !$user->currentTeam,
+                'personal_team' => ! $user->currentTeam,
             ])
         );
 

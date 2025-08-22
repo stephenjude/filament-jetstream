@@ -20,9 +20,7 @@ class UpdatePassword extends BaseLivewireComponent
 {
     public ?array $data = [];
 
-    public function mount(): void
-    {
-    }
+    public function mount(): void {}
 
     public function render()
     {
@@ -52,8 +50,8 @@ class UpdatePassword extends BaseLivewireComponent
                             ->revealable(filament()->arePasswordsRevealable())
                             ->rule(Password::default())
                             ->autocomplete('new-password')
-                            ->dehydrated(fn($state): bool => filled($state))
-                            ->dehydrateStateUsing(fn($state): string => Hash::make($state))
+                            ->dehydrated(fn ($state): bool => filled($state))
+                            ->dehydrateStateUsing(fn ($state): string => Hash::make($state))
                             ->live(debounce: 500)
                             ->same('passwordConfirmation'),
                         TextInput::make('passwordConfirmation')
@@ -62,7 +60,7 @@ class UpdatePassword extends BaseLivewireComponent
                             ->revealable(filament()->arePasswordsRevealable())
                             ->required()
                             ->visible(
-                                fn(Get $get): bool => filled($get('password'))
+                                fn (Get $get): bool => filled($get('password'))
                             )
                             ->dehydrated(false),
                         Actions::make([
@@ -92,14 +90,14 @@ class UpdatePassword extends BaseLivewireComponent
 
         $user->fill($data);
 
-        if (!$user->isDirty('password')) {
+        if (! $user->isDirty('password')) {
             return;
         }
 
         $user->save();
 
         if (request()->hasSession() && array_key_exists('password', $data)) {
-            request()->session()->put(['password_hash_'.Filament::getAuthGuard() => $data['password']]);
+            request()->session()->put(['password_hash_' . Filament::getAuthGuard() => $data['password']]);
         }
 
         $this->data['password'] = null;
