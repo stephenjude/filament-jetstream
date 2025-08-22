@@ -3,13 +3,14 @@
 namespace Filament\Jetstream\Pages;
 
 use Filament\Forms\Components\Livewire;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Jetstream\Livewire\Teams\AddTeamMember;
 use Filament\Jetstream\Livewire\Teams\DeleteTeam;
 use Filament\Jetstream\Livewire\Teams\PendingTeamInvitations;
 use Filament\Jetstream\Livewire\Teams\TeamMembers;
 use Filament\Jetstream\Livewire\Teams\UpdateTeamName;
 use Filament\Pages\Tenancy\EditTenantProfile;
+use Filament\Schemas\Schema;
 
 class EditTeam extends EditTenantProfile
 {
@@ -17,9 +18,9 @@ class EditTeam extends EditTenantProfile
 
     protected static ?int $navigationSort = 2;
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema([
+        return $schema->components([
             Livewire::make(UpdateTeamName::class)
                 ->data(['team' => $this->tenant]),
             Livewire::make(AddTeamMember::class)

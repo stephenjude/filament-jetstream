@@ -3,11 +3,11 @@
 namespace Filament\Jetstream\Livewire\Teams;
 
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
-use Filament\Forms\Components\Actions;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Models\Team;
 
@@ -24,9 +24,9 @@ class UpdateTeamName extends BaseLivewireComponent
         $this->form->fill($team->only(['name']));
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Section::make(__('filament-jetstream::default.update_team_name.section.title'))
                     ->aside()
@@ -44,7 +44,7 @@ class UpdateTeamName extends BaseLivewireComponent
                             ->maxLength(255)
                             ->required(),
                         Actions::make([
-                            Actions\Action::make('save')
+                            Action::make('save')
                                 ->label(__('filament-jetstream::default.action.save.label'))
                                 ->action(fn () => $this->updateTeamName($this->team)),
                         ])->alignEnd(),

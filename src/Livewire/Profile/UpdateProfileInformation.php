@@ -4,11 +4,12 @@ namespace Filament\Jetstream\Livewire\Profile;
 
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\Actions;
+use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Illuminate\Support\Arr;
@@ -24,9 +25,9 @@ class UpdateProfileInformation extends BaseLivewireComponent
         $this->form->fill($data);
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Section::make(__('filament-jetstream::default.update_profile_information.section.title'))
                     ->aside()
@@ -50,7 +51,7 @@ class UpdateProfileInformation extends BaseLivewireComponent
                             ->required()
                             ->unique(get_class(Filament::auth()->user()), ignorable: $this->authUser()),
                         Actions::make([
-                            Actions\Action::make('save')
+                            Action::make('save')
                                 ->label(__('filament-jetstream::default.action.save.label'))
                                 ->submit('updateProfile'),
                         ]),

@@ -48,7 +48,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
             ])
             ->paginated(false)
             ->actions([
-                Tables\Actions\Action::make('updateTeamRole')
+                Action::make('updateTeamRole')
                     ->visible(fn ($record): bool => Gate::check('updateTeamMember', $this->team))
                     ->label(fn ($record): string => Role::find($record->role)->name)
                     ->modalWidth('lg')
@@ -74,7 +74,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                             }),
                     ])
                     ->action(fn ($record, array $data) => $this->updateTeamRole($this->team, $record, $data)),
-                Tables\Actions\Action::make('removeTeamMember')
+                Action::make('removeTeamMember')
                     ->visible(
                         fn ($record): bool => $this->authUser()->id !== $record->id && Gate::check(
                             'removeTeamMember',
@@ -85,7 +85,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
                     ->color('danger')
                     ->requiresConfirmation()
                     ->action(fn ($record) => $this->removeTeamMember($this->team, $record)),
-                Tables\Actions\Action::make('leaveTeam')
+                Action::make('leaveTeam')
                     ->visible(fn ($record): bool => $this->authUser()->id === $record->id)
                     ->icon('heroicon-o-arrow-right-start-on-rectangle')
                     ->color('danger')

@@ -2,7 +2,6 @@
 
 namespace Filament\Jetstream\Pages;
 
-use Filament\Facades\Filament;
 use Filament\Pages\Page;
 use Filament\Panel;
 use Illuminate\Support\Facades\Route;
@@ -17,9 +16,9 @@ class ApiTokens extends Page
 
     protected static ?string $title = 'API Tokens';
 
-    protected static ?string $navigationIcon = 'heroicon-o-key';
+    protected static string | null | \BackedEnum $navigationIcon = 'heroicon-o-key';
 
-    protected static string $view = 'filament-jetstream::pages.api-tokens';
+    protected string $view = 'filament-jetstream::pages.api-tokens';
 
     public static function getRelativeRouteName(): string
     {
@@ -29,8 +28,8 @@ class ApiTokens extends Page
     public static function registerRoutes(Panel $panel): void
     {
         if (filled(static::getCluster())) {
-            Route::name(static::prependClusterRouteBaseName(''))
-                ->prefix(static::prependClusterSlug(''))
+            Route::name(static::prependClusterRouteBaseName($panel, ''))
+                ->prefix(static::prependClusterSlug($panel, ''))
                 ->group(fn () => static::routes($panel));
 
             return;
@@ -39,9 +38,9 @@ class ApiTokens extends Page
         static::routes($panel);
     }
 
-    public static function getRouteName(?string $panel = null): string
+    public static function getRouteName(string | Panel | null $panel = null): string
     {
-        $panel = $panel ? Filament::getPanel($panel) : Filament::getCurrentPanel();
+        $panel = $panel ?? filament()->getCurrentOrDefaultPanel();
 
         return $panel->generateRouteName(static::getRelativeRouteName());
     }

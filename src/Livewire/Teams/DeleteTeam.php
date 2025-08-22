@@ -4,8 +4,9 @@ namespace Filament\Jetstream\Livewire\Teams;
 
 use Filament\Facades\Filament;
 use Filament\Forms;
-use Filament\Forms\Components\Actions;
-use Filament\Forms\Form;
+use Filament\Actions\Action;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Schema;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Models\Team;
 use Illuminate\Support\Facades\Gate;
@@ -20,20 +21,20 @@ class DeleteTeam extends BaseLivewireComponent
         $this->team = $team;
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
-                Forms\Components\Section::make(__('filament-jetstream::default.delete_team.section.title'))
+                Section::make(__('filament-jetstream::default.delete_team.section.title'))
                     ->description(__('filament-jetstream::default.delete_team.section.description'))
                     ->aside()
                     ->visible(fn () => Gate::check('delete', $this->team))
                     ->schema([
-                        Forms\Components\Placeholder::make('notice')
+                        TextEntry::make('notice')
                             ->hiddenLabel()
-                            ->content(fn () => __('filament-jetstream::default.delete_team.section.notice')),
+                            ->state(__('filament-jetstream::default.delete_team.section.notice')),
                         Actions::make([
-                            Actions\Action::make('deleteAccountAction')
+                            Action::make('deleteAccountAction')
                                 ->label(__('filament-jetstream::default.action.delete_team.label'))
                                 ->color('danger')
                                 ->requiresConfirmation()

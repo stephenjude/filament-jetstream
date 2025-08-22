@@ -3,7 +3,7 @@
 namespace Filament\Jetstream\Livewire\ApiTokens;
 
 use Filament\Forms\Components\Checkbox;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Support\Enums\Alignment;
@@ -28,7 +28,7 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
             ])
             ->paginated(false)
             ->actions([
-                Tables\Actions\Action::make('updateToken')
+                Action::make('updateToken')
                     ->label(__('filament-jetstream::default.action.update_token.label'))
                     ->modalHeading(__('filament-jetstream::default.action.update_token.title'))
                     ->modalWidth('lg')
@@ -40,7 +40,7 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
                         ->toArray())
                         ->columns())
                     ->action(fn ($record, array $data) => $this->updateToken($record, $data)),
-                Tables\Actions\Action::make('deleteToken')
+                Action::make('deleteToken')
                     ->color('danger')
                     ->label(__('filament-jetstream::default.action.delete_token.label'))
                     ->modalHeading(__('filament-jetstream::default.action.delete_token.title'))

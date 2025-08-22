@@ -19,7 +19,6 @@ class Jetstream
 
     public static function panel(): Panel
     {
-        return filament()
-            ->getPanel(config('filament-jetstream.panel'));
+        return filament()->getCurrentOrDefaultPanel();
     }
 }

@@ -4,13 +4,13 @@ namespace Filament\Jetstream\Livewire\Teams;
 
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\Actions;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Radio;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Jetstream\Events\InvitingTeamMember;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
@@ -33,9 +33,9 @@ class AddTeamMember extends BaseLivewireComponent
         $this->form->fill($this->team->only(['name']));
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->statePath('data')
             ->schema([
                 Section::make(__('filament-jetstream::default.add_team_member.section.title'))
@@ -89,7 +89,7 @@ class AddTeamMember extends BaseLivewireComponent
                                 ];
                             }),
                         Actions::make([
-                            Actions\Action::make('addTeamMember')
+                            Action::make('addTeamMember')
                                 ->label(__('filament-jetstream::default.action.add_team_member.label'))
                                 ->action(function () {
                                     $this->addTeamMember($this->team);

@@ -4,16 +4,14 @@ namespace Filament\Jetstream\Livewire\ApiTokens;
 
 use DanHarrin\LivewireRateLimiting\Exceptions\TooManyRequestsException;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\Actions;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Components\Section;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
+use Filament\Schemas\Schema;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
-use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification;
 use Illuminate\Support\Arr;
 use Illuminate\Support\HtmlString;
@@ -26,9 +24,9 @@ class CreateApiToken extends BaseLivewireComponent
 
     public function mount(): void {}
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Section::make(__('filament-jetstream::default.create_api_token.section.title'))
                     ->aside()
@@ -51,7 +49,7 @@ class CreateApiToken extends BaseLivewireComponent
                             ),
 
                         Actions::make([
-                            Actions\Action::make('save')
+                            Action::make('save')
                                 ->label(__('filament-jetstream::default.action.create_token.label'))
                                 ->submit('createToken'),
                         ]),

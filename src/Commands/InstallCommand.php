@@ -18,8 +18,6 @@ class InstallCommand extends Command
      */
     public function handle(): int
     {
-        // Publish Migration...
-        $this->call('vendor:publish', ['--tag' => 'filament-jetstream-migrations']);
 
         // Add Filament Default Panel to Service Provider...
         (new Filesystem)->ensureDirectoryExists(app_path('Providers/Filament'));
@@ -129,15 +127,17 @@ class InstallCommand extends Command
             $this->call('install:api', ['--without-migration-prompt' => true]);
         }
 
-        // Install filament assets
-        $this->call('filament:install', ['--scaffold' => true, '--notifications' => true]);
+        // Publish default migrations
+        $this->call('vendor:publish', ['--tag' => 'filament-jetstream-migrations']);
 
         // Link local storage...
         $this->call('storage:link');
 
-        if ($this->confirm('Do you really want to run migrations?')) {
-            $this->call('migrate');
-        }
+        // Publish filament assets
+        $this->call('filament:install', ['--scaffold' => true, '--notifications' => true]);
+
+        // Install 2FA
+        $this->call('filament-two-factor-authentication:install');
 
         $this->info('DONE: Filament Jetstream starter kit installed successfully.');
 

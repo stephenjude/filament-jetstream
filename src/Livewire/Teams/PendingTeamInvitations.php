@@ -2,6 +2,7 @@
 
 namespace Filament\Jetstream\Livewire\Teams;
 
+use Filament\Actions\Action;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Mail\TeamInvitation;
 use Filament\Jetstream\Models\Team;
@@ -25,26 +26,26 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
     public function table(Table $table): Table
     {
         return $table
-            ->query(fn () => $this->team->teamInvitations()->latest())
+            ->query(fn() => $this->team->teamInvitations()->latest())
             ->columns([
                 Tables\Columns\Layout\Split::make([
                     Tables\Columns\TextColumn::make('email'),
                 ]),
             ])
             ->paginated(false)
-            ->actions([
-                Tables\Actions\Action::make('resendTeamInvitation')
+            ->recordActions([
+                Action::make('resendTeamInvitation')
                     ->label(__('filament-jetstream::default.action.resend_team_invitation.label'))
                     ->color('primary')
                     ->requiresConfirmation()
-                    ->visible(fn () => Gate::check('updateTeamMember', $this->team))
-                    ->action(fn ($record) => $this->resendTeamInvitation($this->team, $record)),
-                Tables\Actions\Action::make('cancelTeamInvitation')
+                    ->visible(fn() => Gate::check('updateTeamMember', $this->team))
+                    ->action(fn($record) => $this->resendTeamInvitation($this->team, $record)),
+                Action::make('cancelTeamInvitation')
                     ->label(__('filament-jetstream::default.action.cancel_team_invitation.label'))
                     ->color('danger')
-                    ->visible(fn () => Gate::check('removeTeamMember', $this->team))
+                    ->visible(fn() => Gate::check('removeTeamMember', $this->team))
                     ->requiresConfirmation()
-                    ->action(fn ($record) => $this->cancelTeamInvitation($this->team, $record)),
+                    ->action(fn($record) => $this->cancelTeamInvitation($this->team, $record)),
             ]);
     }
 
@@ -61,7 +62,9 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
 
         $team->fresh();
 
-        $this->sendNotification(__('filament-jetstream::default.notification.team_invitation_cancelled.success.message'));
+        $this->sendNotification(
+            __('filament-jetstream::default.notification.team_invitation_cancelled.success.message')
+        );
     }
 
     public function render()

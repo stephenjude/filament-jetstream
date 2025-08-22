@@ -5,7 +5,7 @@ namespace Filament\Jetstream\Pages\Auth;
 use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Model;
 
-class Register extends \Filament\Pages\Auth\Register
+class Register extends \Filament\Auth\Pages\Register
 {
     protected function handleRegistration(array $data): Model
     {

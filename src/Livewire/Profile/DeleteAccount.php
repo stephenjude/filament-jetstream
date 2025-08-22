@@ -2,9 +2,12 @@
 
 namespace Filament\Jetstream\Livewire\Profile;
 
+use Filament\Actions\Action;
 use Filament\Forms;
-use Filament\Forms\Components\Actions;
-use Filament\Forms\Form;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Illuminate\Http\RedirectResponse;
@@ -14,19 +17,19 @@ use Illuminate\View\View;
 
 class DeleteAccount extends BaseLivewireComponent
 {
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->schema([
-                Forms\Components\Section::make(__('filament-jetstream::default.delete_account.section.title'))
+                Section::make(__('filament-jetstream::default.delete_account.section.title'))
                     ->description(__('filament-jetstream::default.delete_account.section.description'))
                     ->aside()
                     ->schema([
-                        Forms\Components\Placeholder::make('deleteAccountNotice')
+                        TextEntry::make('deleteAccountNotice')
                             ->hiddenLabel()
-                            ->content(fn () => __('filament-jetstream::default.delete_account.section.notice')),
+                            ->state(fn () => __('filament-jetstream::default.delete_account.section.notice')),
                         Actions::make([
-                            Actions\Action::make('deleteAccount')
+                            Action::make('deleteAccount')
                                 ->label(__('filament-jetstream::default.action.delete_account.label'))
                                 ->color('danger')
                                 ->requiresConfirmation()
