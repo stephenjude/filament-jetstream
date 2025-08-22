@@ -26,7 +26,7 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
     public function table(Table $table): Table
     {
         return $table
-            ->query(fn() => $this->team->teamInvitations()->latest())
+            ->query(fn () => $this->team->teamInvitations()->latest())
             ->columns([
                 Tables\Columns\Layout\Split::make([
                     Tables\Columns\TextColumn::make('email'),
@@ -38,14 +38,14 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
                     ->label(__('filament-jetstream::default.action.resend_team_invitation.label'))
                     ->color('primary')
                     ->requiresConfirmation()
-                    ->visible(fn() => Gate::check('updateTeamMember', $this->team))
-                    ->action(fn($record) => $this->resendTeamInvitation($this->team, $record)),
+                    ->visible(fn () => Gate::check('updateTeamMember', $this->team))
+                    ->action(fn ($record) => $this->resendTeamInvitation($this->team, $record)),
                 Action::make('cancelTeamInvitation')
                     ->label(__('filament-jetstream::default.action.cancel_team_invitation.label'))
                     ->color('danger')
-                    ->visible(fn() => Gate::check('removeTeamMember', $this->team))
+                    ->visible(fn () => Gate::check('removeTeamMember', $this->team))
                     ->requiresConfirmation()
-                    ->action(fn($record) => $this->cancelTeamInvitation($this->team, $record)),
+                    ->action(fn ($record) => $this->cancelTeamInvitation($this->team, $record)),
             ]);
     }
 

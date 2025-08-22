@@ -3,7 +3,6 @@
 namespace Filament\Jetstream\Livewire\ApiTokens;
 
 use Filament\Forms\Components\Checkbox;
-use Filament\Schemas\Schema;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Support\Enums\Alignment;

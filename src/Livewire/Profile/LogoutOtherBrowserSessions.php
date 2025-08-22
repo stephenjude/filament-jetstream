@@ -51,7 +51,7 @@ class LogoutOtherBrowserSessions extends BaseLivewireComponent
                                         ->currentPassword(),
                                 ])
                                 ->action(
-                                    fn(array $data) => $this->logoutOtherBrowserSessions($data['password'])
+                                    fn (array $data) => $this->logoutOtherBrowserSessions($data['password'])
                                 ),
                         ]),
                     ]),
@@ -75,7 +75,7 @@ class LogoutOtherBrowserSessions extends BaseLivewireComponent
         request()
             ->session()
             ->put([
-                'password_hash_'.Auth::getDefaultDriver() => filament()->auth()->user()->getAuthPassword(),
+                'password_hash_' . Auth::getDefaultDriver() => filament()->auth()->user()->getAuthPassword(),
             ]);
 
         Notification::make()
@@ -97,8 +97,8 @@ class LogoutOtherBrowserSessions extends BaseLivewireComponent
             ->where('user_id', filament()->auth()->user()->getAuthIdentifier())
             ->orderBy('last_activity', 'desc')
             ->get()->map(function ($session) {
-                return (object)[
-                    'agent' => tap(new Agent, fn($agent) => $session->user_agent),
+                return (object) [
+                    'agent' => tap(new Agent, fn ($agent) => $session->user_agent),
                     'ip_address' => $session->ip_address,
                     'is_current_device' => $session->id === request()->session()->getId(),
                     'last_active' => Carbon::createFromTimestamp($session->last_activity)->diffForHumans(),
