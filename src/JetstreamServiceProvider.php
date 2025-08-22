@@ -7,7 +7,6 @@ use Filament\Jetstream\Livewire\ApiTokens\CreateApiToken;
 use Filament\Jetstream\Livewire\ApiTokens\ManageApiTokens;
 use Filament\Jetstream\Livewire\Profile\DeleteAccount;
 use Filament\Jetstream\Livewire\Profile\LogoutOtherBrowserSessions;
-use Filament\Jetstream\Livewire\Profile\TwoFactorAuthentication;
 use Filament\Jetstream\Livewire\Profile\UpdatePassword;
 use Filament\Jetstream\Livewire\Profile\UpdateProfileInformation;
 use Filament\Jetstream\Livewire\Teams\AddTeamMember;
@@ -42,13 +41,11 @@ class JetstreamServiceProvider extends PackageServiceProvider
             ->hasCommands([InstallCommand::class]);
 
         $this->publishes([
-            __DIR__.'/../database/migrations/2025_08_22_134103_add_profile_photo_column_to_users_table.php'
-            => database_path("migrations/2025_08_22_134103_add_profile_photo_column_to_users_table.php"),
+            __DIR__ . '/../database/migrations/2025_08_22_134103_add_profile_photo_column_to_users_table.php' => database_path('migrations/2025_08_22_134103_add_profile_photo_column_to_users_table.php'),
         ], 'filament-jetstream-migrations');
 
         $this->publishes([
-            __DIR__.'/../database/migrations/2025_08_22_134103_create_teams_table.php'
-            => database_path('migrations/2025_08_22_134103_create_teams_table.php'),
+            __DIR__ . '/../database/migrations/2025_08_22_134103_create_teams_table.php' => database_path('migrations/2025_08_22_134103_create_teams_table.php'),
         ], 'filament-jetstream-team-migrations');
     }
 

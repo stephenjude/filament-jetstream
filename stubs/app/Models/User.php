@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Filament\Jetstream\HasProfilePhoto;
 use Filament\Models\Contracts\FilamentUser;
-//use Filament\Models\Contracts\HasTenants;
-//use Laravel\Sanctum\HasApiTokens;
-//use Filament\Jetstream\HasTeams;
+// use Filament\Models\Contracts\HasTenants;
+// use Laravel\Sanctum\HasApiTokens;
+// use Filament\Jetstream\HasTeams;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,7 +14,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticatable;
-
 
 class User extends Authenticatable implements FilamentUser, HasPasskeys, MustVerifyEmail
 {
