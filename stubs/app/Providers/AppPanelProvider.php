@@ -28,7 +28,7 @@ class AppPanelProvider extends PanelProvider
             ->id('app')
             ->path('/')
             ->homeUrl('/dashboard')
-            ->colors(['primary' => Color::Gray,])
+            ->colors(['primary' => Color::Gray])
             ->brandLogo('https://laravel.com/img/logomark.min.svg')
             ->brandLogoHeight('40px')
             ->login()

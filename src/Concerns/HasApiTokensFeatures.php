@@ -4,8 +4,6 @@ namespace Filament\Jetstream\Concerns;
 
 use Closure;
 use Filament\Actions\Action;
-use Filament\Facades\Filament;
-use Filament\Navigation\MenuItem;
 use Filament\Panel;
 
 trait HasApiTokensFeatures
@@ -66,7 +64,7 @@ trait HasApiTokensFeatures
 
     public function getApiTokenUrl(Panel $panel): ?string
     {
-        return $panel->getUrl().'/tokens';
+        return $panel->getUrl() . '/tokens';
     }
 
     public function validPermissions(array $permissions): array
