@@ -1,0 +1,33 @@
+<?php
+
+namespace Filament\Jetstream\Models;
+
+use Filament\Jetstream\Jetstream;
+use Illuminate\Database\Eloquent\Model;
+
+class TeamInvitation extends Model
+{
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'email',
+        'role',
+    ];
+
+    /**
+     * Get the team that the invitation belongs to.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function team()
+    {
+        $model = Jetstream::plugin()->teamModel();
+
+        $foreignKey = Jetstream::getForeignKeyColumn($model);
+
+        return $this->belongsTo($model, $foreignKey);
+    }
+}

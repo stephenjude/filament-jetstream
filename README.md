@@ -1,19 +1,17 @@
-![Edit Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/banner.jpg)
+# Filament Jetstream — A Filament Starter Kit
 
-# Filament Jetstream
+![Edit Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/banner.jpg)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/stephenjude/filament-jetstream.svg?style=flat-square)](https://packagist.org/packages/stephenjude/filament-jetstream)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/stephenjude/filament-jetstream/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/stephenjude/filament-jetstream/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/stephenjude/filament-jetstream/fix-php-code-styling.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/stephenjude/filament-jetstream/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/stephenjude/filament-jetstream.svg?style=flat-square)](https://packagist.org/packages/stephenjude/filament-jetstream)
 
-This package seamlessly integrates all Laravel Jetstream features into your Filament application. Similar to Laravel Jetstream, it's designed for installation exclusively on a fresh Laravel application. There's no need to install Livewire, Jetstream, or Filament separately before using this package – it handles all the setup for you!
+Filament Jetstream, just like [Laravel Jetstream](https://jetstream.laravel.com/introduction.html) is a beautifully designed application starter kit for Laravel and provides the perfect starting point for your next Laravel application.
 
-## How It Works
+Includes auth, registration, 2FA, session management, API tokens, and team support, all implemented with **native Filament panels and components**. 
 
-This package doesn't reinvent the wheel; instead, it leverages the Livewire components from Laravel Jetstream under the
-hood, stripping away any unnecessary elements. You have the flexibility to enable or disable features through the
-Jetstream configuration, and it seamlessly integrates with Filament for your panel.
+Skip boilerplate, start building features.
 
 ## Installation
 
@@ -21,35 +19,29 @@ You can install the package via composer:
 
 ```bash
 composer require stephenjude/filament-jetstream
+
+php artisan filament-jetstream:install --teams --api
 ```
-
-## Install Jetstream With Teams And API Features
-
-```shell
-php artisan filament:jetstream:install --teams --api
-```
-
 You can remove the `--teams` and `--api` arguments if you don't want those features.
 
-## Screenshots
+## Features
 
-![Edit Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/profile_1.png)
+##### 🔐 Authentication
+![Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/login.jpeg)
 
----
+##### 👤 User Profile
+![Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/profile.jpeg)
 
-![Edit Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/profile_2.png)
+##### 👥 Team (Optional)
+![Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/team.jpeg)
 
----
+##### 🔑 API Tokens (Optional)
+![Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/tokens.jpeg)
 
-![Edit Team](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/team_1.png)
+##### 🌍 Translation-ready
 
----
-
-![Edit Team](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/team_2.png)
-
----
-
-![Edit Team](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/api_token.png)
+## Manual Installation
+coming soon...
 
 ## Testing
 

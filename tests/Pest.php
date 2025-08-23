@@ -1,5 +1,5 @@
 <?php
 
-use FilamentJetstream\FilamentJetstream\Tests\TestCase;
+use Filament\Jetstream\Tests\TestCase;
 
 uses(TestCase::class)->in(__DIR__);
