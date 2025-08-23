@@ -7,11 +7,9 @@ use Filament\Actions\Action;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
-use Filament\Infolists\Components\ImageEntry;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Schemas\Components\Actions;
-use Filament\Schemas\Components\Flex;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Support\Arr;
@@ -34,16 +32,16 @@ class UpdateProfileInformation extends BaseLivewireComponent
                 Section::make(__('filament-jetstream::default.update_profile_information.section.title'))
                     ->aside()
                     ->description(__('filament-jetstream::default.update_profile_information.section.description'))
-                    ->schema([ FileUpload::make('profile_photo_path')
+                    ->schema([FileUpload::make('profile_photo_path')
                         ->label(__('filament-jetstream::default.form.profile_photo.label'))
                         ->avatar()
                         ->image()
                         ->imageEditor()
                         ->visibility('public')
                         ->directory('profile-photos')
-                        ->formatStateUsing(fn() => filament()->auth()->user()?->profile_photo_path)
-                        ->disk(fn(): string => Jetstream::plugin()?->profilePhotoDisk())
-                        ->visible(fn(): bool => Jetstream::plugin()?->managesProfilePhotos()),
+                        ->formatStateUsing(fn () => filament()->auth()->user()?->profile_photo_path)
+                        ->disk(fn (): string => Jetstream::plugin()?->profilePhotoDisk())
+                        ->visible(fn (): bool => Jetstream::plugin()?->managesProfilePhotos()),
                         TextInput::make('name')
                             ->label(__('filament-jetstream::default.form.name.label'))
                             ->string()
