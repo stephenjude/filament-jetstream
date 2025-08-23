@@ -6,6 +6,7 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
+use Filament\Schemas\Schema;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -35,13 +36,14 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
                     ->modalCancelAction(false)
                     ->modalFooterActionsAlignment(Alignment::End)
                     ->modalSubmitActionLabel(__('filament-jetstream::default.action.update_token.modal.label'))
-                    ->form(fn (PersonalAccessToken $record, Form $form) => $form->schema(fn () => collect(Jetstream::plugin()?->getApiTokenPermissions())
+                    ->schema(fn (PersonalAccessToken $record, Schema $schema) => $schema->schema(fn () => collect(Jetstream::plugin()?->getApiTokenPermissions())
                         ->map(fn ($permission) => Checkbox::make($permission)->label(__($permission))->default($record->can($permission)))
                         ->toArray())
                         ->columns())
                     ->action(fn ($record, array $data) => $this->updateToken($record, $data)),
                 Action::make('deleteToken')
                     ->color('danger')
+                    ->modalWidth('md')
                     ->label(__('filament-jetstream::default.action.delete_token.label'))
                     ->modalHeading(__('filament-jetstream::default.action.delete_token.title'))
                     ->modalDescription(__('filament-jetstream::default.action.delete_token.description'))
