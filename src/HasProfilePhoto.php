@@ -26,7 +26,7 @@ trait HasProfilePhoto
      */
     public function deleteProfilePhoto(): void
     {
-        if (! Jetstream::plugin()?->managesProfilePhotos()) {
+        if (!Jetstream::plugin()?->managesProfilePhotos()) {
             return;
         }
 
@@ -48,8 +48,8 @@ trait HasProfilePhoto
     {
         return Attribute::get(function (): string {
             return $this->profile_photo_path
-                    ? Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)
-                    : $this->defaultProfilePhotoUrl();
+                ? Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)
+                : $this->defaultProfilePhotoUrl();
         });
     }
 
@@ -58,11 +58,13 @@ trait HasProfilePhoto
      */
     protected function defaultProfilePhotoUrl(): string
     {
-        $name = trim(collect(explode(' ', $this->name))->map(function ($segment) {
-            return mb_substr($segment, 0, 1);
-        })->join(' '));
+        $name = trim(
+            collect(explode(' ', $this->name))->map(function ($segment) {
+                return mb_substr($segment, 0, 1);
+            })->join(' ')
+        );
 
-        return 'https://ui-avatars.com/api/?name=' . urlencode($name) . '&color=7F9CF5&background=EBF4FF';
+        return 'https://ui-avatars.com/api/?name='.urlencode($name).'&color=7F9CF5&background=EBF4FF';
     }
 
     /**

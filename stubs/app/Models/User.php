@@ -4,9 +4,7 @@ namespace App\Models;
 
 use Filament\Jetstream\HasProfilePhoto;
 use Filament\Models\Contracts\FilamentUser;
-// use Filament\Models\Contracts\HasTenants;
-// use Laravel\Sanctum\HasApiTokens;
-// use Filament\Jetstream\HasTeams;
+use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,12 +13,17 @@ use Illuminate\Notifications\Notifiable;
 use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
 use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticatable;
 
-class User extends Authenticatable implements FilamentUser, HasPasskeys, MustVerifyEmail
+// use Filament\Models\Contracts\HasTenants;
+// use Laravel\Sanctum\HasApiTokens;
+// use Filament\Jetstream\HasTeams;
+
+class User extends Authenticatable implements FilamentUser, HasAvatar, HasPasskeys, MustVerifyEmail
 {
     use HasFactory;
     use HasProfilePhoto;
     use Notifiable;
     use TwoFactorAuthenticatable;
+
     // use HasApiTokens;
     // use HasTeams;
 
@@ -68,6 +71,11 @@ class User extends Authenticatable implements FilamentUser, HasPasskeys, MustVer
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
+    }
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->profile_photo_url;
     }
 
     /**

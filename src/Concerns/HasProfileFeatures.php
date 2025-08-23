@@ -23,6 +23,8 @@ trait HasProfileFeatures
 
     protected Closure | bool $enablePasskeyAuthentication = false;
 
+    protected Closure | bool $requiresPasswordForAuthenticationSetup = false;
+
     protected Closure | bool $twoFactorAuthentication = true;
 
     public Closure | bool $logoutOtherBrowserSessions = true;
@@ -38,9 +40,9 @@ trait HasProfileFeatures
         return $this;
     }
 
-    public function profilePhotoDisk(): bool
+    public function profilePhotoDisk(): ?string
     {
-        return $this->evaluate($this->profilePhotoDisk) === true;
+        return $this->evaluate($this->profilePhotoDisk);
     }
 
     public function managesProfilePhotos(): bool
@@ -82,13 +84,16 @@ trait HasProfileFeatures
     public function twoFactorAuthentication(
         bool | Closure $condition = true,
         bool | Closure $forced = false,
-        bool | Closure $enablePasskey = true
+        bool | Closure $enablePasskey = true,
+        bool | Closure $requiresPassword = true
     ): static {
         $this->twoFactorAuthentication = $condition;
 
         $this->forceTwoFactorAuthentication = $forced;
 
         $this->enablePasskeyAuthentication = $enablePasskey;
+
+        $this->requiresPasswordForAuthenticationSetup = $requiresPassword;
 
         return $this;
     }
@@ -106,6 +111,11 @@ trait HasProfileFeatures
     public function forceTwoFactorAuthetication(): bool
     {
         return $this->evaluate($this->forceTwoFactorAuthentication) === true;
+    }
+
+    public function requiresPasswordForAuthenticationSetup(): bool
+    {
+        return $this->evaluate($this->requiresPasswordForAuthenticationSetup) === true;
     }
 
     public function enabledLogoutOtherBrowserSessions(): bool

@@ -34,12 +34,6 @@ class UpdateTeamName extends BaseLivewireComponent
                     ->aside()
                     ->description(__('filament-jetstream::default.update_team_name.section.description'))
                     ->schema([
-                        TextEntry::make('team_owner')
-                            ->label(__('filament-jetstream::default.form.team_owner.label'))
-                            ->state(fn (): string => __(':name (:email)', [
-                                'name' => $this->authUser()->name,
-                                'email' => $this->authUser()->email,
-                            ])),
                         TextInput::make('name')
                             ->label(__('filament-jetstream::default.form.team_name.label'))
                             ->string()

@@ -47,12 +47,16 @@ class JetstreamPlugin implements Plugin
     public function register(Panel $panel): void
     {
         $panel
+            ->homeUrl(fn() => str(filament()->getCurrentOrDefaultPanel()->getUrl())->append('/dashboard'))
             ->profile(EditProfile::class)
             ->plugins([
                 TwoFactorAuthenticationPlugin::make()
-                    ->enableTwoFactorAuthentication(condition: fn () => $this->enabledTwoFactorAuthetication())
-                    ->enablePasskeyAuthentication(condition: fn () => $this->enabledPasskeyAuthetication())
-                    ->forceTwoFactorSetup(condition: fn () => $this->forceTwoFactorAuthetication()),
+                    ->enableTwoFactorAuthentication(condition: fn() => $this->enabledTwoFactorAuthetication())
+                    ->enablePasskeyAuthentication(condition: fn() => $this->enabledPasskeyAuthetication())
+                    ->forceTwoFactorSetup(
+                        condition: fn() => $this->forceTwoFactorAuthetication(),
+                        requiresPassword: $this->requiresPasswordForAuthenticationSetup()
+                    ),
             ]);
 
         if ($this->hasApiTokensFeatures()) {
@@ -67,7 +71,7 @@ class JetstreamPlugin implements Plugin
                 ->tenant($this->teamModel())
                 ->tenantRegistration(CreateTeam::class)
                 ->tenantProfile(EditTeam::class)
-                ->routes(fn () => $this->teamsRoutes());
+                ->routes(fn() => $this->teamsRoutes());
         }
     }
 
