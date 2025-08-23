@@ -1,6 +1,6 @@
 {
     "name": "stephenjude/filament-jetstream",
-    "description": "Supercharge your Filament Admin Panel with Filament Starter kit.",
+    "description": "A Laravel starter kit built with Filament inspired by Jetstream.",
     "keywords": [
         "stephenjude",
         "laravel",
@@ -24,7 +24,6 @@
         "filament/filament": "^4.0",
         "stephenjude/filament-two-factor-authentication": "^3.0",
         "illuminate/contracts": "^12.0",
-        "laravel/sanctum": "^4.0",
         "mobiledetect/mobiledetectlib": "^4.8",
         "spatie/laravel-package-tools": "^1.15.0"
     },
