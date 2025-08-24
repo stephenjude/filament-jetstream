@@ -1,4 +1,4 @@
-# Filament Jetstream — A Filament Starter Kit
+# Filament Jetstream — A Laravel Starter Kit Built With Filament
 
 ![Edit Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/banner.jpg)
 
