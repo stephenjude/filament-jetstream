@@ -4,8 +4,8 @@
         {{ $this->challengeAction }}
     </x-slot>
 
-    <x-filament-panels::form id="form" wire:submit="authenticate">
+    <form id="form" wire:submit="authenticate">
         {{ $this->form }}
-    </x-filament-panels::form>
+    </form>
 
 </x-filament-panels::page.simple>
