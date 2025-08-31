@@ -73,7 +73,6 @@ class InstallCommand extends Command
             // Factories
             copy(__DIR__ . '/../../database/factories/TeamFactory.php', base_path('database/factories/TeamFactory.php'));
 
-
             $this->replaceInFile(
                 '// use Filament\Models\Contracts\HasTenants;',
                 'use Filament\Models\Contracts\HasTenants;',
