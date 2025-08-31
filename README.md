@@ -40,8 +40,165 @@ You can remove the `--teams` and `--api` arguments if you don't want those featu
 
 ##### 🌍 Translation-ready
 
-## Manual Installation
-coming soon...
+## Usage & Configurations
+
+#### Configuring the User Profile
+```php
+use \App\Models\User;
+use Filament\Jetstream\JetstreamPlugin;
+use Illuminate\Validation\Rules\Password;
+
+...
+->plugins([
+    ...
+    JetstreamPlugin::make()
+        ->configureUserModel(userModel: User::class)
+        ->profilePhoto(condition: fn() => true, disk: 'public')
+        ->deleteAccount(condition: fn() => true)
+        ->updatePassword(condition: fn() => true, Password::default())
+        ->profileInformation(condition: fn() => true)
+        ->logoutBrowserSessions(condition: fn() => true)
+        ->twoFactorAuthentication(
+            condition: fn() => auth()->check(),
+            forced: fn() => app()->isProduction(),
+            enablePasskey: fn() =>  Feature::active('passkey'),
+            requiresPassword: fn() => app()->isProduction(),
+        ),
+])
+```
+
+#### Configuring Team features
+
+```php
+use \Filament\Jetstream\Role;
+use Filament\Jetstream\JetstreamPlugin;
+use Illuminate\Validation\Rules\Password;
+use \Filament\Jetstream\Models\{Team,Membership,TeamInvitation};
+
+...
+->plugins([
+    ...
+    JetstreamPlugin::make()
+        ->teams(
+            condition: fn() => Feature::active('teams'), 
+            acceptTeamInvitation: fn($invitationId) => JetstreamPlugin::make()->defaultAcceptTeamInvitation()
+        )
+        ->configureTeamModels(
+            teamModel: Team::class,
+            roleModel: Role::class,
+            membershipModel: Membership::class,
+            teamInvitationModel:  TeamInvitation::class
+        ),
+])
+```
+
+#### Configuring API features
+```php
+use Filament\Jetstream\JetstreamPlugin;
+use Illuminate\Validation\Rules\Password;
+use \Filament\Jetstream\Role;
+use \Filament\Jetstream\Models\{Team, Membership, TeamInvitation};
+
+...
+->plugins([
+    ...
+    JetstreamPlugin::make()
+        ->apiTokens(
+            condition: fn() => Feature::active('api'), 
+            permissions: fn() => ['create', 'read', 'update', 'delete'],
+            menuItemLabel: fn() => 'API Tokens',
+            menuItemIcon: fn() => 'heroicon-o-key',
+        ),
+])
+```
+
+## Existing Laravel projects
+
+### Installing the Profile feature
+
+#### Publish profile migrations
+Run the following command to publish the profile migrations.
+
+```bash
+php artisan vendor:publish \
+  --tag=filament-jetstream-migrations \
+  --tag=passkeys-migrations \
+  --tag=filament-two-factor-authentication-migrations
+```
+
+#### Add profile feature traits to the User model
+Update the `App\Models\User` model:
+
+```php
+...
+use Filament\Jetstream\HasProfilePhoto;
+use Filament\Models\Contracts\HasAvatar;
+use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
+use \Filament\Jetstream\InteractsWIthProfile;
+
+class User extends Authenticatable implements  HasAvatar, HasPasskeys
+{
+    ...
+    use InteractsWIthProfile;
+
+    protected $hidden = [
+        ...
+        'two_factor_recovery_codes',
+        'two_factor_secret',
+    ];
+
+    protected $appends = [
+        ...
+        'profile_photo_url',
+    ];
+}
+```
+
+
+
+### Installing the Team Features
+
+#### Publish team migration
+Run the following command to publish the **team** migrations.
+```bash
+php artisan vendor:publish --tag=filament-jetstream-team-migration
+```
+
+#### Add team feature traits to User model
+Update `App\Models\User` model to implement 'Filament\Models\Contracts\HasTenants' and use `Filament\Jetstream\InteractsWithTeams` trait.
+
+```php
+...
+use Filament\Jetstream\InteractsWithTeams;
+use Filament\Models\Contracts\HasTenants;
+
+class User extends Authenticatable implements  HasTenants
+{
+    ...
+    use InteractsWithTeams;
+}
+
+```
+
+### Installing the API Features
+#### Publish team migration
+Run the following command to publish the **team** migrations.
+```bash
+php artisan vendor:publish --tag=filament-jetstream-team-migration
+```
+
+#### Add api feature trait to User model
+Update `App\Models\User` model to  use `Laravel\Sanctum\HasApiTokens` trait.
+```php
+...
+use \Laravel\Sanctum\HasApiTokens;
+
+class User extends Authenticatable 
+{
+    use HasApiTokens;
+}
+
+```
 
 ## Testing
 
