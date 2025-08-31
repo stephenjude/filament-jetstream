@@ -40,8 +40,166 @@ You can remove the `--teams` and `--api` arguments if you don't want those featu
 
 ##### 🌍 Translation-ready
 
-## Manual Installation
-coming soon...
+## Existing Laravel projects
+
+### Installing the Profile feature
+
+#### Publish profile migrations
+Run the following command to publish the profile migrations.
+
+```bash
+php artisan vendor:publish --tag=filament-jetstream-migrations --tag=passkeys-migrations --tag=filament-two-factor-authentication-migrations
+```
+
+#### Add profile feature traits to the User model
+Update the `App\Models\User` model:
+
+```php
+...
+use Filament\Jetstream\HasProfilePhoto;
+use Filament\Models\Contracts\HasAvatar;
+use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
+use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticatable;
+
+class User extends Authenticatable implements  HasAvatar, HasPasskeys
+{
+    ...
+    use HasProfilePhoto; 
+    use TwoFactorAuthenticatable; 
+
+    protected $hidden = [
+        ...
+        'two_factor_recovery_codes',
+        'two_factor_secret',
+    ];
+
+    protected $appends = [
+        ...
+        'profile_photo_url',
+    ];
+
+    public function getFilamentAvatarUrl(): ?string
+    {
+        return $this->profile_photo_url;
+    }
+}
+```
+
+#### Configure the profile features 
+Add the following to your default panel plugin configuration:
+
+```php
+use Filament\Jetstream\JetstreamPlugin;use Illuminate\Validation\Rules\Password;
+...
+->plugins([
+    ...
+    JetstreamPlugin::make()
+        ->configureUserModel(userModel: \App\Models\User::class)
+        ->profilePhoto(condition: fn() => true, disk: 'public')
+        ->deleteAccount(condition: fn() => true)
+        ->updatePassword(condition: fn() => true, Password::default())
+        ->profileInformation(condition: fn() => true)
+        ->logoutBrowserSessions(condition: fn() => true)
+        ->twoFactorAuthentication(
+            condition: fn() => auth()->check(),
+            forced: fn() => app()->isProduction(),
+            enablePasskey: fn() =>  Feature::active('passkey'),
+            requiresPassword: fn() => app()->isProduction(),
+        ),
+])
+```
+
+### Installing the Team Features
+
+#### Publish team migration
+Run the following command to publish the **team** migrations.
+```bash
+php artisan vendor:publish --tag=filament-jetstream-team-migration
+```
+
+#### Add team feature traits to User model
+Update `App\Models\User` model to implement 'Filament\Models\Contracts\HasTenants' and use `Filament\Jetstream\HasTeams` trait.
+
+```php
+use Filament\Models\Contracts\HasTenants;
+use Filament\Jetstream\HasTeams;
+
+class User extends Authenticatable implements  HasTenants
+{
+    ...
+    use HasTeams;
+}
+
+```
+
+#### Configure the team features
+Add the following to your default panel plugin configuration:
+
+```php
+use Filament\Jetstream\JetstreamPlugin;
+use Illuminate\Validation\Rules\Password;
+use \Filament\Jetstream\Role;
+use \Filament\Jetstream\Models\{Team,Membership,TeamInvitation};
+...
+->plugins([
+    ...
+    JetstreamPlugin::make()
+        ->teams(
+            condition: fn() => Feature::active('teams'), 
+            acceptTeamInvitation: fn($invitationId) => TeamInvitation::find($invitationId)->accept() // write your logic here
+        )
+        ->configureTeamModels(
+            teamModel: Team::class,
+            roleModel: Role::class,
+            membershipModel: Membership::class,
+            teamInvitationModel:  TeamInvitation::class
+        ),
+])
+```
+
+### Installing the API Features
+#### Publish team migration
+Run the following command to publish the **team** migrations.
+```bash
+php artisan vendor:publish --tag=filament-jetstream-team-migration
+```
+
+#### Add api feature trait to User model
+Update `App\Models\User` model to  use `Laravel\Sanctum\HasApiTokens` trait.
+```php
+
+
+use Filament\Models\Contracts\HasTenants;
+use Filament\Jetstream\HasTeams;
+
+class User extends Authenticatable implements  HasTenants
+{
+    use HasTeams;
+}
+
+```
+
+#### Configure the API features
+Add the following to your default panel plugin configuration:
+
+```php
+use Filament\Jetstream\JetstreamPlugin;
+use Illuminate\Validation\Rules\Password;
+use \Filament\Jetstream\Role;
+use \Filament\Jetstream\Models\{Team, Membership, TeamInvitation};
+...
+->plugins([
+    ...
+    JetstreamPlugin::make()
+        ->apiTokens(
+            condition: fn() => Feature::active('api'), 
+            permissions: fn() => ['create', 'read', 'update', 'delete'],
+            menuItemLabel: fn() => 'API Tokens',
+            menuItemIcon: fn() => 'heroicon-o-key',
+        ),
+])
+```
+
 
 ## Testing
 

@@ -68,7 +68,7 @@ class InstallCommand extends Command
 
         // Setup Team
         if ($this->option('teams')) {
-            $this->call('vendor:publish', ['--tag' => 'filament-jetstream-team-migrations', '--force' => true]);
+            $this->call('vendor:publish', ['--tag' => 'filament-jetstream-team-migrations']);
 
             // Factories
             copy(__DIR__ . '/../../database/factories/TeamFactory.php', base_path('database/factories/TeamFactory.php'));
