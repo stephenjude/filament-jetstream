@@ -92,8 +92,8 @@ class InstallCommand extends Command
             );
 
             $this->replaceInFile(
-                '// use HasTeams;',
-                'use HasTeams;',
+                '// use InteractsWithTeams;',
+                'use InteractsWithTeams;',
                 app_path('Models/User.php')
             );
 

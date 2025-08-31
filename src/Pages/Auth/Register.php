@@ -13,7 +13,7 @@ class Register extends \Filament\Auth\Pages\Register
 
         if (Filament::hasTenancy()) {
             $user->switchTeam($user->ownedTeams()->create([
-                'name' => "$user->name's Team",
+                'name' => 'My Workspace',
                 'personal_team' => true,
             ]));
         }
