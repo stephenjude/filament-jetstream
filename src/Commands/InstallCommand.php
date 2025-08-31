@@ -73,19 +73,22 @@ class InstallCommand extends Command
             // Factories
             copy(__DIR__ . '/../../database/factories/TeamFactory.php', base_path('database/factories/TeamFactory.php'));
 
-            // Implement \Filament\Models\Contracts\HasTenants contract in User Model
+
             $this->replaceInFile(
                 '// use Filament\Models\Contracts\HasTenants;',
                 'use Filament\Models\Contracts\HasTenants;',
                 app_path('Models/User.php')
             );
 
-            $this->replaceInFile(', MustVerifyEmail', ', MustVerifyEmail, HasTenants', app_path('Models/User.php'));
-
-            // Add \Filament\Jetstream\HasTeams trait to User Model
             $this->replaceInFile(
-                '// use Filament\Jetstream\HasTeams',
-                'use Filament\Jetstream\HasTeams',
+                '// use Filament\Jetstream\InteractsWithTeams',
+                'use Filament\Jetstream\InteractsWithTeams',
+                app_path('Models/User.php')
+            );
+
+            $this->replaceInFile(
+                ', MustVerifyEmail',
+                ', MustVerifyEmail, HasTenants',
                 app_path('Models/User.php')
             );
 
@@ -99,7 +102,8 @@ class InstallCommand extends Command
             $this->replaceInFile(
                 '->twoFactorAuthentication()',
                 '->twoFactorAuthentication()
-                    ->teams()',
+                 ->teams()
+                 ',
                 app_path('Providers/Filament/AppPanelProvider.php')
             );
         }
@@ -123,7 +127,8 @@ class InstallCommand extends Command
             $this->replaceInFile(
                 '->twoFactorAuthentication()',
                 '->twoFactorAuthentication()
-                    ->apiTokens()',
+                 ->apiTokens()
+                 ',
                 app_path('Providers/Filament/AppPanelProvider.php')
             );
 

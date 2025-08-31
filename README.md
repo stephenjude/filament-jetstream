@@ -40,54 +40,9 @@ You can remove the `--teams` and `--api` arguments if you don't want those featu
 
 ##### 🌍 Translation-ready
 
-## Existing Laravel projects
+## Usage & Configurations
 
-### Installing the Profile feature
-
-#### Publish profile migrations
-Run the following command to publish the profile migrations.
-
-```bash
-php artisan vendor:publish --tag=filament-jetstream-migrations --tag=passkeys-migrations --tag=filament-two-factor-authentication-migrations
-```
-
-#### Add profile feature traits to the User model
-Update the `App\Models\User` model:
-
-```php
-...
-use Filament\Jetstream\HasProfilePhoto;
-use Filament\Models\Contracts\HasAvatar;
-use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
-use Stephenjude\FilamentTwoFactorAuthentication\TwoFactorAuthenticatable;
-
-class User extends Authenticatable implements  HasAvatar, HasPasskeys
-{
-    ...
-    use HasProfilePhoto; 
-    use TwoFactorAuthenticatable; 
-
-    protected $hidden = [
-        ...
-        'two_factor_recovery_codes',
-        'two_factor_secret',
-    ];
-
-    protected $appends = [
-        ...
-        'profile_photo_url',
-    ];
-
-    public function getFilamentAvatarUrl(): ?string
-    {
-        return $this->profile_photo_url;
-    }
-}
-```
-
-#### Configure the profile features 
-Add the following to your default panel plugin configuration:
-
+#### Configuring the User Profile
 ```php
 use \App\Models\User;
 use Filament\Jetstream\JetstreamPlugin;
@@ -112,32 +67,7 @@ use Illuminate\Validation\Rules\Password;
 ])
 ```
 
-### Installing the Team Features
-
-#### Publish team migration
-Run the following command to publish the **team** migrations.
-```bash
-php artisan vendor:publish --tag=filament-jetstream-team-migration
-```
-
-#### Add team feature traits to User model
-Update `App\Models\User` model to implement 'Filament\Models\Contracts\HasTenants' and use `Filament\Jetstream\HasTeams` trait.
-
-```php
-...
-use Filament\Jetstream\HasTeams;
-use Filament\Models\Contracts\HasTenants;
-
-class User extends Authenticatable implements  HasTenants
-{
-    ...
-    use HasTeams;
-}
-
-```
-
-#### Configure the team features
-Add the following to your default panel plugin configuration:
+#### Configuring Team features
 
 ```php
 use \Filament\Jetstream\Role;
@@ -162,29 +92,7 @@ use \Filament\Jetstream\Models\{Team,Membership,TeamInvitation};
 ])
 ```
 
-### Installing the API Features
-#### Publish team migration
-Run the following command to publish the **team** migrations.
-```bash
-php artisan vendor:publish --tag=filament-jetstream-team-migration
-```
-
-#### Add api feature trait to User model
-Update `App\Models\User` model to  use `Laravel\Sanctum\HasApiTokens` trait.
-```php
-use Filament\Models\Contracts\HasTenants;
-use Filament\Jetstream\HasTeams;
-
-class User extends Authenticatable implements  HasTenants
-{
-    use HasTeams;
-}
-
-```
-
-#### Configure the API features
-Add the following to your default panel plugin configuration:
-
+#### Configuring API features
 ```php
 use Filament\Jetstream\JetstreamPlugin;
 use Illuminate\Validation\Rules\Password;
@@ -204,6 +112,93 @@ use \Filament\Jetstream\Models\{Team, Membership, TeamInvitation};
 ])
 ```
 
+## Existing Laravel projects
+
+### Installing the Profile feature
+
+#### Publish profile migrations
+Run the following command to publish the profile migrations.
+
+```bash
+php artisan vendor:publish \
+  --tag=filament-jetstream-migrations \
+  --tag=passkeys-migrations \
+  --tag=filament-two-factor-authentication-migrations
+```
+
+#### Add profile feature traits to the User model
+Update the `App\Models\User` model:
+
+```php
+...
+use Filament\Jetstream\HasProfilePhoto;
+use Filament\Models\Contracts\HasAvatar;
+use Spatie\LaravelPasskeys\Models\Concerns\HasPasskeys;
+use \Filament\Jetstream\InteractsWIthProfile;
+
+class User extends Authenticatable implements  HasAvatar, HasPasskeys
+{
+    ...
+    use InteractsWIthProfile;
+
+    protected $hidden = [
+        ...
+        'two_factor_recovery_codes',
+        'two_factor_secret',
+    ];
+
+    protected $appends = [
+        ...
+        'profile_photo_url',
+    ];
+}
+```
+
+
+
+### Installing the Team Features
+
+#### Publish team migration
+Run the following command to publish the **team** migrations.
+```bash
+php artisan vendor:publish --tag=filament-jetstream-team-migration
+```
+
+#### Add team feature traits to User model
+Update `App\Models\User` model to implement 'Filament\Models\Contracts\HasTenants' and use `Filament\Jetstream\InteractsWithTeams` trait.
+
+```php
+...
+use Filament\Jetstream\InteractsWithTeams;
+use Filament\Models\Contracts\HasTenants;
+
+class User extends Authenticatable implements  HasTenants
+{
+    ...
+    use InteractsWithTeams;
+}
+
+```
+
+### Installing the API Features
+#### Publish team migration
+Run the following command to publish the **team** migrations.
+```bash
+php artisan vendor:publish --tag=filament-jetstream-team-migration
+```
+
+#### Add api feature trait to User model
+Update `App\Models\User` model to  use `Laravel\Sanctum\HasApiTokens` trait.
+```php
+...
+use \Laravel\Sanctum\HasApiTokens;
+
+class User extends Authenticatable 
+{
+    use HasApiTokens;
+}
+
+```
 
 ## Testing
 
