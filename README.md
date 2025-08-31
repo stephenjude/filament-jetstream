@@ -89,12 +89,15 @@ class User extends Authenticatable implements  HasAvatar, HasPasskeys
 Add the following to your default panel plugin configuration:
 
 ```php
-use Filament\Jetstream\JetstreamPlugin;use Illuminate\Validation\Rules\Password;
+use \App\Models\User;
+use Filament\Jetstream\JetstreamPlugin;
+use Illuminate\Validation\Rules\Password;
+
 ...
 ->plugins([
     ...
     JetstreamPlugin::make()
-        ->configureUserModel(userModel: \App\Models\User::class)
+        ->configureUserModel(userModel: User::class)
         ->profilePhoto(condition: fn() => true, disk: 'public')
         ->deleteAccount(condition: fn() => true)
         ->updatePassword(condition: fn() => true, Password::default())
@@ -121,8 +124,9 @@ php artisan vendor:publish --tag=filament-jetstream-team-migration
 Update `App\Models\User` model to implement 'Filament\Models\Contracts\HasTenants' and use `Filament\Jetstream\HasTeams` trait.
 
 ```php
-use Filament\Models\Contracts\HasTenants;
+...
 use Filament\Jetstream\HasTeams;
+use Filament\Models\Contracts\HasTenants;
 
 class User extends Authenticatable implements  HasTenants
 {
@@ -136,17 +140,18 @@ class User extends Authenticatable implements  HasTenants
 Add the following to your default panel plugin configuration:
 
 ```php
+use \Filament\Jetstream\Role;
 use Filament\Jetstream\JetstreamPlugin;
 use Illuminate\Validation\Rules\Password;
-use \Filament\Jetstream\Role;
 use \Filament\Jetstream\Models\{Team,Membership,TeamInvitation};
+
 ...
 ->plugins([
     ...
     JetstreamPlugin::make()
         ->teams(
             condition: fn() => Feature::active('teams'), 
-            acceptTeamInvitation: fn($invitationId) => TeamInvitation::find($invitationId)->accept() // write your logic here
+            acceptTeamInvitation: fn($invitationId) => JetstreamPlugin::make()->defaultAcceptTeamInvitation()
         )
         ->configureTeamModels(
             teamModel: Team::class,
@@ -167,8 +172,6 @@ php artisan vendor:publish --tag=filament-jetstream-team-migration
 #### Add api feature trait to User model
 Update `App\Models\User` model to  use `Laravel\Sanctum\HasApiTokens` trait.
 ```php
-
-
 use Filament\Models\Contracts\HasTenants;
 use Filament\Jetstream\HasTeams;
 
@@ -187,6 +190,7 @@ use Filament\Jetstream\JetstreamPlugin;
 use Illuminate\Validation\Rules\Password;
 use \Filament\Jetstream\Role;
 use \Filament\Jetstream\Models\{Team, Membership, TeamInvitation};
+
 ...
 ->plugins([
     ...
