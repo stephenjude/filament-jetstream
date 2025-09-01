@@ -2,6 +2,18 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 1.2.1 - 2025-09-01
+
+### What's Changed
+
+* Update php version in  phpstan.yml by @wotta in https://github.com/stephenjude/filament-jetstream/pull/53
+
+### New Contributors
+
+* @wotta made their first contribution in https://github.com/stephenjude/filament-jetstream/pull/53
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.2.0...1.2.1
+
 ## 1.2.0 - 2025-08-31
 
 ### What's Changed
