@@ -49,22 +49,19 @@ use Filament\Jetstream\JetstreamPlugin;
 use Illuminate\Validation\Rules\Password;
 
 ...
-->plugins([
-    ...
-    JetstreamPlugin::make()
-        ->configureUserModel(userModel: User::class)
-        ->profilePhoto(condition: fn() => true, disk: 'public')
-        ->deleteAccount(condition: fn() => true)
-        ->updatePassword(condition: fn() => true, Password::default())
-        ->profileInformation(condition: fn() => true)
-        ->logoutBrowserSessions(condition: fn() => true)
-        ->twoFactorAuthentication(
-            condition: fn() => auth()->check(),
-            forced: fn() => app()->isProduction(),
-            enablePasskey: fn() =>  Feature::active('passkey'),
-            requiresPassword: fn() => app()->isProduction(),
-        ),
-])
+JetstreamPlugin::make()
+    ->configureUserModel(userModel: User::class)
+    ->profilePhoto(condition: fn() => true, disk: 'public')
+    ->deleteAccount(condition: fn() => true)
+    ->updatePassword(condition: fn() => true, Password::default())
+    ->profileInformation(condition: fn() => true)
+    ->logoutBrowserSessions(condition: fn() => true)
+    ->twoFactorAuthentication(
+        condition: fn() => auth()->check(),
+        forced: fn() => app()->isProduction(),
+        enablePasskey: fn() =>  Feature::active('passkey'),
+        requiresPassword: fn() => app()->isProduction(),
+    )
 ```
 
 #### Configuring Team features
@@ -76,20 +73,17 @@ use Illuminate\Validation\Rules\Password;
 use \Filament\Jetstream\Models\{Team,Membership,TeamInvitation};
 
 ...
-->plugins([
-    ...
-    JetstreamPlugin::make()
-        ->teams(
-            condition: fn() => Feature::active('teams'), 
-            acceptTeamInvitation: fn($invitationId) => JetstreamPlugin::make()->defaultAcceptTeamInvitation()
-        )
-        ->configureTeamModels(
-            teamModel: Team::class,
-            roleModel: Role::class,
-            membershipModel: Membership::class,
-            teamInvitationModel:  TeamInvitation::class
-        ),
-])
+JetstreamPlugin::make()
+    ->teams(
+        condition: fn() => Feature::active('teams'), 
+        acceptTeamInvitation: fn($invitationId) => JetstreamPlugin::make()->defaultAcceptTeamInvitation()
+    )
+    ->configureTeamModels(
+        teamModel: Team::class,
+        roleModel: Role::class,
+        membershipModel: Membership::class,
+        teamInvitationModel:  TeamInvitation::class
+    )
 ```
 
 #### Configuring API features
@@ -99,17 +93,13 @@ use Illuminate\Validation\Rules\Password;
 use \Filament\Jetstream\Role;
 use \Filament\Jetstream\Models\{Team, Membership, TeamInvitation};
 
-...
-->plugins([
-    ...
-    JetstreamPlugin::make()
-        ->apiTokens(
-            condition: fn() => Feature::active('api'), 
-            permissions: fn() => ['create', 'read', 'update', 'delete'],
-            menuItemLabel: fn() => 'API Tokens',
-            menuItemIcon: fn() => 'heroicon-o-key',
-        ),
-])
+JetstreamPlugin::make()
+    ->apiTokens(
+        condition: fn() => Feature::active('api'), 
+        permissions: fn() => ['create', 'read', 'update', 'delete'],
+        menuItemLabel: fn() => 'API Tokens',
+        menuItemIcon: fn() => 'heroicon-o-key',
+    ),
 ```
 
 ## Existing Laravel projects
@@ -153,8 +143,6 @@ class User extends Authenticatable implements  HasAvatar, HasPasskeys
     ];
 }
 ```
-
-
 
 ### Installing the Team Features
 
