@@ -2,6 +2,15 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 1.2.2 - 2025-09-18
+
+### What's Changed
+
+* Updated ReadMe documentation by @stephenjude in https://github.com/stephenjude/filament-jetstream/pull/55
+* Fixing an incorrect translation of the “Password” section in a UI by @stephenjude in https://github.com/stephenjude/filament-jetstream/pull/56
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.2.1...1.2.2
+
 ## 1.2.1 - 2025-09-01
 
 ### What's Changed
