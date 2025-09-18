@@ -33,7 +33,7 @@ class UpdatePassword extends BaseLivewireComponent
             ->schema([
                 Section::make(__('filament-jetstream::default.update_profile_information.section.title'))
                     ->aside()
-                    ->description(__('filament-jetstream::default.update_profile_information.section.description'))
+                    ->description(__('filament-jetstream::default.update_password.section.description'))
                     ->schema([
                         TextInput::make('currentPassword')
                             ->label(__('filament-jetstream::default.form.current_password.label'))
