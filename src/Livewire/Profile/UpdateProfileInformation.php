@@ -32,16 +32,17 @@ class UpdateProfileInformation extends BaseLivewireComponent
                 Section::make(__('filament-jetstream::default.update_profile_information.section.title'))
                     ->aside()
                     ->description(__('filament-jetstream::default.update_profile_information.section.description'))
-                    ->schema([FileUpload::make('profile_photo_path')
-                        ->label(__('filament-jetstream::default.form.profile_photo.label'))
-                        ->avatar()
-                        ->image()
-                        ->imageEditor()
-                        ->visibility('public')
-                        ->directory('profile-photos')
-                        ->formatStateUsing(fn () => filament()->auth()->user()?->profile_photo_path)
-                        ->disk(fn (): string => Jetstream::plugin()?->profilePhotoDisk())
-                        ->visible(fn (): bool => Jetstream::plugin()?->managesProfilePhotos()),
+                    ->schema([
+                        FileUpload::make('avatar')
+                            ->label(__('filament-jetstream::default.form.profile_photo.label'))
+                            ->avatar()
+                            ->image()
+                            ->imageEditor()
+                            ->visibility('public')
+                            ->directory('avatars')
+                            ->formatStateUsing(fn() => filament()->auth()->user()?->avatar)
+                            ->disk(fn(): string => Jetstream::plugin()?->profilePhotoDisk())
+                            ->visible(fn(): bool => Jetstream::plugin()?->managesProfilePhotos()),
                         TextInput::make('name')
                             ->label(__('filament-jetstream::default.form.name.label'))
                             ->string()
@@ -78,9 +79,9 @@ class UpdateProfileInformation extends BaseLivewireComponent
 
         $isUpdatingEmail = $data['email'] !== $user->email;
 
-        $isUpdatingPhoto = $data['profile_photo_path'] !== $user->profile_photo_path;
+        $isUpdatingPhoto = $data['avatar'] !== $user->avatar;
 
-        $user->forceFill(Arr::except($data, ['profile_photo_path']))->save();
+        $user->forceFill(Arr::except($data, ['avatar']))->save();
 
         if ($isUpdatingEmail) {
             $user->forceFill(['email_verified_at' => null]);
@@ -89,8 +90,8 @@ class UpdateProfileInformation extends BaseLivewireComponent
         }
 
         if ($isUpdatingPhoto) {
-            Arr::get($data, 'profile_photo_path')
-                ? $user->updateProfilePhoto($data['profile_photo_path'])
+            Arr::get($data, 'avatar')
+                ? $user->updateProfilePhoto($data['avatar'])
                 : $user->deleteProfilePhoto();
         }
 
