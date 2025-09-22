@@ -7,7 +7,7 @@ use Filament\Jetstream\Jetstream;
 
 class EditProfile extends \Filament\Auth\Pages\EditProfile
 {
-    protected static string|null|\BackedEnum $navigationIcon = 'heroicon-o-user-circle';
+    protected static string | null | \BackedEnum $navigationIcon = 'heroicon-o-user-circle';
 
     protected string $view = 'filament-jetstream::pages.edit-profile';
 
@@ -18,7 +18,7 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
         parent::mount();
 
         if ($id = $this->getUser()?->currentTeam?->id) {
-            once(fn() => Filament::setTenant(Jetstream::plugin()->teamModel::find($id)));
+            once(fn () => Filament::setTenant(Jetstream::plugin()->teamModel::find($id)));
         }
     }
 

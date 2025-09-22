@@ -12,8 +12,8 @@ trait HasProfilePhoto
      */
     public function updateProfilePhoto(string $photo): void
     {
-        tap($this->avatar, function ($previous) use ($photo) {
-            $this->forceFill(['avatar' => $photo])->save();
+        tap($this->profile_photo_path, function ($previous) use ($photo) {
+            $this->forceFill(['profile_photo_path' => $photo])->save();
 
             if ($previous) {
                 Storage::disk($this->profilePhotoDisk())->delete($previous);
@@ -26,18 +26,18 @@ trait HasProfilePhoto
      */
     public function deleteProfilePhoto(): void
     {
-        if (!Jetstream::plugin()?->managesProfilePhotos()) {
+        if (! Jetstream::plugin()?->managesProfilePhotos()) {
             return;
         }
 
-        if (is_null($this->avatar)) {
+        if (is_null($this->profile_photo_path)) {
             return;
         }
 
-        Storage::disk($this->profilePhotoDisk())->delete($this->avatar);
+        Storage::disk($this->profilePhotoDisk())->delete($this->profile_photo_path);
 
         $this->forceFill([
-            'avatar' => null,
+            'profile_photo_path' => null,
         ])->save();
     }
 
@@ -47,8 +47,8 @@ trait HasProfilePhoto
     public function profilePhotoUrl(): Attribute
     {
         return Attribute::get(function (): string {
-            return $this->avatar
-                ? Storage::disk($this->profilePhotoDisk())->url($this->avatar)
+            return $this->profile_photo_path
+                ? Storage::disk($this->profilePhotoDisk())->url($this->profile_photo_path)
                 : $this->defaultProfilePhotoUrl();
         });
     }

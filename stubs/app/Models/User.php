@@ -61,7 +61,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasPasske
      * @var array<int, string>
      */
     protected $appends = [
-        'avatar',
+        'profile_photo_url',
     ];
 
     /**
@@ -75,10 +75,5 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasPasske
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
-    }
-
-    public function getAvatarAttribute()
-    {
-        return $this->attributes['avatar'];
     }
 }

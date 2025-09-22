@@ -12,7 +12,7 @@ trait InteractsWIthProfile
 
     public function getFilamentAvatarUrl(): ?string
     {
-        return $this->avatar;
+        return $this->profile_photo_url;
     }
 
     public function canAccessPanel(Panel $panel): bool
