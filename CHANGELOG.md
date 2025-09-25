@@ -2,6 +2,18 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 1.2.3 - 2025-09-25
+
+### What's Changed
+
+* fix the agent error by @YoussefGoher in https://github.com/stephenjude/filament-jetstream/pull/59
+
+### New Contributors
+
+* @YoussefGoher made their first contribution in https://github.com/stephenjude/filament-jetstream/pull/59
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.2.2...1.2.3
+
 ## 1.2.2 - 2025-09-18
 
 ### What's Changed
