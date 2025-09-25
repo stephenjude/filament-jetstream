@@ -98,7 +98,7 @@ class LogoutOtherBrowserSessions extends BaseLivewireComponent
             ->orderBy('last_activity', 'desc')
             ->get()->map(function ($session) {
                 return (object) [
-                    'agent' => tap(new Agent, fn($agent) => $agent->setUserAgent($session->user_agent)),
+                    'agent' => tap(new Agent, fn ($agent) => $agent->setUserAgent($session->user_agent)),
                     'ip_address' => $session->ip_address,
                     'is_current_device' => $session->id === request()->session()->getId(),
                     'last_active' => Carbon::createFromTimestamp($session->last_activity)->diffForHumans(),
