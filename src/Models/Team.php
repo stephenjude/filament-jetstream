@@ -21,6 +21,7 @@ class Team extends Model
      */
     protected $fillable = [
         'name',
+        'slug',
         'personal_team',
     ];
 
@@ -45,6 +46,13 @@ class Team extends Model
         return [
             'personal_team' => 'boolean',
         ];
+    }
+
+    protected static function booted()
+    {
+        static::creating(function (Team $team) {
+            $team->slug = \Str::slug($team->name);
+        });
     }
 
     /**
