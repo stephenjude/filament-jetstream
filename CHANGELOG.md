@@ -2,6 +2,14 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 1.2.4 - 2025-09-27
+
+### What's Changed
+
+* fix ApiToken error and bug by @YoussefGoher in https://github.com/stephenjude/filament-jetstream/pull/61
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.2.3...1.2.4
+
 ## 1.2.3 - 2025-09-25
 
 ### What's Changed
