@@ -64,7 +64,7 @@ class ManageApiTokens extends BaseLivewireComponent implements HasTable
     {
         $record->delete();
 
-        $this->sendNotification(__('filament-jetstream::default.notification.token_deleted.success'));
+        $this->sendNotification(__('filament-jetstream::default.notification.token_deleted.success.message'));
     }
 
     public function render()

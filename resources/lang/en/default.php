@@ -295,6 +295,11 @@ return [
             'label' => 'Copy',
         ],
 
+        'copy_token_confirm' => [
+
+            'label' => 'Confirm Copied',
+        ],
+
         'add_team_member' => [
 
             'label' => 'Add',
