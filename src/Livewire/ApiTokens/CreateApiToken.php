@@ -92,13 +92,12 @@ class CreateApiToken extends BaseLivewireComponent
 
         Notification::make('showApiToken')
             ->success()
-            ->body(new HtmlString("API Token: <span>{$plainTextToken}</span>"))
+            ->body(new HtmlString("API Token: <span>{$plainTextToken}</span><br>Please copy the token manually."))
             ->title(__('filament-jetstream::default.notification.create_token.success.message'))
             ->actions([
-                Action::make('copy')
-                    ->label(__('filament-jetstream::default.action.copy_token.label'))
-                    ->icon('heroicon-o-square-2-stack')
-                    ->alpineClickHandler('(window.navigator.clipboard.writeText("' . $plainTextToken . '"))')
+                Action::make('copy_token_confirm')
+                    ->label(__('filament-jetstream::default.action.copy_token_confirm.label'))
+                    ->icon('heroicon-o-check-circle')
                     ->dispatch('token-copied', ['token' => $plainTextToken]),
             ])
             ->persistent()
