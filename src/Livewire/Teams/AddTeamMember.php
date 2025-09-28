@@ -40,64 +40,59 @@ class AddTeamMember extends BaseLivewireComponent
         return $schema
             ->statePath('data')
             ->schema([
-                Section::make(__('filament-jetstream::default.add_team_member.section.title'))
-                    ->aside()
-                    ->visible(fn () => Gate::check('addTeamMember', $this->team))
-                    ->description(__('filament-jetstream::default.add_team_member.section.description'))
-                    ->schema([
-                        TextEntry::make('addTeamMemberNotice')
-                            ->hiddenLabel()
-                            ->state(fn () => __('filament-jetstream::default.add_team_member.section.notice')),
-                        TextInput::make('email')
-                            ->label(__('filament-jetstream::default.form.email.label'))
-                            ->email()
-                            ->required()
-                            ->unique(table: Jetstream::plugin()->teamInvitationModel(), modifyRuleUsing: function (
-                                Unique $rule
-                            ) {
-                                return $rule->where(
-                                    Jetstream::getForeignKeyColumn(Jetstream::plugin()->teamModel()),
-                                    $this->team->id
-                                );
-                            })
-                            ->validationMessages([
-                                'unique' => __(
-                                    'filament-jetstream::default.action.add_team_member.error_message.email_already_invited'
-                                ),
-                            ])
-                            ->rules([
-                                fn (): Closure => function (string $attribute, $value, Closure $fail) {
-                                    if ($this->team->hasUserWithEmail($value)) {
-                                        $fail(
-                                            __(
-                                                'filament-jetstream::default.action.add_team_member.error_message.email_already_invited'
-                                            )
-                                        );
-                                    }
-                                },
-                            ]),
-                        Grid::make()
-                            ->columns(1)
-                            ->schema(function () {
-                                $roles = collect(Jetstream::plugin()?->getTeamRolesAndPermissions());
 
-                                return [
-                                    Radio::make('role')
-                                        ->hiddenLabel()
-                                        ->required()
-                                        ->in($roles->pluck('key'))
-                                        ->options($roles->pluck('name', 'key'))
-                                        ->descriptions($roles->pluck('description', 'key')),
-                                ];
-                            }),
-                        Actions::make([
-                            Action::make('addTeamMember')
-                                ->label(__('filament-jetstream::default.action.add_team_member.label'))
-                                ->action(function () {
-                                    $this->addTeamMember($this->team);
-                                }),
-                        ])->alignEnd(),
+                TextEntry::make('addTeamMemberNotice')
+                    ->hiddenLabel()
+                    ->state(fn() => __('filament-jetstream::default.add_team_member.section.notice')),
+                TextInput::make('email')
+                    ->label(__('filament-jetstream::default.form.email.label'))
+                    ->email()
+                    ->required()
+                    ->unique(table: Jetstream::plugin()->teamInvitationModel(), modifyRuleUsing: function (
+                        Unique $rule
+                    ) {
+                        return $rule->where(
+                            Jetstream::getForeignKeyColumn(Jetstream::plugin()->teamModel()),
+                            $this->team->id
+                        );
+                    })
+                    ->validationMessages([
+                        'unique' => __(
+                            'filament-jetstream::default.action.add_team_member.error_message.email_already_invited'
+                        ),
+                    ])
+                    ->rules([
+                        fn(): Closure => function (string $attribute, $value, Closure $fail) {
+                            if ($this->team->hasUserWithEmail($value)) {
+                                $fail(
+                                    __(
+                                        'filament-jetstream::default.action.add_team_member.error_message.email_already_invited'
+                                    )
+                                );
+                            }
+                        },
                     ]),
+                Grid::make()
+                    ->columns(1)
+                    ->schema(function () {
+                        $roles = collect(Jetstream::plugin()?->getTeamRolesAndPermissions());
+
+                        return [
+                            Radio::make('role')
+                                ->hiddenLabel()
+                                ->required()
+                                ->in($roles->pluck('key'))
+                                ->options($roles->pluck('name', 'key'))
+                                ->descriptions($roles->pluck('description', 'key')),
+                        ];
+                    }),
+                Actions::make([
+                    Action::make('addTeamMember')
+                        ->label(__('filament-jetstream::default.action.add_team_member.label'))
+                        ->action(function () {
+                            $this->addTeamMember($this->team);
+                        }),
+                ])->alignEnd(),
             ]);
     }
 
