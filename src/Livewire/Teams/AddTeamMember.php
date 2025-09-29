@@ -40,7 +40,6 @@ class AddTeamMember extends BaseLivewireComponent
         return $schema
             ->statePath('data')
             ->schema([
-
                 TextEntry::make('addTeamMemberNotice')
                     ->hiddenLabel()
                     ->state(fn() => __('filament-jetstream::default.add_team_member.section.notice')),
