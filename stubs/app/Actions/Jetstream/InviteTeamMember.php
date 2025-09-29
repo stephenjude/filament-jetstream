@@ -2,8 +2,6 @@
 
 namespace App\Actions\Jetstream;
 
-use App\Models\Team;
-use App\Models\User;
 use Closure;
 use Filament\Jetstream\Contracts\InvitesTeamMembers;
 use Filament\Jetstream\Events\InvitingTeamMember;
@@ -40,7 +38,7 @@ class InviteTeamMember implements InvitesTeamMembers
     /**
      * Validate the invite member operation.
      */
-    protected function validate(Team $team, string $email, ?string $role): void
+    protected function validate($team, string $email, ?string $role): void
     {
         Validator::make([
             'email' => $email,
@@ -58,7 +56,7 @@ class InviteTeamMember implements InvitesTeamMembers
      *
      * @return array<string, \Illuminate\Contracts\Validation\Rule|array|string>
      */
-    protected function rules(Team $team): array
+    protected function rules($team): array
     {
         return array_filter([
             'email' => [
@@ -75,7 +73,7 @@ class InviteTeamMember implements InvitesTeamMembers
     /**
      * Ensure that the user is not already on the team.
      */
-    protected function ensureUserIsNotAlreadyOnTeam(Team $team, string $email): Closure
+    protected function ensureUserIsNotAlreadyOnTeam($team, string $email): Closure
     {
         return function ($validator) use ($team, $email) {
             $validator->errors()->addIf(
@@ -94,11 +92,6 @@ class InviteTeamMember implements InvitesTeamMembers
     {
         return function ($validator) {
             // Add your custom validation logic here
-            // Example from HCareMatters:
-            // $user = User::where('email', $email)->first();
-            // if ($user && $user->user_type_id !== 2) {
-            //     $validator->errors()->add('email', 'Only healthcare providers can be invited.');
-            // }
         };
     }
 }

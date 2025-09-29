@@ -2,7 +2,6 @@
 
 namespace App\Actions\Jetstream;
 
-use App\Models\Team;
 use Closure;
 use Filament\Jetstream\Contracts\AddsTeamMembers;
 use Filament\Jetstream\Events\AddingTeamMember;
@@ -35,7 +34,7 @@ class AddTeamMember implements AddsTeamMembers
     /**
      * Validate the add member operation.
      */
-    protected function validate(Team $team, string $email, ?string $role): void
+    protected function validate($team, string $email, ?string $role): void
     {
         Validator::make([
             'email' => $email,
@@ -64,7 +63,7 @@ class AddTeamMember implements AddsTeamMembers
     /**
      * Ensure that the user is not already on the team.
      */
-    protected function ensureUserIsNotAlreadyOnTeam(Team $team, string $email): Closure
+    protected function ensureUserIsNotAlreadyOnTeam($team, string $email): Closure
     {
         return function ($validator) use ($team, $email) {
             $validator->errors()->addIf(
@@ -83,11 +82,6 @@ class AddTeamMember implements AddsTeamMembers
     {
         return function ($validator) {
             // Add your custom validation logic here
-            // Example from HCareMatters:
-            // $user = User::where('email', $email)->first();
-            // if ($user && $user->user_type_id !== 2) {
-            //     $validator->errors()->add('email', 'Only healthcare providers can be added.');
-            // }
         };
     }
 }
