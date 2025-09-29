@@ -8,7 +8,6 @@ use Filament\Forms\Components\TextInput;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Models\Team;
 use Filament\Schemas\Components\Actions;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class UpdateTeamName extends BaseLivewireComponent
@@ -36,7 +35,7 @@ class UpdateTeamName extends BaseLivewireComponent
                 Actions::make([
                     Action::make('save')
                         ->label(__('filament-jetstream::default.action.save.label'))
-                        ->action(fn() => $this->updateTeamName($this->team)),
+                        ->action(fn () => $this->updateTeamName($this->team)),
                 ])->alignEnd(),
             ])
             ->statePath('data');

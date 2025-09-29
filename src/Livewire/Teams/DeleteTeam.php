@@ -8,9 +8,7 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Models\Team;
 use Filament\Schemas\Components\Actions;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\View\View;
 
 class DeleteTeam extends BaseLivewireComponent
@@ -38,7 +36,7 @@ class DeleteTeam extends BaseLivewireComponent
                         ->modalDescription(__('filament-jetstream::default.action.delete_team.notice'))
                         ->modalSubmitActionLabel(__('filament-jetstream::default.action.delete_team.label'))
                         ->modalCancelAction(false)
-                        ->action(fn() => $this->deleteTeam($this->team)),
+                        ->action(fn () => $this->deleteTeam($this->team)),
                 ]),
             ]);
     }

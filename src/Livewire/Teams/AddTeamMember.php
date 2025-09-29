@@ -16,9 +16,7 @@ use Filament\Jetstream\Mail\TeamInvitation;
 use Filament\Jetstream\Models\Team;
 use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Grid;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Unique;
 
@@ -42,7 +40,7 @@ class AddTeamMember extends BaseLivewireComponent
             ->schema([
                 TextEntry::make('addTeamMemberNotice')
                     ->hiddenLabel()
-                    ->state(fn() => __('filament-jetstream::default.add_team_member.section.notice')),
+                    ->state(fn () => __('filament-jetstream::default.add_team_member.section.notice')),
                 TextInput::make('email')
                     ->label(__('filament-jetstream::default.form.email.label'))
                     ->email()
@@ -61,7 +59,7 @@ class AddTeamMember extends BaseLivewireComponent
                         ),
                     ])
                     ->rules([
-                        fn(): Closure => function (string $attribute, $value, Closure $fail) {
+                        fn (): Closure => function (string $attribute, $value, Closure $fail) {
                             if ($this->team->hasUserWithEmail($value)) {
                                 $fail(
                                     __(
