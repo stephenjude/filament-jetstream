@@ -17,6 +17,7 @@ use Filament\Jetstream\Models\Team;
 use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Schema;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Unique;
 
@@ -40,7 +41,7 @@ class AddTeamMember extends BaseLivewireComponent
             ->schema([
                 TextEntry::make('addTeamMemberNotice')
                     ->hiddenLabel()
-                    ->state(fn () => __('filament-jetstream::default.add_team_member.section.notice')),
+                    ->state(fn() => __('filament-jetstream::default.add_team_member.section.notice')),
                 TextInput::make('email')
                     ->label(__('filament-jetstream::default.form.email.label'))
                     ->email()
@@ -59,7 +60,7 @@ class AddTeamMember extends BaseLivewireComponent
                         ),
                     ])
                     ->rules([
-                        fn (): Closure => function (string $attribute, $value, Closure $fail) {
+                        fn(): Closure => function (string $attribute, $value, Closure $fail) {
                             if ($this->team->hasUserWithEmail($value)) {
                                 $fail(
                                     __(
@@ -106,9 +107,31 @@ class AddTeamMember extends BaseLivewireComponent
         $data = $this->form->getState();
 
         $email = $data['email'];
-
         $role = $data['role'];
 
+        // Use contract-based approach if custom action is available
+        if (app()->bound(\Filament\Jetstream\Contracts\InvitesTeamMembers::class)) {
+            app(\Filament\Jetstream\Contracts\InvitesTeamMembers::class)->invite(
+                Auth::user(),
+                $team,
+                $email,
+                $role
+            );
+        } else {
+            // Fallback to default implementation
+            $this->defaultInviteTeamMember($team, $email, $role);
+        }
+
+        $this->sendNotification(__('filament-jetstream::default.notification.team_invitation_sent.success.message'));
+
+        $this->redirect(Filament::getTenantProfileUrl());
+    }
+
+    /**
+     * Default invitation implementation.
+     */
+    protected function defaultInviteTeamMember(Team $team, string $email, string $role): void
+    {
         InvitingTeamMember::dispatch($team, $email, $role);
 
         $invitation = $team->teamInvitations()->create([
@@ -117,10 +140,6 @@ class AddTeamMember extends BaseLivewireComponent
         ]);
 
         Mail::to($email)->send(new TeamInvitation($invitation));
-
-        $this->sendNotification(__('filament-jetstream::default.notification.team_invitation_sent.success.message'));
-
-        $this->redirect(Filament::getTenantProfileUrl());
     }
 
     public function render()

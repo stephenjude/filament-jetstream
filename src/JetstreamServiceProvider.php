@@ -47,11 +47,26 @@ class JetstreamServiceProvider extends PackageServiceProvider
         $this->publishes([
             __DIR__ . '/../database/migrations/2025_08_22_134103_create_teams_table.php' => database_path('migrations/2025_08_22_134103_create_teams_table.php'),
         ], 'filament-jetstream-team-migrations');
+
+        // Publish Jetstream action stubs
+        $this->publishes([
+            __DIR__ . '/../stubs/app/Actions/Jetstream/InviteTeamMember.php' => app_path('Actions/Jetstream/InviteTeamMember.php'),
+            __DIR__ . '/../stubs/app/Actions/Jetstream/AddTeamMember.php' => app_path('Actions/Jetstream/AddTeamMember.php'),
+            __DIR__ . '/../stubs/app/Actions/Jetstream/AcceptTeamInvitation.php' => app_path('Actions/Jetstream/AcceptTeamInvitation.php'),
+            __DIR__ . '/../stubs/app/Traits/HandlesPendingTeamInvitations.php' => app_path('Traits/HandlesPendingTeamInvitations.php'),
+            __DIR__ . '/../stubs/app/Actions/Fortify/CreateNewUser.php' => app_path('Actions/Fortify/CreateNewUser.php'),
+        ], 'jetstream-actions');
+
+        // Publish enhanced email template
+        $this->publishes([
+            __DIR__ . '/../stubs/resources/views/emails/team-invitation.blade.php' => resource_path('views/emails/team-invitation.blade.php'),
+        ], 'jetstream-views');
     }
 
     public function packageBooted()
     {
         $this->registerLivewireComponents();
+        $this->configureActions();
     }
 
     private function registerLivewireComponents(): void
@@ -90,5 +105,25 @@ class JetstreamServiceProvider extends PackageServiceProvider
             PendingTeamInvitations::class
         );
         Livewire::component('filament-jetstream::livewire.teams.delete-team', DeleteTeam::class);
+    }
+
+    /**
+     * Configure Jetstream actions to use published stubs when available.
+     */
+    protected function configureActions(): void
+    {
+        if (class_exists('App\\Actions\\Jetstream\\InviteTeamMember')) {
+            $this->app->bind(
+                \Filament\Jetstream\Contracts\InvitesTeamMembers::class,
+                'App\\Actions\\Jetstream\\InviteTeamMember'
+            );
+        }
+
+        if (class_exists('App\\Actions\\Jetstream\\AddTeamMember')) {
+            $this->app->bind(
+                \Filament\Jetstream\Contracts\AddsTeamMembers::class,
+                'App\\Actions\\Jetstream\\AddTeamMember'
+            );
+        }
     }
 }

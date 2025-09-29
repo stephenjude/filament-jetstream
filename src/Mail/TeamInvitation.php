@@ -34,10 +34,16 @@ class TeamInvitation extends Mailable
             'invitation' => $this->invitation,
         ]);
 
+        // Use custom template if available, otherwise use package template
+        $template = view()->exists('emails.team-invitation')
+            ? 'emails.team-invitation'
+            : 'filament-jetstream::emails.team-invitation';
+
         return $this->subject(__('filament-jetstream::default.mail.team_invitation.subject'))
-            ->markdown('filament-jetstream::emails.team-invitation', [
+            ->markdown($template, [
                 'acceptUrl' => $url,
                 'teamName' => $this->invitation->team?->name,
+                'invitation' => $this->invitation,
             ]);
     }
 }

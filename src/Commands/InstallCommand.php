@@ -149,9 +149,25 @@ class InstallCommand extends Command
         // Link local storage
         $this->call('storage:link');
 
+        // Publish Jetstream action stubs
+        $this->publishJetstreamActions();
+
         $this->info('DONE: Filament Jetstream starter kit installed successfully.');
 
         return self::SUCCESS;
+    }
+
+    /**
+     * Publish Jetstream action stubs.
+     */
+    protected function publishJetstreamActions(): void
+    {
+        $this->call('vendor:publish', [
+            '--tag' => 'jetstream-actions',
+            '--force' => $this->option('force') ?? false,
+        ]);
+
+        $this->info('Jetstream action stubs published successfully.');
     }
 
     /**
