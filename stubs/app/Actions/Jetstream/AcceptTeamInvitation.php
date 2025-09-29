@@ -120,8 +120,6 @@ class AcceptTeamInvitation
             'email' => $invitation->email,
             'password' => Hash::make(Str::password()),
             // Add custom fields here:
-            // 'user_type_id' => 2, // For healthcare providers
-            // 'status' => '1', // Active status
         ];
     }
 
@@ -148,10 +146,6 @@ class AcceptTeamInvitation
     protected function redirectAfterAcceptance(User $user, Team $team): RedirectResponse
     {
         // Example: Redirect to specific dashboard based on user type
-        // if ($user->user_type_id === 2) {
-        //     return redirect('/healthcare-provider/dashboard');
-        // }
-
         return redirect()->intended(config('fortify.home', '/dashboard'));
     }
 
