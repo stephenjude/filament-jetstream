@@ -28,21 +28,16 @@ class UpdateTeamName extends BaseLivewireComponent
     {
         return $schema
             ->schema([
-                Section::make(__('filament-jetstream::default.update_team_name.section.title'))
-                    ->aside()
-                    ->description(__('filament-jetstream::default.update_team_name.section.description'))
-                    ->schema([
-                        TextInput::make('name')
-                            ->label(__('filament-jetstream::default.form.team_name.label'))
-                            ->string()
-                            ->maxLength(255)
-                            ->required(),
-                        Actions::make([
-                            Action::make('save')
-                                ->label(__('filament-jetstream::default.action.save.label'))
-                                ->action(fn () => $this->updateTeamName($this->team)),
-                        ])->alignEnd(),
-                    ]),
+                TextInput::make('name')
+                    ->label(__('filament-jetstream::default.form.team_name.label'))
+                    ->string()
+                    ->maxLength(255)
+                    ->required(),
+                Actions::make([
+                    Action::make('save')
+                        ->label(__('filament-jetstream::default.action.save.label'))
+                        ->action(fn() => $this->updateTeamName($this->team)),
+                ])->alignEnd(),
             ])
             ->statePath('data');
     }

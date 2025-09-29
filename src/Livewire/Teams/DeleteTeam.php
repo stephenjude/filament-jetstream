@@ -26,26 +26,20 @@ class DeleteTeam extends BaseLivewireComponent
     {
         return $schema
             ->schema([
-                Section::make(__('filament-jetstream::default.delete_team.section.title'))
-                    ->description(__('filament-jetstream::default.delete_team.section.description'))
-                    ->aside()
-                    ->visible(fn () => Gate::check('delete', $this->team))
-                    ->schema([
-                        TextEntry::make('notice')
-                            ->hiddenLabel()
-                            ->state(__('filament-jetstream::default.delete_team.section.notice')),
-                        Actions::make([
-                            Action::make('deleteAccountAction')
-                                ->label(__('filament-jetstream::default.action.delete_team.label'))
-                                ->color('danger')
-                                ->requiresConfirmation()
-                                ->modalHeading(__('filament-jetstream::default.delete_team.section.title'))
-                                ->modalDescription(__('filament-jetstream::default.action.delete_team.notice'))
-                                ->modalSubmitActionLabel(__('filament-jetstream::default.action.delete_team.label'))
-                                ->modalCancelAction(false)
-                                ->action(fn () => $this->deleteTeam($this->team)),
-                        ]),
-                    ]),
+                TextEntry::make('notice')
+                    ->hiddenLabel()
+                    ->state(__('filament-jetstream::default.delete_team.section.notice')),
+                Actions::make([
+                    Action::make('deleteAccountAction')
+                        ->label(__('filament-jetstream::default.action.delete_team.label'))
+                        ->color('danger')
+                        ->requiresConfirmation()
+                        ->modalHeading(__('filament-jetstream::default.delete_team.section.title'))
+                        ->modalDescription(__('filament-jetstream::default.action.delete_team.notice'))
+                        ->modalSubmitActionLabel(__('filament-jetstream::default.action.delete_team.label'))
+                        ->modalCancelAction(false)
+                        ->action(fn() => $this->deleteTeam($this->team)),
+                ]),
             ]);
     }
 
