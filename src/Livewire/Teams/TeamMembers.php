@@ -9,7 +9,6 @@ use Filament\Jetstream\Events\TeamMemberUpdated;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
 use Filament\Jetstream\Models\Team;
-use Filament\Jetstream\Role;
 use Filament\Schemas\Components\Grid;
 use Filament\Support\Enums\Alignment;
 use Filament\Tables;
