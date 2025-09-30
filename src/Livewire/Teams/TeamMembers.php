@@ -51,7 +51,7 @@ class TeamMembers extends BaseLivewireComponent implements Tables\Contracts\HasT
             ->recordActions([
                 Action::make('updateTeamRole')
                     ->visible(fn ($record): bool => Gate::check('updateTeamMember', $this->team))
-                    ->label(fn ($record): string => Role::find($record->role)->name)
+                    ->label(fn ($record): string => Jetstream::plugin()->roleModel::find($record->role)?->name ?? __('N/A'))
                     ->modalWidth('lg')
                     ->modalHeading(__('filament-jetstream::default.action.update_team_role.title'))
                     ->modalSubmitActionLabel(__('filament-jetstream::default.action.save.label'))
