@@ -2,6 +2,14 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 1.2.8 - 2025-10-01
+
+### What's Changed
+
+* Revert: Added tenant slug for friendly URL #71
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.2.5...1.2.8
+
 ## 1.2.1 - 2025-09-01
 
 ### What's Changed
