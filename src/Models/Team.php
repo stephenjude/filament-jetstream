@@ -53,9 +53,43 @@ class Team extends Model
         parent::boot();
 
         static::creating(function (Model $team) {
-            $team->slug = \Str::slug($team->name);
+            $team->slug = static::generateUniqueSlug($team->name);
+        });
+
+        static::updating(function (Model $team) {
+            // Update slug when name is changed.
+            if ($team->isDirty('name')) {
+                $team->slug = static::generateUniqueSlug($team->name, $team->id);
+            }
         });
     }
+
+
+    /**
+     * Generates a unique slug from the given name, incrementing a counter if the slug already exists.
+     *
+     * @param string $name The name to generate the slug from.
+     * @param null|int $ignoreId The ID of the model to ignore when checking for existing slugs.
+     * @return string The unique slug.
+     */
+    protected static function generateUniqueSlug(string $name, $ignoreId = null): string
+    {
+        $slug = \Str::slug($name);
+        $original = $slug;
+        $counter = 1;
+
+        while (
+            static::where('slug', $slug)
+                ->when($ignoreId, fn($q) => $q->where('id', '!=', $ignoreId))
+                ->exists()
+        ) {
+            $slug = "{$original}-{$counter}";
+            $counter++;
+        }
+
+        return $slug;
+    }
+
 
     /**
      * Get the owner of the team.

@@ -47,6 +47,10 @@ class JetstreamServiceProvider extends PackageServiceProvider
         $this->publishes([
             __DIR__ . '/../database/migrations/2025_08_22_134103_create_teams_table.php' => database_path('migrations/2025_08_22_134103_create_teams_table.php'),
         ], 'filament-jetstream-team-migrations');
+
+        $this->publishes([
+            __DIR__ . '/../database/migrations/2025_10_01_165811_add_slug_column_in_teams_table.php' => database_path('migrations/2025_10_01_165811_add_slug_column_in_teams_table.php'),
+        ], 'filament-jetstream-team-migrations');
     }
 
     public function packageBooted()

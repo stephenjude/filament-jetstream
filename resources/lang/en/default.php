@@ -68,6 +68,9 @@ return [
         'team_name' => [
             'label' => 'Team Name',
         ],
+        'team_slug' => [
+            'label' => 'Team Slug',
+        ],
 
         'or' => [
             'label' => 'Or ',

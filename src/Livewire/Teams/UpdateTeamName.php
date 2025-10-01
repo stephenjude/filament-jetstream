@@ -20,7 +20,7 @@ class UpdateTeamName extends BaseLivewireComponent
     {
         $this->team = $team;
 
-        $this->form->fill($team->only(['name']));
+        $this->form->fill($team->only(['name', 'slug']));
     }
 
     public function form(Schema $schema): Schema
@@ -32,10 +32,16 @@ class UpdateTeamName extends BaseLivewireComponent
                     ->string()
                     ->maxLength(255)
                     ->required(),
+                TextInput::make('slug')
+                    ->label(__('filament-jetstream::default.form.team_slug.label'))
+                    ->string()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(255)
+                    ->required(),
                 Actions::make([
                     Action::make('save')
                         ->label(__('filament-jetstream::default.action.save.label'))
-                        ->action(fn () => $this->updateTeamName($this->team)),
+                        ->action(fn() => $this->updateTeamName($this->team)),
                 ])->alignEnd(),
             ])
             ->statePath('data');
