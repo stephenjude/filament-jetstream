@@ -9,27 +9,27 @@ trait HasProfileFeatures
 {
     public string $userModel = 'App\\Models\\User';
 
-    public Closure | bool $updateProfileInformation = true;
+    public mixed $updateProfileInformation = true;
 
-    public Closure | bool $updateProfilePhoto = true;
+    public mixed $updateProfilePhoto = true;
 
     public string $profilePhotoDisk = 'public';
 
-    public Closure | bool $updatePassword = true;
+    public mixed $updatePassword = true;
 
-    public Closure | Password | null $passwordRule = null;
+    public mixed $passwordRule = null;
 
-    protected Closure | bool $forceTwoFactorAuthentication = false;
+    protected mixed $forceTwoFactorAuthentication = false;
 
-    protected Closure | bool $enablePasskeyAuthentication = false;
+    protected mixed $enablePasskeyAuthentication = false;
 
-    protected Closure | bool $requiresPasswordForAuthenticationSetup = false;
+    protected mixed $requiresPasswordForAuthenticationSetup = false;
 
-    protected Closure | bool $twoFactorAuthentication = true;
+    protected mixed $twoFactorAuthentication = true;
 
-    public Closure | bool $logoutOtherBrowserSessions = true;
+    public mixed $logoutOtherBrowserSessions = true;
 
-    public Closure | bool $deleteAccount = true;
+    public mixed $deleteAccount = true;
 
     public function profilePhoto(Closure | bool $condition = true, string $disk = 'public'): static
     {
