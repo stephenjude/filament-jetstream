@@ -146,6 +146,9 @@ class InstallCommand extends Command
         // Publish 2FA migrations
         $this->call('vendor:publish', ['--tag' => 'filament-two-factor-authentication-migrations']);
 
+        // Publish jetstream team slug migration
+        $this->call('vendor:publish', ['--tag' => 'filament-jetstream-team-slug-migrations']);
+
         // Link local storage
         $this->call('storage:link');
 

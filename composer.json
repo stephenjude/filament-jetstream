@@ -49,6 +49,11 @@
     },
     "scripts": {
         "post-autoload-dump": "@php ./vendor/bin/testbench package:discover --ansi",
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=filament-jetstream-team-slug-migrations --force",
+            "@php artisan optimize",
+            "@php artisan migrate"
+        ],
         "analyse": "vendor/bin/phpstan analyse",
         "test": "vendor/bin/pest",
         "test-coverage": "vendor/bin/pest --coverage",

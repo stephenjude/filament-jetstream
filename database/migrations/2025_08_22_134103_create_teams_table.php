@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -50,11 +49,18 @@ return new class extends Migration
     public function down(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropColumns('users', 'current_team_id');
-        Schema::enableForeignKeyConstraints();
 
-        Schema::dropIfExists('teams');
-        Schema::dropIfExists('team_user');
+        // Drop dependent tables first
         Schema::dropIfExists('team_invitations');
+        Schema::dropIfExists('team_user');
+        Schema::dropIfExists('teams');
+
+        // Finally drop column from users
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('current_team_id');
+        });
+
+        Schema::enableForeignKeyConstraints();
     }
+
 };
