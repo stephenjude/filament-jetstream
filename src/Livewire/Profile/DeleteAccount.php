@@ -49,7 +49,7 @@ class DeleteAccount extends BaseLivewireComponent
                                 ])
                                 ->action(fn(array $data) => $this->deleteAccount())
                                 ->successNotificationTitle('User deleted')
-                                ->successRedirectUrl('/HealthcareProvider'),
+                                ->successRedirectUrl(route('login')),
                         ]),
                     ])
             ]);
