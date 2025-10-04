@@ -17,6 +17,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Str;
+use Laravel\SerializableClosure\SerializableClosure;
 
 trait HasTeamsFeatures
 {
@@ -28,16 +29,16 @@ trait HasTeamsFeatures
 
     public string $teamInvitationModel = TeamInvitation::class;
 
-    public Closure | bool $hasTeamFeature = false;
+    public mixed $hasTeamFeature = false;
 
-    public ?Closure $acceptTeamInvitation = null;
+    public mixed $acceptTeamInvitation = null;
 
     public function hasTeamsFeatures(): bool
     {
         return $this->evaluate($this->hasTeamFeature) === true;
     }
 
-    public function teams(Closure | bool $condition = true, ?Closure $acceptTeamInvitation = null): static
+    public function teams(Closure | bool $condition = true, Closure | string | null $acceptTeamInvitation = null): static
     {
         $this->hasTeamFeature = $condition;
 
@@ -57,12 +58,41 @@ trait HasTeamsFeatures
     public function teamsRoutes(): array
     {
         return [
-            Route::get('/team-invitations/{invitation}', fn ($invitation) => $this->acceptTeamInvitation === null
-                ? $this->defaultAcceptTeamInvitation($invitation)
-                : $this->evaluate($this->acceptTeamInvitation, ['invitationId' => $invitation]))
+            Route::get('/team-invitations/{invitation}', function ($invitation) {
+                if ($this->acceptTeamInvitation === null) {
+                    return $this->defaultAcceptTeamInvitation($invitation);
+                }
+
+                if (is_string($this->acceptTeamInvitation)) {
+                    return app()->call($this->acceptTeamInvitation, ['invitationId' => $invitation]);
+                }
+
+                // Unwrap the closure if it's serialized
+                $closure = $this->unwrapClosure($this->acceptTeamInvitation);
+
+                return $this->evaluate($closure, ['invitationId' => $invitation]);
+            })
                 ->middleware(['signed'])
                 ->name('team-invitations.accept'),
         ];
+    }
+
+    /**
+     * Unwrap a closure if it's wrapped in a SerializableClosure or serializer object.
+     */
+    protected function unwrapClosure(mixed $closure): mixed
+    {
+        // Handle SerializableClosure wrapper
+        if ($closure instanceof SerializableClosure) {
+            return $closure->getClosure();
+        }
+
+        // Handle Laravel's native serializer wrapper
+        if (is_object($closure) && method_exists($closure, 'getClosure')) {
+            return $closure->getClosure();
+        }
+
+        return $closure;
     }
 
     public function configureTeamModels(
@@ -158,5 +188,46 @@ trait HasTeamsFeatures
             );
 
         return redirect()->to($passwordResetUrl ?? Filament::getHomeUrl());
+    }
+
+    /**
+     * Serialize the trait for caching.
+     *
+     * This method properly handles closure serialization to prevent
+     * type errors when running php artisan optimize.
+     */
+    public function __serialize(): array
+    {
+        $data = get_object_vars($this);
+
+        // Convert closures to SerializableClosure instances
+        foreach ($data as $key => $value) {
+            if ($value instanceof Closure) {
+                $data[$key] = new SerializableClosure($value);
+            }
+        }
+
+        return $data;
+    }
+
+    /**
+     * Unserialize the trait from cache.
+     *
+     * This method properly handles closure deserialization to restore
+     * the trait state after php artisan optimize.
+     */
+    public function __unserialize(array $data): void
+    {
+        foreach ($data as $key => $value) {
+            // Convert SerializableClosure back to Closure
+            if ($value instanceof SerializableClosure) {
+                $this->{$key} = $value->getClosure();
+            } elseif (is_object($value) && method_exists($value, 'getClosure')) {
+                // Handle Laravel's native serializer wrapper
+                $this->{$key} = $value->getClosure();
+            } else {
+                $this->{$key} = $value;
+            }
+        }
     }
 }

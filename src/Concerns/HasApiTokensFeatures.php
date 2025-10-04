@@ -8,9 +8,9 @@ use Filament\Panel;
 
 trait HasApiTokensFeatures
 {
-    public Closure | bool $hasApiFeature = false;
+    public mixed $hasApiFeature = false;
 
-    public Closure | array | null $apiTokenPermissions = [];
+    public mixed $apiTokenPermissions = [];
 
     public ?string $apiMenuItemLabel = null;
 
@@ -54,9 +54,9 @@ trait HasApiTokensFeatures
     public function apiTokenMenuItem(Panel $panel): Action
     {
         return Action::make('api_tokens')
-            ->visible(fn (): bool => $this->hasApiTokensFeatures())
-            ->label(fn () => $this->getApiMenuItemLabel())
-            ->icon(fn () => $this->getApiMenuItemIcon())
+            ->visible(fn(): bool => $this->hasApiTokensFeatures())
+            ->label(fn() => $this->getApiMenuItemLabel())
+            ->icon(fn() => $this->getApiMenuItemIcon())
             ->url(function () use ($panel) {
                 return $this->getApiTokenUrl($panel);
             });

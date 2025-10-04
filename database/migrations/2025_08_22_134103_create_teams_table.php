@@ -19,6 +19,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->index();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->boolean('personal_team');
             $table->timestamps();
         });
@@ -50,11 +51,17 @@ return new class extends Migration
     public function down(): void
     {
         Schema::disableForeignKeyConstraints();
-        Schema::dropColumns('users', 'current_team_id');
-        Schema::enableForeignKeyConstraints();
 
-        Schema::dropIfExists('teams');
-        Schema::dropIfExists('team_user');
+        // Drop dependent tables first
         Schema::dropIfExists('team_invitations');
+        Schema::dropIfExists('team_user');
+        Schema::dropIfExists('teams');
+
+        // Finally drop column from users
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('current_team_id');
+        });
+
+        Schema::enableForeignKeyConstraints();
     }
 };
