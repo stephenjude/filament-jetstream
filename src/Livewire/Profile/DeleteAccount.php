@@ -7,11 +7,13 @@ use Filament\Forms;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
+use Filament\Jetstream\Models\Team;
 use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
 
@@ -27,7 +29,7 @@ class DeleteAccount extends BaseLivewireComponent
                     ->schema([
                         TextEntry::make('deleteAccountNotice')
                             ->hiddenLabel()
-                            ->state(fn () => __('filament-jetstream::default.delete_account.section.notice')),
+                            ->state(fn() => __('filament-jetstream::default.delete_account.section.notice')),
                         Actions::make([
                             Action::make('deleteAccount')
                                 ->label(__('filament-jetstream::default.action.delete_account.label'))
@@ -37,7 +39,7 @@ class DeleteAccount extends BaseLivewireComponent
                                 ->modalDescription(__('filament-jetstream::default.action.delete_account.notice'))
                                 ->modalSubmitActionLabel(__('filament-jetstream::default.action.delete_account.label'))
                                 ->modalCancelAction(false)
-                                ->form([
+                                ->schema([
                                     Forms\Components\TextInput::make('password')
                                         ->password()
                                         ->revealable()
@@ -45,9 +47,12 @@ class DeleteAccount extends BaseLivewireComponent
                                         ->required()
                                         ->currentPassword(),
                                 ])
-                                ->action(fn (array $data) => $this->deleteAccount()),
+                                ->action(fn(array $data) => $this->deleteAccount())
+                                ->successNotificationTitle(__('filament-jetstream::default.action.delete_account.success_title'))
+                                ->successRedirectUrl(route('login')),
                         ]),
-                    ])]);
+                    ])
+            ]);
     }
 
     /**
@@ -62,7 +67,7 @@ class DeleteAccount extends BaseLivewireComponent
                 $user->teams()->detach();
 
                 $user->ownedTeams->each(function (Team $team) {
-                    $this->deletesTeams->delete($team);
+                    $team->delete();
                 });
             }
 
