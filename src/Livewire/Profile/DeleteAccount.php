@@ -48,7 +48,7 @@ class DeleteAccount extends BaseLivewireComponent
                                         ->currentPassword(),
                                 ])
                                 ->action(fn(array $data) => $this->deleteAccount())
-                                ->successNotificationTitle('User deleted')
+                                ->successNotificationTitle(__('filament-jetstream::default.action.delete_account.success_title'))
                                 ->successRedirectUrl(route('login')),
                         ]),
                     ])
@@ -78,7 +78,7 @@ class DeleteAccount extends BaseLivewireComponent
             $user->delete();
         });
 
-        Auth::logout();
+        filament()->auth()->logout();
 
         return redirect(filament()->getLoginUrl());
     }
