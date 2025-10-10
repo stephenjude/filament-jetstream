@@ -2,6 +2,14 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 1.2.10 - 2025-10-10
+
+### What's Changed
+
+* Added phpstan for code editing to fix action phpstan.yml action by @MominAlZaraa in https://github.com/stephenjude/filament-jetstream/pull/76
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.2.9...1.2.10
+
 ## 1.2.9 - 2025-10-05
 
 ### What's Changed
