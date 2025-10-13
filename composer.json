@@ -36,7 +36,7 @@
         "pestphp/pest": "^3.0",
         "pestphp/pest-plugin-arch": "^3.0",
         "pestphp/pest-plugin-laravel": "^3.0",
-        "phpstan/phpstanlarastan/larastan": "^3.0"
+        "larastan/larastan": "^3.0"
     },
     "autoload": {
         "psr-4": {
