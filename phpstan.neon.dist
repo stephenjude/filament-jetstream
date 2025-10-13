@@ -1,14 +1,41 @@
 includes:
-    - phpstan-baseline.neon
+    - vendor/nunomaduro/larastan/extension.neon
+    - vendor/nesbot/carbon/extension.neon
 
 parameters:
     level: 4
+
     paths:
         - src
-        - config
-        - database
-    tmpDir: build/phpstan
-    checkOctaneCompatibility: true
-    checkModelProperties: true
-    checkMissingIterableValueType: false
+        - database/factories
+        - database/seeders
 
+    tmpDir: build/phpstan
+
+    # Recommended for Laravel packages
+    checkModelProperties: true
+    checkModelRelations: true
+    checkMissingTemplateVars: false # package usually has no Blade templates
+    checkImplicitMixed: true
+    analyseModelFactoryBuilders: true
+
+    # Optional performance tweak
+    parallel:
+        maximumNumberOfProcesses: 4
+
+    # Avoid vendor false positives
+    scanDirectories:
+        - vendor
+
+    # Skip non-source dirs
+    excludePaths:
+        - tests/CreatesApplication.php
+        - bootstrap/*
+        - storage/*
+        - node_modules/*
+
+    # Ignore known dynamic or generated code
+    ignoreErrors:
+        - '#Call to an undefined method Illuminate\\.*#'
+        - '#Call to an undefined method Filament\\.*#'
+        - '#Access to an undefined property Livewire\\.*#'

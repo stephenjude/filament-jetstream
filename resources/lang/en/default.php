@@ -277,6 +277,8 @@ return [
 
             'notice' => 'Are you sure you want to delete your account? Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.',
 
+            'success_title' => 'Account Deleted',
+
         ],
 
         'delete_team' => [
@@ -403,8 +405,7 @@ return [
 
     ],
 
-    'profile_photo' => [
-    ],
+    'profile_photo' => [],
 
     'update_profile_information' => [
 

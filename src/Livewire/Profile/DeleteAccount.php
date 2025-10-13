@@ -7,6 +7,7 @@ use Filament\Forms;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Jetstream\Jetstream;
 use Filament\Jetstream\Livewire\BaseLivewireComponent;
+use Filament\Jetstream\Models\Team;
 use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -37,7 +38,7 @@ class DeleteAccount extends BaseLivewireComponent
                                 ->modalDescription(__('filament-jetstream::default.action.delete_account.notice'))
                                 ->modalSubmitActionLabel(__('filament-jetstream::default.action.delete_account.label'))
                                 ->modalCancelAction(false)
-                                ->form([
+                                ->schema([
                                     Forms\Components\TextInput::make('password')
                                         ->password()
                                         ->revealable()
@@ -45,9 +46,12 @@ class DeleteAccount extends BaseLivewireComponent
                                         ->required()
                                         ->currentPassword(),
                                 ])
-                                ->action(fn (array $data) => $this->deleteAccount()),
+                                ->action(fn (array $data) => $this->deleteAccount())
+                                ->successNotificationTitle(__('filament-jetstream::default.action.delete_account.success_title'))
+                                ->successRedirectUrl(route('login')),
                         ]),
-                    ])]);
+                    ]),
+            ]);
     }
 
     /**
@@ -62,7 +66,7 @@ class DeleteAccount extends BaseLivewireComponent
                 $user->teams()->detach();
 
                 $user->ownedTeams->each(function (Team $team) {
-                    $this->deletesTeams->delete($team);
+                    $team->delete();
                 });
             }
 
