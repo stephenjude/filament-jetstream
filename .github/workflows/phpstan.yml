@@ -2,25 +2,39 @@ name: PHPStan
 
 on:
   push:
-    paths:
-      - '**.php'
-      - 'phpstan.neon.dist'
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  release:
+    types: [released]
 
 jobs:
   phpstan:
-    name: phpstan
     runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v5
 
-      - name: Setup PHP
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up PHP
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.3'
+          extensions: mbstring, xml, ctype, iconv, intl, json, mysql
           coverage: none
 
-      - name: Install composer dependencies
-        uses: ramsey/composer-install@v3
+      - name: Cache Composer dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.composer/cache
+            vendor
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-php-
+
+      - name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-interaction
 
       - name: Run PHPStan
-        run: ./vendor/bin/phpstan --error-format=github
+        run: ./vendor/bin/phpstan analyse --error-format=github

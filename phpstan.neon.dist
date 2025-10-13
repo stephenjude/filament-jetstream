@@ -1,5 +1,5 @@
 includes:
-    - vendor/nunomaduro/larastan/extension.neon
+    - vendor/larastan/larastan/extension.neon
     - vendor/nesbot/carbon/extension.neon
 
 parameters:
@@ -7,17 +7,13 @@ parameters:
 
     paths:
         - src
-        - database/factories
-        - database/seeders
+        - database
 
     tmpDir: build/phpstan
 
     # Recommended for Laravel packages
     checkModelProperties: true
-    checkModelRelations: true
-    checkMissingTemplateVars: false # package usually has no Blade templates
     checkImplicitMixed: true
-    analyseModelFactoryBuilders: true
 
     # Optional performance tweak
     parallel:
@@ -29,10 +25,10 @@ parameters:
 
     # Skip non-source dirs
     excludePaths:
-        - tests/CreatesApplication.php
-        - bootstrap/*
-        - storage/*
-        - node_modules/*
+        analyseAndScan:
+            - bootstrap/*
+            - storage/*
+            - node_modules/*
 
     # Ignore known dynamic or generated code
     ignoreErrors:

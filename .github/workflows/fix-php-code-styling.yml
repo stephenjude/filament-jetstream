@@ -4,6 +4,8 @@ on:
   push:
     paths:
       - '**.php'
+  release:
+    types: [released]
 
 permissions:
   contents: write
@@ -14,9 +16,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v5
-        with:
-          ref: ${{ github.head_ref }}
+        uses: actions/checkout@v4
 
       - name: Fix PHP code style issues
         uses: aglipanci/laravel-pint-action@2.6
