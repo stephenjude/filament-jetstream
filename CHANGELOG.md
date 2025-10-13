@@ -2,6 +2,30 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 1.2.10 - 2025-10-10
+
+### What's Changed
+
+* Added phpstan for code editing to fix action phpstan.yml action by @MominAlZaraa in https://github.com/stephenjude/filament-jetstream/pull/76
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.2.9...1.2.10
+
+## 1.2.9 - 2025-10-05
+
+### What's Changed
+
+* Fix: DeleteAccount flow & replace deprecated modal form usage by @momin-00 in https://github.com/stephenjude/filament-jetstream/pull/75
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.2.6...1.2.9
+
+## 1.2.8 - 2025-10-01
+
+### What's Changed
+
+* Revert: Added tenant slug for friendly URL #71
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.2.5...1.2.8
+
 ## 1.2.1 - 2025-09-01
 
 ### What's Changed
