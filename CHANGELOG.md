@@ -2,6 +2,14 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 1.2.12 - 2025-10-13
+
+### What's Changed
+
+* added Larastan rules by @stephenjude in https://github.com/stephenjude/filament-jetstream/pull/85
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.2.11...1.2.12
+
 ## 1.2.11 - 2025-10-13
 
 ### What's Changed
