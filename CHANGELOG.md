@@ -2,6 +2,17 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 1.2.11 - 2025-10-13
+
+### What's Changed
+
+* chore(phpstan): update configuration to use supported methods only by @MominAlZaraa in https://github.com/stephenjude/filament-jetstream/pull/77
+* chore(phpstan): replace PHPStan with Larastan for enhanced built-in features by @MominAlZaraa in https://github.com/stephenjude/filament-jetstream/pull/78
+* Bump stefanzweifel/git-auto-commit-action from 6 to 7 by @dependabot[bot] in https://github.com/stephenjude/filament-jetstream/pull/83
+* fixed Larastan dev dependency by @stephenjude in https://github.com/stephenjude/filament-jetstream/pull/84
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.2.10...1.2.11
+
 ## 1.2.10 - 2025-10-10
 
 ### What's Changed
