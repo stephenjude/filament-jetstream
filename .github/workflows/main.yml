@@ -1,0 +1,26 @@
+name: Run Tests Every Minute
+
+on:
+  schedule:
+    - cron: "*/1 * * * *" # every minute
+  workflow_dispatch: # allow manual trigger
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          extensions: mbstring, pdo, pdo_mysql
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-progress --no-interaction --prefer-dist
+
+      - name: Run tests
+        run: php artisan test --no-interaction
