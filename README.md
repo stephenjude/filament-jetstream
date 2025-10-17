@@ -1,6 +1,6 @@
 # Filament Jetstream Enhanced — A Laravel Starter Kit Built With Filament
 
-![Edit Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/banner.jpg)
+![Edit Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/1.x/art/banner.jpg)
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/mominpert/filament-jetstream-enhanced.svg?style=flat-square)](https://packagist.org/packages/mominpert/filament-jetstream-enhanced)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/MominAlZaraa/filament-jetstream/run-tests.yml?branch=1.x&label=tests&style=flat-square)](https://github.com/MominAlZaraa/filament-jetstream/actions?query=workflow%3Arun-tests+branch%3A1.x)
@@ -108,16 +108,16 @@ return [
 ## Features
 
 ##### 🔐 Authentication
-![Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/login.jpeg)
+![Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/1.x/art/login.jpeg)
 
 ##### 👤 User Profile
-![Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/profile.jpeg)
+![Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/1.x/art/profile.jpeg)
 
 ##### 👥 Team (Optional)
-![Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/team.jpeg)
+![Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/1.x/art/team.jpeg)
 
 ##### 🔑 API Tokens (Optional)
-![Profile](https://raw.githubusercontent.com/stephenjude/filament-jetstream/main/art/tokens.jpeg)
+![Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/1.x/art/tokens.jpeg)
 
 ##### 🌍 Translation-ready
 
