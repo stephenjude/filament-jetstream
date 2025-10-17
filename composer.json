@@ -1,22 +1,28 @@
 {
-    "name": "stephenjude/filament-jetstream",
-    "description": "A Laravel starter kit built with Filament inspired by Jetstream.",
+    "name": "mominpert/filament-jetstream-enhanced",
+    "description": "An enhanced Laravel starter kit built with Filament inspired by Jetstream with comprehensive customization features.",
     "keywords": [
+        "mominpert",
         "laravel",
         "starter kit",
         "filament",
-        "filament-jetstream"
+        "filament-jetstream",
+        "enhanced",
+        "customizable",
+        "livewire",
+        "publishing"
     ],
-    "homepage": "https://github.com/stephenjude/filament-jetstream",
+    "homepage": "https://github.com/MominAlZaraa/filament-jetstream",
     "support": {
-        "issues": "https://github.com/stephenjude/filament-jetstream/issues",
-        "source": "https://github.com/stephenjude/filament-jetstream"
+        "issues": "https://github.com/MominAlZaraa/filament-jetstream/issues",
+        "source": "https://github.com/MominAlZaraa/filament-jetstream",
+        "email": "support@mominpert.com"
     },
     "license": "MIT",
     "authors": [
         {
-            "name": "stephenjude",
-            "email": "stephenjudesuccess@gmail.com",
+            "name": "mominpert",
+            "email": "mominpert@gmail.com",
             "role": "Developer"
         }
     ],
