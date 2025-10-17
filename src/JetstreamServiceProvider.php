@@ -36,36 +36,35 @@ class JetstreamServiceProvider extends PackageServiceProvider
          */
         $package->name(static::$name)
             ->hasViews()
-            ->hasTranslations('filament-jetstream')
             ->hasConfigFile(static::$name)
             ->hasCommands([InstallCommand::class]);
 
         $this->publishes([
-            __DIR__.'/../database/migrations/2025_08_22_134103_add_profile_photo_column_to_users_table.php' => database_path('migrations/2025_08_22_134103_add_profile_photo_column_to_users_table.php'),
+            __DIR__ . '/../database/migrations/2025_08_22_134103_add_profile_photo_column_to_users_table.php' => database_path('migrations/2025_08_22_134103_add_profile_photo_column_to_users_table.php'),
         ], 'filament-jetstream-migrations');
 
         $this->publishes([
-            __DIR__.'/../database/migrations/2025_08_22_134103_create_teams_table.php' => database_path('migrations/2025_08_22_134103_create_teams_table.php'),
+            __DIR__ . '/../database/migrations/2025_08_22_134103_create_teams_table.php' => database_path('migrations/2025_08_22_134103_create_teams_table.php'),
         ], 'filament-jetstream-team-migrations');
 
         // Publish Livewire components
         $this->publishes([
-            __DIR__.'/../Livewire' => app_path('Livewire/FilamentJetstream'),
+            __DIR__ . '/Livewire' => app_path('Livewire/FilamentJetstream'),
         ], 'filament-jetstream-livewire');
 
         // Publish views
         $this->publishes([
-            __DIR__.'/../resources/views' => resource_path('views/vendor/filament-jetstream'),
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/filament-jetstream'),
         ], 'filament-jetstream-views');
 
         // Publish translations
         $this->publishes([
-            __DIR__.'/../resources/lang/en/default.php' => lang_path('en/filament-jetstream.php'),
+            __DIR__ . '/../resources/lang/en/default.php' => lang_path('en/filament-jetstream.php'),
         ], 'filament-jetstream-translations');
 
         // Publish pages
         $this->publishes([
-            __DIR__.'/../Pages' => app_path('Filament/Pages/FilamentJetstream'),
+            __DIR__ . '/Pages' => app_path('Filament/Pages/FilamentJetstream'),
         ], 'filament-jetstream-pages');
     }
 
