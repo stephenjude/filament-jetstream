@@ -7,10 +7,6 @@ return [
             'label' => 'Name',
         ],
 
-        'surname' => [
-            'label' => 'Surname',
-        ],
-
         'team_owner' => [
             'label' => 'Team Owner',
         ],
