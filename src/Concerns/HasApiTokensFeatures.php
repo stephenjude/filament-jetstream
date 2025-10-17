@@ -8,9 +8,9 @@ use Filament\Panel;
 
 trait HasApiTokensFeatures
 {
-    public Closure | bool $hasApiFeature = false;
+    public Closure|bool $hasApiFeature = false;
 
-    public Closure | array | null $apiTokenPermissions = [];
+    public Closure|array|null $apiTokenPermissions = [];
 
     public ?string $apiMenuItemLabel = null;
 
@@ -21,7 +21,7 @@ trait HasApiTokensFeatures
         return $this->evaluate($this->hasApiFeature) === true;
     }
 
-    public function apiTokens(Closure | bool $condition = true, Closure | array | null $permissions = null, ?string $menuItemLabel = null, ?string $menuItemIcon = null): static
+    public function apiTokens(Closure|bool $condition = true, Closure|array|null $permissions = null, ?string $menuItemLabel = null, ?string $menuItemIcon = null): static
     {
         $this->hasApiFeature = $condition;
 
@@ -36,7 +36,7 @@ trait HasApiTokensFeatures
 
     public function getApiMenuItemLabel(): string
     {
-        return $this->evaluate($this->apiMenuItemLabel) ?? __('filament-jetstream::default.menu_item.api_tokens.label');
+        return $this->evaluate($this->apiMenuItemLabel) ?? __('filament-jetstream.menu_item.api_tokens.label');
     }
 
     public function getApiMenuItemIcon(): string
@@ -46,7 +46,7 @@ trait HasApiTokensFeatures
 
     public function getApiTokenPermissions(): array
     {
-        $permissions = $this->evaluate($this->apiTokenPermissions) ?? ['create', 'read', 'update', 'delete'];
+        $permissions = $this->evaluate($this->apiTokenPermissions) ?? config('filament-jetstream.api_token_permissions', ['create', 'read', 'update', 'delete']);
 
         return array_combine($permissions, $permissions);
     }
@@ -64,7 +64,7 @@ trait HasApiTokensFeatures
 
     public function getApiTokenUrl(Panel $panel): ?string
     {
-        return $panel->getUrl() . '/tokens';
+        return $panel->getUrl().'/tokens';
     }
 
     public function validPermissions(array $permissions): array

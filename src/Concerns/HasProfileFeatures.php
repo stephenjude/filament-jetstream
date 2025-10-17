@@ -7,31 +7,31 @@ use Illuminate\Validation\Rules\Password;
 
 trait HasProfileFeatures
 {
-    public string $userModel = 'App\\Models\\User';
+    public string $userModel;
 
-    public Closure | bool $updateProfileInformation = true;
+    public Closure|bool $updateProfileInformation = true;
 
-    public Closure | bool $updateProfilePhoto = true;
+    public Closure|bool $updateProfilePhoto = true;
 
     public string $profilePhotoDisk = 'public';
 
-    public Closure | bool $updatePassword = true;
+    public Closure|bool $updatePassword = true;
 
-    public Closure | Password | null $passwordRule = null;
+    public Closure|Password|null $passwordRule = null;
 
-    protected Closure | bool $forceTwoFactorAuthentication = false;
+    protected Closure|bool $forceTwoFactorAuthentication = false;
 
-    protected Closure | bool $enablePasskeyAuthentication = false;
+    protected Closure|bool $enablePasskeyAuthentication = false;
 
-    protected Closure | bool $requiresPasswordForAuthenticationSetup = false;
+    protected Closure|bool $requiresPasswordForAuthenticationSetup = false;
 
-    protected Closure | bool $twoFactorAuthentication = true;
+    protected Closure|bool $twoFactorAuthentication = true;
 
-    public Closure | bool $logoutOtherBrowserSessions = true;
+    public Closure|bool $logoutOtherBrowserSessions = true;
 
-    public Closure | bool $deleteAccount = true;
+    public Closure|bool $deleteAccount = true;
 
-    public function profilePhoto(Closure | bool $condition = true, string $disk = 'public'): static
+    public function profilePhoto(Closure|bool $condition = true, string $disk = 'public'): static
     {
         $this->updateProfilePhoto = $condition;
 
@@ -42,7 +42,7 @@ trait HasProfileFeatures
 
     public function profilePhotoDisk(): ?string
     {
-        return $this->evaluate($this->profilePhotoDisk);
+        return $this->evaluate($this->profilePhotoDisk) ?? config('filament-jetstream.profile_photo.disk', 'public');
     }
 
     public function managesProfilePhotos(): bool
@@ -55,7 +55,7 @@ trait HasProfileFeatures
         return $this->evaluate($this->updateProfileInformation) === true;
     }
 
-    public function profileInformation(Closure | bool $condition = true): static
+    public function profileInformation(Closure|bool $condition = true): static
     {
         $this->updateProfileInformation = $condition;
 
@@ -72,7 +72,7 @@ trait HasProfileFeatures
         return $this->evaluate($this->passwordRule) ?? Password::default();
     }
 
-    public function updatePassword(Closure | bool $condition = true, ?Password $rule = null): static
+    public function updatePassword(Closure|bool $condition = true, ?Password $rule = null): static
     {
         $this->updatePassword = $condition;
 
@@ -82,10 +82,10 @@ trait HasProfileFeatures
     }
 
     public function twoFactorAuthentication(
-        bool | Closure $condition = true,
-        bool | Closure $forced = false,
-        bool | Closure $enablePasskey = true,
-        bool | Closure $requiresPassword = true
+        bool|Closure $condition = true,
+        bool|Closure $forced = false,
+        bool|Closure $enablePasskey = true,
+        bool|Closure $requiresPassword = true
     ): static {
         $this->twoFactorAuthentication = $condition;
 
@@ -123,7 +123,7 @@ trait HasProfileFeatures
         return $this->evaluate($this->logoutOtherBrowserSessions) === true;
     }
 
-    public function logoutBrowserSessions(Closure | bool $condition = true): static
+    public function logoutBrowserSessions(Closure|bool $condition = true): static
     {
         $this->logoutOtherBrowserSessions = $condition;
 
@@ -135,7 +135,7 @@ trait HasProfileFeatures
         return $this->evaluate($this->deleteAccount) === true;
     }
 
-    public function deleteAccount(Closure | bool $condition = true): static
+    public function deleteAccount(Closure|bool $condition = true): static
     {
         $this->deleteAccount = $condition;
 
@@ -151,6 +151,6 @@ trait HasProfileFeatures
 
     public function userModel(): string
     {
-        return $this->userModel;
+        return $this->userModel ?? config('filament-jetstream.user_model', 'App\\Models\\User');
     }
 }

@@ -46,9 +46,16 @@ class JetstreamPlugin implements Plugin
 
     public function register(Panel $panel): void
     {
+        $config = config('filament-jetstream', []);
+
+        $editProfileClass = $config['pages']['edit_profile'] ?? EditProfile::class;
+        $apiTokensClass = $config['pages']['api_tokens'] ?? ApiTokens::class;
+        $createTeamClass = $config['pages']['create_team'] ?? CreateTeam::class;
+        $editTeamClass = $config['pages']['edit_team'] ?? EditTeam::class;
+
         $panel
             ->homeUrl(fn () => str(filament()->getCurrentOrDefaultPanel()->getUrl())->append('/dashboard'))
-            ->profile(EditProfile::class)
+            ->profile($editProfileClass)
             ->plugins([
                 TwoFactorAuthenticationPlugin::make()
                     ->enableTwoFactorAuthentication(condition: fn () => $this->enabledTwoFactorAuthetication())
@@ -61,7 +68,7 @@ class JetstreamPlugin implements Plugin
 
         if ($this->hasApiTokensFeatures()) {
             $panel
-                ->pages([ApiTokens::class])
+                ->pages([$apiTokensClass])
                 ->userMenuItems([$this->apiTokenMenuItem($panel)]);
         }
 
@@ -69,8 +76,8 @@ class JetstreamPlugin implements Plugin
             $panel
                 ->registration(Register::class)
                 ->tenant($this->teamModel())
-                ->tenantRegistration(CreateTeam::class)
-                ->tenantProfile(EditTeam::class)
+                ->tenantRegistration($createTeamClass)
+                ->tenantProfile($editTeamClass)
                 ->routes(fn () => $this->teamsRoutes());
         }
     }

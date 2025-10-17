@@ -22,7 +22,7 @@ abstract class BaseLivewireComponent extends Component implements HasActions, Ha
     use InteractsWithForms;
     use WithRateLimiting;
 
-    public function authUser(): FilamentUser | Model | Authenticatable
+    public function authUser(): FilamentUser|Model|Authenticatable
     {
         /** @var FilamentUser $user */
         $user = Filament::auth()->user();
@@ -37,8 +37,8 @@ abstract class BaseLivewireComponent extends Component implements HasActions, Ha
     protected function sendRateLimitedNotification(TooManyRequestsException $exception): void
     {
         Notification::make()
-            ->title(__('filament-jetstream::default.notification.rate_limited.title'))
-            ->body(__('filament-jetstream::default.notification.rate_limited.message', ['seconds' => $exception->secondsUntilAvailable]))
+            ->title(__('filament-jetstream.notification.rate_limited.title'))
+            ->body(__('filament-jetstream.notification.rate_limited.message', ['seconds' => $exception->secondsUntilAvailable]))
             ->danger()
             ->send();
     }

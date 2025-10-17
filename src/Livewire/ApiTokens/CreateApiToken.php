@@ -30,18 +30,18 @@ class CreateApiToken extends BaseLivewireComponent
     {
         return $schema
             ->schema([
-                Section::make(__('filament-jetstream::default.create_api_token.section.title'))
+                Section::make(__('filament-jetstream.create_api_token.section.title'))
                     ->aside()
-                    ->description(__('filament-jetstream::default.create_api_token.section.description'))
+                    ->description(__('filament-jetstream.create_api_token.section.description'))
                     ->schema([
                         TextInput::make('name')
-                            ->label(__('filament-jetstream::default.form.token_name.label'))
+                            ->label(__('filament-jetstream.form.token_name.label'))
                             ->minLength(3)
                             ->required()
                             ->string()
                             ->maxLength(255),
                         TextEntry::make('permissions')
-                            ->label(__('filament-jetstream::default.form.permissions.label'))
+                            ->label(__('filament-jetstream.form.permissions.label'))
                             ->state(''),
                         Grid::make()
                             ->columns()
@@ -52,7 +52,7 @@ class CreateApiToken extends BaseLivewireComponent
                             ),
                         Actions::make([
                             Action::make('save')
-                                ->label(__('filament-jetstream::default.action.create_token.label'))
+                                ->label(__('filament-jetstream.action.create_token.label'))
                                 ->submit('createToken'),
                         ]),
                     ]),
@@ -77,7 +77,7 @@ class CreateApiToken extends BaseLivewireComponent
         if (empty($permissions)) {
             Notification::make()
                 ->danger()
-                ->body(__('filament-jetstream::default.notification.create_token.error.message'))
+                ->body(__('filament-jetstream.notification.create_token.error.message'))
                 ->send();
 
             return;
@@ -93,10 +93,10 @@ class CreateApiToken extends BaseLivewireComponent
         Notification::make('showApiToken')
             ->success()
             ->body(new HtmlString("API Token: <span>{$plainTextToken}</span><br>Please copy the token manually."))
-            ->title(__('filament-jetstream::default.notification.create_token.success.message'))
+            ->title(__('filament-jetstream.notification.create_token.success.message'))
             ->actions([
                 Action::make('copy_token_confirm')
-                    ->label(__('filament-jetstream::default.action.copy_token_confirm.label'))
+                    ->label(__('filament-jetstream.action.copy_token_confirm.label'))
                     ->icon('heroicon-o-check-circle')
                     ->dispatch('token-copied', ['token' => $plainTextToken]),
             ])
@@ -116,7 +116,7 @@ class CreateApiToken extends BaseLivewireComponent
     {
         Notification::make()
             ->success()
-            ->body(__('filament-jetstream::default.notification.copy_token.success.message'))
+            ->body(__('filament-jetstream.notification.copy_token.success.message'))
             ->icon('heroicon-o-square-2-stack')
             ->send();
 

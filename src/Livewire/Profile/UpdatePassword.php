@@ -31,19 +31,19 @@ class UpdatePassword extends BaseLivewireComponent
     {
         return $schema
             ->schema([
-                Section::make(__('filament-jetstream::default.update_profile_information.section.title'))
+                Section::make(__('filament-jetstream.update_profile_information.section.title'))
                     ->aside()
-                    ->description(__('filament-jetstream::default.update_password.section.description'))
+                    ->description(__('filament-jetstream.update_password.section.description'))
                     ->schema([
                         TextInput::make('currentPassword')
-                            ->label(__('filament-jetstream::default.form.current_password.label'))
+                            ->label(__('filament-jetstream.form.current_password.label'))
                             ->password()
                             ->revealable(filament()->arePasswordsRevealable())
                             ->required()
                             ->autocomplete('current-password')
                             ->currentPassword(),
                         TextInput::make('password')
-                            ->label(__('filament-jetstream::default.form.password.label'))
+                            ->label(__('filament-jetstream.form.password.label'))
                             ->password()
                             ->rule(Jetstream::plugin()?->passwordRule())
                             ->required()
@@ -55,7 +55,7 @@ class UpdatePassword extends BaseLivewireComponent
                             ->live(debounce: 500)
                             ->same('passwordConfirmation'),
                         TextInput::make('passwordConfirmation')
-                            ->label(__('filament-jetstream::default.form.confirm_password.label'))
+                            ->label(__('filament-jetstream.form.confirm_password.label'))
                             ->password()
                             ->revealable(filament()->arePasswordsRevealable())
                             ->required()
@@ -65,7 +65,7 @@ class UpdatePassword extends BaseLivewireComponent
                             ->dehydrated(false),
                         Actions::make([
                             Action::make('save')
-                                ->label(__('filament-jetstream::default.action.save.label'))
+                                ->label(__('filament-jetstream.action.save.label'))
                                 ->submit('updatePassword'),
                         ]),
                     ]),
@@ -97,7 +97,7 @@ class UpdatePassword extends BaseLivewireComponent
         $user->save();
 
         if (request()->hasSession() && array_key_exists('password', $data)) {
-            request()->session()->put(['password_hash_' . Filament::getAuthGuard() => $data['password']]);
+            request()->session()->put(['password_hash_'.Filament::getAuthGuard() => $data['password']]);
         }
 
         $this->data['password'] = null;

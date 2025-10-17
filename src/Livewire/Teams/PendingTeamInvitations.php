@@ -35,13 +35,13 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
             ->paginated(false)
             ->recordActions([
                 Action::make('resendTeamInvitation')
-                    ->label(__('filament-jetstream::default.action.resend_team_invitation.label'))
+                    ->label(__('filament-jetstream.action.resend_team_invitation.label'))
                     ->color('primary')
                     ->requiresConfirmation()
                     ->visible(fn () => Gate::check('updateTeamMember', $this->team))
                     ->action(fn ($record) => $this->resendTeamInvitation($record)),
                 Action::make('cancelTeamInvitation')
-                    ->label(__('filament-jetstream::default.action.cancel_team_invitation.label'))
+                    ->label(__('filament-jetstream.action.cancel_team_invitation.label'))
                     ->color('danger')
                     ->visible(fn () => Gate::check('removeTeamMember', $this->team))
                     ->requiresConfirmation()
@@ -53,7 +53,7 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
     {
         Mail::to($invitation->email)->send(new TeamInvitation($invitation));
 
-        $this->sendNotification(__('filament-jetstream::default.notification.team_invitation_sent.success.message'));
+        $this->sendNotification(__('filament-jetstream.notification.team_invitation_sent.success.message'));
     }
 
     public function cancelTeamInvitation(Team $team, Model $invitation)
@@ -63,7 +63,7 @@ class PendingTeamInvitations extends BaseLivewireComponent implements Tables\Con
         $team->fresh();
 
         $this->sendNotification(
-            __('filament-jetstream::default.notification.team_invitation_cancelled.success.message')
+            __('filament-jetstream.notification.team_invitation_cancelled.success.message')
         );
     }
 

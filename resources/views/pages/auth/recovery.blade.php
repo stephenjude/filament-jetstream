@@ -1,6 +1,6 @@
 <x-filament-panels::page.simple>
     <x-slot name="subheading">
-        {{ __('filament-jetstream::default.form.or.label') }}
+        {{ __('filament-jetstream.form.or.label') }}
         {{ $this->challengeAction }}
     </x-slot>
 

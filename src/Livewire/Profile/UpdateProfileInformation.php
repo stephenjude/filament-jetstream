@@ -29,11 +29,11 @@ class UpdateProfileInformation extends BaseLivewireComponent
     {
         return $schema
             ->schema([
-                Section::make(__('filament-jetstream::default.update_profile_information.section.title'))
+                Section::make(__('filament-jetstream.update_profile_information.section.title'))
                     ->aside()
-                    ->description(__('filament-jetstream::default.update_profile_information.section.description'))
+                    ->description(__('filament-jetstream.update_profile_information.section.description'))
                     ->schema([FileUpload::make('profile_photo_path')
-                        ->label(__('filament-jetstream::default.form.profile_photo.label'))
+                        ->label(__('filament-jetstream.form.profile_photo.label'))
                         ->avatar()
                         ->image()
                         ->imageEditor()
@@ -43,18 +43,18 @@ class UpdateProfileInformation extends BaseLivewireComponent
                         ->disk(fn (): string => Jetstream::plugin()?->profilePhotoDisk())
                         ->visible(fn (): bool => Jetstream::plugin()?->managesProfilePhotos()),
                         TextInput::make('name')
-                            ->label(__('filament-jetstream::default.form.name.label'))
+                            ->label(__('filament-jetstream.form.name.label'))
                             ->string()
                             ->maxLength(255)
                             ->required(),
                         TextInput::make('email')
-                            ->label(__('filament-jetstream::default.form.email.label'))
+                            ->label(__('filament-jetstream.form.email.label'))
                             ->email()
                             ->required()
                             ->unique(get_class(Filament::auth()->user()), ignorable: $this->authUser()),
                         Actions::make([
                             Action::make('save')
-                                ->label(__('filament-jetstream::default.action.save.label'))
+                                ->label(__('filament-jetstream.action.save.label'))
                                 ->submit('updateProfile'),
                         ]),
                     ]),

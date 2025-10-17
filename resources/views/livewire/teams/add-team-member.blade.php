@@ -1,9 +1,9 @@
 <x-filament::section aside>
     <x-slot name="heading">
-        {{ __('filament-jetstream::default.add_team_member.section.title') }}
+        {{ __('filament-jetstream.add_team_member.section.title') }}
     </x-slot>
     <x-slot name="description">
-        {{ __('filament-jetstream::default.add_team_member.section.description') }}
+        {{ __('filament-jetstream.add_team_member.section.description') }}
     </x-slot>
 
     <form wire:submit="addTeamMember">

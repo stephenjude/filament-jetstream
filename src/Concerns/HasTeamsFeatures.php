@@ -20,15 +20,15 @@ use Illuminate\Support\Str;
 
 trait HasTeamsFeatures
 {
-    public string $teamModel = Team::class;
+    public string $teamModel;
 
-    public string $roleModel = Role::class;
+    public string $roleModel;
 
-    public string $membershipModel = Membership::class;
+    public string $membershipModel;
 
-    public string $teamInvitationModel = TeamInvitation::class;
+    public string $teamInvitationModel;
 
-    public Closure | bool $hasTeamFeature = false;
+    public Closure|bool $hasTeamFeature = false;
 
     public ?Closure $acceptTeamInvitation = null;
 
@@ -37,7 +37,7 @@ trait HasTeamsFeatures
         return $this->evaluate($this->hasTeamFeature) === true;
     }
 
-    public function teams(Closure | bool $condition = true, ?Closure $acceptTeamInvitation = null): static
+    public function teams(Closure|bool $condition = true, ?Closure $acceptTeamInvitation = null): static
     {
         $this->hasTeamFeature = $condition;
 
@@ -84,25 +84,25 @@ trait HasTeamsFeatures
 
     public function teamModel(): string
     {
-        return $this->teamModel;
+        return $this->teamModel ?? config('filament-jetstream.team_model', Team::class);
     }
 
     public function membershipModel(): string
     {
-        return $this->membershipModel;
+        return $this->membershipModel ?? config('filament-jetstream.membership_model', Membership::class);
     }
 
     public function teamInvitationModel(): string
     {
-        return $this->teamInvitationModel;
+        return $this->teamInvitationModel ?? config('filament-jetstream.team_invitation_model', TeamInvitation::class);
     }
 
     public function roleModel(): string
     {
-        return $this->roleModel;
+        return $this->roleModel ?? config('filament-jetstream.role_model', Role::class);
     }
 
-    public function defaultAcceptTeamInvitation(string | int $invitationId): RedirectResponse
+    public function defaultAcceptTeamInvitation(string|int $invitationId): RedirectResponse
     {
         $model = Jetstream::plugin()->teamInvitationModel();
 
@@ -121,7 +121,7 @@ trait HasTeamsFeatures
         abort_if(
             boolean: $team->hasUserWithEmail($newTeamMember->email),
             code: 403,
-            message: __('filament-jetstream::default.action.add_team_member.error_message.email_already_joined')
+            message: __('filament-jetstream.action.add_team_member.error_message.email_already_joined')
         );
 
         AddingTeamMember::dispatch($team, $newTeamMember);
@@ -139,9 +139,9 @@ trait HasTeamsFeatures
 
         Notification::make()
             ->success()
-            ->title(__('filament-jetstream::default.notification.accepted_invitation.success.title'))
+            ->title(__('filament-jetstream.notification.accepted_invitation.success.title'))
             ->body(
-                __('filament-jetstream::default.notification.accepted_invitation.success.message', [
+                __('filament-jetstream.notification.accepted_invitation.success.message', [
                     'team' => $invitation->team->name,
                 ])
             )

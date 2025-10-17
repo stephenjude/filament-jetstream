@@ -16,7 +16,7 @@ class ApiTokens extends Page
 
     protected static ?string $title = 'API Tokens';
 
-    protected static string | null | \BackedEnum $navigationIcon = 'heroicon-o-key';
+    protected static string|null|\BackedEnum $navigationIcon = 'heroicon-o-key';
 
     protected string $view = 'filament-jetstream::pages.api-tokens';
 
@@ -38,7 +38,7 @@ class ApiTokens extends Page
         static::routes($panel);
     }
 
-    public static function getRouteName(string | Panel | null $panel = null): string
+    public static function getRouteName(string|Panel|null $panel = null): string
     {
         $panel = $panel ?? filament()->getCurrentOrDefaultPanel();
 

@@ -2,11 +2,11 @@
 
 <x-filament-panels::page>
     @if (Jetstream::plugin()?->enabledProfileInformationUpdate())
-        @livewire(Filament\Jetstream\Livewire\Profile\UpdateProfileInformation::class)
+        @livewire(config('filament-jetstream.livewire_components.profile.update_information', \Filament\Jetstream\Livewire\Profile\UpdateProfileInformation::class))
     @endif
 
     @if (Jetstream::plugin()?->enabledPasswordUpdate())
-        @livewire(Filament\Jetstream\Livewire\Profile\UpdatePassword::class)
+        @livewire(config('filament-jetstream.livewire_components.profile.update_password', \Filament\Jetstream\Livewire\Profile\UpdatePassword::class))
     @endif
 
     @if (Jetstream::plugin()?->enabledTwoFactorAuthetication())
@@ -18,10 +18,10 @@
     @endif
 
     @if (Jetstream::plugin()?->enabledLogoutOtherBrowserSessions())
-        @livewire(Filament\Jetstream\Livewire\Profile\LogoutOtherBrowserSessions::class)
+        @livewire(config('filament-jetstream.livewire_components.profile.logout_other_sessions', \Filament\Jetstream\Livewire\Profile\LogoutOtherBrowserSessions::class))
     @endif
 
     @if (Jetstream::plugin()?->enabledDeleteAccount())
-        @livewire(Filament\Jetstream\Livewire\Profile\DeleteAccount::class)
+        @livewire(config('filament-jetstream.livewire_components.profile.delete_account', \Filament\Jetstream\Livewire\Profile\DeleteAccount::class))
     @endif
 </x-filament-panels::page>

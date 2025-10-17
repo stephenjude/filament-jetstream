@@ -55,14 +55,14 @@ class InstallCommand extends Command
         }
 
         // Factories...
-        copy(__DIR__ . '/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
+        copy(__DIR__.'/../../database/factories/UserFactory.php', base_path('database/factories/UserFactory.php'));
 
         // User Model...
-        copy(__DIR__ . '/../../stubs/app/Models/User.php', app_path('Models/User.php'));
+        copy(__DIR__.'/../../stubs/app/Models/User.php', app_path('Models/User.php'));
 
         // Default Filament Panel...
         copy(
-            __DIR__ . '/../../stubs/app/Providers/AppPanelProvider.php',
+            __DIR__.'/../../stubs/app/Providers/AppPanelProvider.php',
             app_path('Providers/Filament/AppPanelProvider.php')
         );
 
@@ -71,7 +71,7 @@ class InstallCommand extends Command
             $this->call('vendor:publish', ['--tag' => 'filament-jetstream-team-migrations']);
 
             // Factories
-            copy(__DIR__ . '/../../database/factories/TeamFactory.php', base_path('database/factories/TeamFactory.php'));
+            copy(__DIR__.'/../../database/factories/TeamFactory.php', base_path('database/factories/TeamFactory.php'));
 
             $this->replaceInFile(
                 '// use Filament\Models\Contracts\HasTenants;',

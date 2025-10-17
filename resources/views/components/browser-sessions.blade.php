@@ -3,7 +3,7 @@
     :field="$field"
 >
     <div class="text-sm mb-4">
-        {{ __('filament-jetstream::default.browser_sessions.section.notice') }}
+        {{ __('filament-jetstream.browser_sessions.section.notice') }}
     </div>
 
     @if (count($sessions) > 0)
@@ -21,8 +21,8 @@
 
                     <div class="ms-3">
                         <div class="text-sm">
-                            {{ $session->agent->platform() ?: __('filament-jetstream::default.browser_sessions.section.labels.unknown_device') }}
-                            - {{ $session->agent->browser() ?: __('filament-jetstream::default.browser_sessions.section.labels.unknown_device') }}
+                            {{ $session->agent->platform() ?: __('filament-jetstream.browser_sessions.section.labels.unknown_device') }}
+                            - {{ $session->agent->browser() ?: __('filament-jetstream.browser_sessions.section.labels.unknown_device') }}
                         </div>
 
                         <div>
@@ -31,9 +31,9 @@
 
                                 @if ($session->is_current_device)
                                     <span
-                                        class="font-semibold">{{ __('filament-jetstream::default.browser_sessions.section.labels.current_device') }}</span>
+                                        class="font-semibold">{{ __('filament-jetstream.browser_sessions.section.labels.current_device') }}</span>
                                 @else
-                                    {{ __('filament-jetstream::default.browser_sessions.section.labels.last_active') }} {{ $session->last_active }}
+                                    {{ __('filament-jetstream.browser_sessions.section.labels.last_active') }} {{ $session->last_active }}
                                 @endif
                             </div>
                         </div>

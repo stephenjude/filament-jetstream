@@ -34,7 +34,7 @@ class TeamInvitation extends Mailable
             'invitation' => $this->invitation,
         ]);
 
-        return $this->subject(__('filament-jetstream::default.mail.team_invitation.subject'))
+        return $this->subject(__('filament-jetstream.mail.team_invitation.subject'))
             ->markdown('filament-jetstream::emails.team-invitation', [
                 'acceptUrl' => $url,
                 'teamName' => $this->invitation->team?->name,

@@ -1,9 +1,9 @@
 <x-filament::section aside>
     <x-slot name="heading">
-        {{ __('filament-jetstream::default.pending_team_invitations.section.title') }}
+        {{ __('filament-jetstream.pending_team_invitations.section.title') }}
     </x-slot>
     <x-slot name="description">
-        {{ __('filament-jetstream::default.pending_team_invitations.section.description') }}
+        {{ __('filament-jetstream.pending_team_invitations.section.description') }}
     </x-slot>
 
     {{ $this->table }}

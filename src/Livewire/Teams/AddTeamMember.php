@@ -40,9 +40,9 @@ class AddTeamMember extends BaseLivewireComponent
             ->schema([
                 TextEntry::make('addTeamMemberNotice')
                     ->hiddenLabel()
-                    ->state(fn () => __('filament-jetstream::default.add_team_member.section.notice')),
+                    ->state(fn () => __('filament-jetstream.add_team_member.section.notice')),
                 TextInput::make('email')
-                    ->label(__('filament-jetstream::default.form.email.label'))
+                    ->label(__('filament-jetstream.form.email.label'))
                     ->email()
                     ->required()
                     ->unique(table: Jetstream::plugin()->teamInvitationModel(), modifyRuleUsing: function (
@@ -55,7 +55,7 @@ class AddTeamMember extends BaseLivewireComponent
                     })
                     ->validationMessages([
                         'unique' => __(
-                            'filament-jetstream::default.action.add_team_member.error_message.email_already_invited'
+                            'filament-jetstream.action.add_team_member.error_message.email_already_invited'
                         ),
                     ])
                     ->rules([
@@ -63,7 +63,7 @@ class AddTeamMember extends BaseLivewireComponent
                             if ($this->team->hasUserWithEmail($value)) {
                                 $fail(
                                     __(
-                                        'filament-jetstream::default.action.add_team_member.error_message.email_already_invited'
+                                        'filament-jetstream.action.add_team_member.error_message.email_already_invited'
                                     )
                                 );
                             }
@@ -85,7 +85,7 @@ class AddTeamMember extends BaseLivewireComponent
                     }),
                 Actions::make([
                     Action::make('addTeamMember')
-                        ->label(__('filament-jetstream::default.action.add_team_member.label'))
+                        ->label(__('filament-jetstream.action.add_team_member.label'))
                         ->action(function () {
                             $this->addTeamMember($this->team);
                         }),
@@ -118,7 +118,7 @@ class AddTeamMember extends BaseLivewireComponent
 
         Mail::to($email)->send(new TeamInvitation($invitation));
 
-        $this->sendNotification(__('filament-jetstream::default.notification.team_invitation_sent.success.message'));
+        $this->sendNotification(__('filament-jetstream.notification.team_invitation_sent.success.message'));
 
         $this->redirect(Filament::getTenantProfileUrl());
     }

@@ -35,6 +35,6 @@ class EditTeam extends EditTenantProfile
 
     public static function getLabel(): string
     {
-        return __('filament-jetstream::default.page.edit_team.title');
+        return __('filament-jetstream.page.edit_team.title');
     }
 }

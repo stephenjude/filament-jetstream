@@ -13,7 +13,7 @@ class CreateTeam extends RegisterTenant
 {
     public static function getLabel(): string
     {
-        return __('filament-jetstream::default.page.create_team.title');
+        return __('filament-jetstream.page.create_team.title');
     }
 
     public function form(Schema $schema): Schema
