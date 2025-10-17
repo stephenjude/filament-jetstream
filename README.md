@@ -1,13 +1,13 @@
-# Filament Jetstream Enhanced — A Laravel Starter Kit Built With Filament
+# Filament Jetstream — A Laravel Starter Kit Built With Filament
 
 ![Edit Profile](https://raw.githubusercontent.com/MominAlZaraa/filament-jetstream/1.x/art/banner.jpg)
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/mominpert/filament-jetstream-enhanced.svg?style=flat-square)](https://packagist.org/packages/mominpert/filament-jetstream-enhanced)
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/mominalzaraa/filament-jetstream.svg?style=flat-square)](https://packagist.org/packages/mominalzaraa/filament-jetstream)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/MominAlZaraa/filament-jetstream/run-tests.yml?branch=1.x&label=tests&style=flat-square)](https://github.com/MominAlZaraa/filament-jetstream/actions?query=workflow%3Arun-tests+branch%3A1.x)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/MominAlZaraa/filament-jetstream/fix-php-code-styling.yml?branch=1.x&label=code%20style&style=flat-square)](https://github.com/MominAlZaraa/filament-jetstream/actions?query=workflow%3A"Fix+PHP+code+style+issues"+branch%3A1.x)
-[![Total Downloads](https://img.shields.io/packagist/dt/mominpert/filament-jetstream-enhanced.svg?style=flat-square)](https://packagist.org/packages/mominpert/filament-jetstream-enhanced)
+[![Total Downloads](https://img.shields.io/packagist/dt/mominalzaraa/filament-jetstream.svg?style=flat-square)](https://packagist.org/packages/mominalzaraa/filament-jetstream)
 
-Filament Jetstream Enhanced is a beautifully designed application starter kit for Laravel, inspired by [Laravel Jetstream](https://jetstream.laravel.com/introduction.html) and built with **Filament**. This enhanced version provides comprehensive customization capabilities and improved developer experience.
+Filament Jetstream is a beautifully designed application starter kit for Laravel, inspired by [Laravel Jetstream](https://jetstream.laravel.com/introduction.html) and built with **Filament**. This version provides comprehensive customization capabilities and improved developer experience.
 
 Includes auth, registration, 2FA, session management, API tokens, and team support, all implemented with **native Filament panels and components** with **full customization support**.
 
@@ -28,7 +28,7 @@ Skip boilerplate, start building features.
 You can install the package via composer:
 
 ```bash
-composer require mominpert/filament-jetstream-enhanced
+composer require mominalzaraa/filament-jetstream
 
 php artisan filament-jetstream:install --teams --api
 ```
@@ -328,7 +328,7 @@ Please review [our security policy](../../security/policy) on how to report secu
 ## Credits
 
 - **Original Author**: [stephenjude](https://github.com/stephenjude) - [stephenjude/filament-jetstream](https://github.com/stephenjude/filament-jetstream)
-- **Enhanced by**: [mominpert](https://github.com/MominAlZaraa) - [mominpert/filament-jetstream-enhanced](https://github.com/MominAlZaraa/filament-jetstream)
+- **Enhanced by**: [mominalzaraa](https://github.com/MominAlZaraa) - [mominalzaraa/filament-jetstream](https://github.com/MominAlZaraa/filament-jetstream)
 - [taylorotwell](https://github.com/taylorotwell)
 - [All Contributors](../../contributors)
 
