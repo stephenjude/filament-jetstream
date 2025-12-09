@@ -58,8 +58,11 @@ trait HasProfilePhoto
      */
     protected function defaultProfilePhotoUrl(): string
     {
+        // Use getFilamentName() if available for context-aware naming, otherwise fall back to name
+        $displayName = method_exists($this, 'getFilamentName') ? $this->getFilamentName() : $this->name;
+
         $name = trim(
-            collect(explode(' ', $this->name))->map(function ($segment) {
+            collect(explode(' ', $displayName))->map(function ($segment) {
                 return mb_substr($segment, 0, 1);
             })->join(' ')
         );
