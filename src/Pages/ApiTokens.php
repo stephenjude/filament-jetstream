@@ -3,7 +3,6 @@
 namespace Filament\Jetstream\Pages;
 
 use Filament\Pages\Page;
-use Filament\Pages\PageConfiguration;
 use Filament\Panel;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +25,7 @@ class ApiTokens extends Page
         return 'tokens';
     }
 
-    public static function registerRoutes(Panel $panel, ?PageConfiguration $configuration = null): void
+    public static function registerRoutes(Panel $panel, $configuration = null): void
     {
         if (filled(static::getCluster())) {
             Route::name(static::prependClusterRouteBaseName($panel, ''))
