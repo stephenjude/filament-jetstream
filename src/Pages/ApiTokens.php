@@ -27,15 +27,19 @@ class ApiTokens extends Page
 
     public static function registerRoutes(Panel $panel, $configuration = null): void
     {
+        $registerRoutes = fn () => $configuration === null 
+            ? static::routes($panel) 
+            : static::routes($panel, $configuration);
+        
         if (filled(static::getCluster())) {
             Route::name(static::prependClusterRouteBaseName($panel, ''))
                 ->prefix(static::prependClusterSlug($panel, ''))
-                ->group(fn () => static::routes($panel, $configuration));
+                ->group($registerRoutes);
 
             return;
         }
 
-        static::routes($panel, $configuration);
+        $registerRoutes();
     }
 
     public static function getRouteName(string | Panel | null $panel = null): string
