@@ -2,6 +2,20 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 1.3.0 - 2026-03-04
+
+### What's Changed
+
+* Bump actions/checkout from 5 to 6 by @dependabot[bot] in https://github.com/stephenjude/filament-jetstream/pull/90
+* Bump dependabot/fetch-metadata from 2.4.0 to 2.5.0 by @dependabot[bot] in https://github.com/stephenjude/filament-jetstream/pull/92
+* fix: update registerRoutes to be compatible with Filament v4.8.0 by @alegbeleyehzl in https://github.com/stephenjude/filament-jetstream/pull/93
+
+### New Contributors
+
+* @alegbeleyehzl made their first contribution in https://github.com/stephenjude/filament-jetstream/pull/93
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.2.12...1.3.0
+
 ## 1.2.12 - 2025-10-13
 
 ### What's Changed
