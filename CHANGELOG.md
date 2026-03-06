@@ -2,6 +2,18 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 1.4.0 - 2026-03-06
+
+### What's Changed
+
+* Laravel 13.x Compatibility by @laravel-shift in https://github.com/stephenjude/filament-jetstream/pull/94
+
+### New Contributors
+
+* @laravel-shift made their first contribution in https://github.com/stephenjude/filament-jetstream/pull/94
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.3.0...1.4.0
+
 ## 1.3.0 - 2026-03-04
 
 ### What's Changed
