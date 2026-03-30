@@ -2,6 +2,15 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 1.4.1 - 2026-03-30
+
+### What's Changed
+
+* Bump ramsey/composer-install from 3 to 4 by @dependabot[bot] in https://github.com/stephenjude/filament-jetstream/pull/95
+* Bump dependabot/fetch-metadata from 2.5.0 to 3.0.0 by @dependabot[bot] in https://github.com/stephenjude/filament-jetstream/pull/96
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.4.0...1.4.1
+
 ## 1.4.0 - 2026-03-06
 
 ### What's Changed
