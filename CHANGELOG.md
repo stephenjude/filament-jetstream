@@ -2,6 +2,14 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 1.4.2 - 2026-04-22
+
+### What's Changed
+
+* Bump dependabot/fetch-metadata from 3.0.0 to 3.1.0 by @dependabot[bot] in https://github.com/stephenjude/filament-jetstream/pull/98
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.4.1...1.4.2
+
 ## 1.4.1 - 2026-03-30
 
 ### What's Changed
