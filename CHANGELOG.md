@@ -2,6 +2,14 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 2.0.0 - 2026-05-31
+
+### What's Changed
+
+* Support Filament 5 and Laravel 13 by @stephenjude in https://github.com/stephenjude/filament-jetstream/pull/99
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.4.2...2.0.0
+
 ## 1.4.2 - 2026-04-22
 
 ### What's Changed
