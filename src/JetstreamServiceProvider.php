@@ -37,7 +37,6 @@ class JetstreamServiceProvider extends PackageServiceProvider
         $package->name(static::$name)
             ->hasViews()
             ->hasTranslations()
-            ->hasConfigFile(static::$name)
             ->hasCommands([InstallCommand::class]);
 
         $this->publishes([
