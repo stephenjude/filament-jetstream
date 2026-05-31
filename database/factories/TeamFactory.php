@@ -7,7 +7,7 @@ use Filament\Jetstream\Models\Team;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\Filament\Jetstream\Models\Team>
+ * @extends Factory<Team>
  */
 class TeamFactory extends Factory
 {

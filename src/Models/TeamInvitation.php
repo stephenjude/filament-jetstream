@@ -4,6 +4,7 @@ namespace Filament\Jetstream\Models;
 
 use Filament\Jetstream\Jetstream;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TeamInvitation extends Model
 {
@@ -20,7 +21,7 @@ class TeamInvitation extends Model
     /**
      * Get the team that the invitation belongs to.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function team()
     {

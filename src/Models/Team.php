@@ -2,13 +2,17 @@
 
 namespace Filament\Jetstream\Models;
 
+use App\Models\User;
 use Filament\Jetstream\Events\TeamCreated;
 use Filament\Jetstream\Events\TeamDeleted;
 use Filament\Jetstream\Events\TeamUpdated;
 use Filament\Jetstream\Jetstream;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Collection;
 
 class Team extends Model
 {
@@ -50,7 +54,7 @@ class Team extends Model
     /**
      * Get the owner of the team.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return BelongsTo
      */
     public function owner()
     {
@@ -64,7 +68,7 @@ class Team extends Model
     /**
      * Get all of the team's users including its owner.
      *
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function allUsers()
     {
@@ -98,7 +102,7 @@ class Team extends Model
     /**
      * Determine if the given user belongs to the team.
      *
-     * @param  \App\Models\User  $user
+     * @param  User  $user
      * @return bool
      */
     public function hasUser($user)
@@ -121,7 +125,7 @@ class Team extends Model
     /**
      * Determine if the given user has the given permission on the team.
      *
-     * @param  \App\Models\User  $user
+     * @param  User  $user
      * @param  string  $permission
      * @return bool
      */
@@ -133,7 +137,7 @@ class Team extends Model
     /**
      * Get all of the pending user invitations for the team.
      *
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return HasMany
      */
     public function teamInvitations()
     {
@@ -145,7 +149,7 @@ class Team extends Model
     /**
      * Remove the given user from the team.
      *
-     * @param  \App\Models\User  $user
+     * @param  User  $user
      * @return void
      */
     public function removeUser($user)
