@@ -4,9 +4,11 @@ on:
   push:
     branches:
       - main
+      - 2.x
   pull_request:
     branches:
       - main
+      - 2.x
 
 jobs:
   test:
@@ -17,7 +19,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
         php: [8.4, 8.3]
-        laravel: [12, 13]
+        laravel: ['12.*', '13.*']
         stability: [prefer-lowest, prefer-stable]
         include:
           - laravel: 12.*
@@ -45,11 +47,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" "nesbot/carbon:${{ matrix.carbon }}" --no-interaction --no-update
+          composer require "laravel/framework:${{ matrix.laravel }}" "orchestra/testbench:${{ matrix.testbench }}" --no-interaction --no-update
           composer update --${{ matrix.stability }} --prefer-dist --no-interaction
 
       - name: List Installed Dependencies
         run: composer show -D
 
       - name: Execute tests
-        run: vendor/bin/pest --ci
+        run: vendor/bin/pest --no-coverage
