@@ -2,6 +2,14 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 2.0.1 - 2026-06-24
+
+### What's Changed
+
+* Bump actions/checkout from 6 to 7 by @dependabot[bot] in https://github.com/stephenjude/filament-jetstream/pull/100
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/2.0.0...2.0.1
+
 ## 2.0.0 - 2026-05-31
 
 ### What's Changed
