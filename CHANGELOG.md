@@ -2,6 +2,14 @@
 
 All notable changes to `filament-jetstream` will be documented in this file.
 
+## 1.5.0 - 2026-11-05
+
+### What's Changed
+
+* [1.x] Require two factor authentication ^4.2|^5.0.4 by @stephenjude in https://github.com/stephenjude/filament-jetstream/pull/102
+
+**Full Changelog**: https://github.com/stephenjude/filament-jetstream/compare/1.4.2...1.5.0
+
 ## 2.0.1 - 2026-06-24
 
 ### What's Changed
